@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "RfKpgOUIZkNsL4LDGXOHRmW50aUfDIPe695Nrt3tndYo7jkaewjbsNLBBZAkRpOWeJzlluv8OD3g1yFaqpYHVw==",
+  "dgSpecHash": "ATyb7DCiyZawVYFPw9LwbOIwW7xPm/ncB5ALy+KO8RmJneJLfuinvGHgy1oovX3QRwzeQk8EOjMe+j8l8QsxXA==",
   "success": true,
   "projectFilePath": "C:\\git\\RPGTileMapCreator\\RPGTileMapCreator\\RPGTileMapCreator\\RPGTileMapCreator.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\Rieger\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512"
+  ],
   "logs": []
 }
