@@ -142,7 +142,14 @@ namespace RPGTileMapCreator
             {
                 pb.tile.Tag = letter.Text;
             }
-            
+            // Can only be one
+          /*  if (tileSets.Count(p => p.letter == letter) > 1)
+            {
+                DialogResult dialogResult = MessageBox.Show("This character assignment already exists.", "Character Already Used", MessageBoxButtons.OK);
+                pb.letter.Text = "";
+                pb.tile.Tag = null;
+            }*/
+
             if (String.IsNullOrEmpty(letter.Text))
             {
               DialogResult dialogResult = MessageBox.Show("There is no character for this tile. If you leave it blank, these tiles will be removed from canvas. Proceed?", "You Goofed!", MessageBoxButtons.YesNo);
@@ -297,7 +304,7 @@ namespace RPGTileMapCreator
                 {
                     fileName = p.Name,
                     filePath = p.ImageLocation,
-                    character = p.Tag.ToString()
+                    character = p.Tag == null ? "" : p.Tag.ToString()
                 });
             }
 
