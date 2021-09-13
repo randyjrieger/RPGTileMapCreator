@@ -22,6 +22,9 @@ namespace RPGTileMapCreator
         TextBox txtMapCharacter = new TextBox();
         List<PaletteObject> tileSets;
 
+        protected int tileWidth = 0;
+        protected int tileHeight = 0;
+
         public Form1()
         {
             PictureBox p;
@@ -31,84 +34,86 @@ namespace RPGTileMapCreator
 
             //openTileFolderDialog = new OpenFileDialog();
 
+            //PictureBox p;
+            //TextBox t = new TextBox();
 
-            for (int i = 1; i <= 10; i++)
-            {
-                for (int j = 1; j <= 10; j++)
-                {
-                    p = new PictureBox();
-
-                    p.BackColor = Color.Ivory;
-                    p.SizeMode = PictureBoxSizeMode.StretchImage;
-                    p.Width = 51;
-                    p.Height = 51;
-                    p.Left = 51 * i - 51;
-                    p.Top = 51 * j - 51;
-                    p.Name = p.Left.ToString() + "_" + p.Top.ToString();
-                    p.BorderStyle = BorderStyle.FixedSingle;
-                    p.MouseDown += (s, args) =>
-                    {
-                        if (args.Button == MouseButtons.Right)
-                        {
-                            CanvasBox_RightClick(s, args);
-                        }
-                        else if (args.Button == MouseButtons.Left)
-                        {
-                            CanvasBox_Click(s, args);
-                        }
-                    };
-                    //  p.DragOver += new EventHandler(CanvasBox_DragOver);
-                    this.Controls.Add(p);
-                }
-            }
-
-            //int row = 0;
-            //int col = 0;
-            //foreach (string s in Directory.GetFiles(@"C:\git\thievesGuild\ThievesGuild\ThievesGuild\Resources\tiles"))
+            //for (int i = 1; i <= 10; i++)
             //{
-            //    p = new PictureBox();
-            //    t = new TextBox();
-
-            //    p.BackColor = Color.Ivory;
-            //    p.SizeMode = PictureBoxSizeMode.StretchImage;
-            //    p.Width = 51;
-            //    p.Height = 51;
-
-            //    t.MaxLength = 1;
-            //    t.Height = 23;
-            //    t.Width = p.Width;
-
-            //    p.Left = col * 51;
-            //    p.Top = row * 51 + row * t.Height;
-            //    col++;
-            //    if (col == 9)
+            //    for (int j = 1; j <= 10; j++)
             //    {
-            //        col = 0; row++;
+            //        p = new PictureBox();
+
+            //        p.BackColor = Color.Ivory;
+            //        p.SizeMode = PictureBoxSizeMode.StretchImage;
+            //        p.Width = 51;
+            //        p.Height = 51;
+            //        p.Left = 51 * i - 51;
+            //        p.Top = 51 * j - 51;
+            //        p.Name = p.Left.ToString() + "_" + p.Top.ToString();
+            //        p.BorderStyle = BorderStyle.FixedSingle;
+            //        p.MouseDown += (s, args) =>
+            //        {
+            //            if (args.Button == MouseButtons.Right)
+            //            {
+            //                CanvasBox_RightClick(s, args);
+            //            }
+            //            else if (args.Button == MouseButtons.Left)
+            //            {
+            //                CanvasBox_Click(s, args);
+            //            }
+            //        };
+            //        //  p.DragOver += new EventHandler(CanvasBox_DragOver);
+            //        this.Controls.Add(p);
             //    }
-
-            //    p.Name = Path.GetFileName(s);
-            //    p.BorderStyle = BorderStyle.None;
-            //    p.Image = Image.FromFile(s);
-            //    p.Click += new EventHandler(PaletteBox_Click);
-            //    Panel_Palete.Controls.Add(p);
-
-            //    t.Left = p.Left;
-            //    t.Top = p.Top + p.Height;
-            //    t.Tag = p.Name;
-            //    t.Leave += new EventHandler(LetterBox_LostFocus);
-            //    t.Enter += new EventHandler(LetterBox_Enter);
-            //    t.TextChanged += new EventHandler(LetterBox_TextChanged);
-            //    Panel_Palete.Controls.Add(t);
-
-            //    tileSets.Add(new PaletteObject(p, t));
             //}
 
-            txtMapCharacter.Visible = false;
-            txtMapCharacter.Left = 0;
-            txtMapCharacter.Top = 0;
-            this.Controls.Add(txtMapCharacter);
+            ////int row = 0;
+            ////int col = 0;
+            ////foreach (string s in Directory.GetFiles(@"C:\git\thievesGuild\ThievesGuild\ThievesGuild\Resources\tiles"))
+            ////{
+            ////    p = new PictureBox();
+            ////    t = new TextBox();
 
-            txtMapName.Focus();
+            ////    p.BackColor = Color.Ivory;
+            ////    p.SizeMode = PictureBoxSizeMode.StretchImage;
+            ////    p.Width = 51;
+            ////    p.Height = 51;
+
+            ////    t.MaxLength = 1;
+            ////    t.Height = 23;
+            ////    t.Width = p.Width;
+
+            ////    p.Left = col * 51;
+            ////    p.Top = row * 51 + row * t.Height;
+            ////    col++;
+            ////    if (col == 9)
+            ////    {
+            ////        col = 0; row++;
+            ////    }
+
+            ////    p.Name = Path.GetFileName(s);
+            ////    p.BorderStyle = BorderStyle.None;
+            ////    p.Image = Image.FromFile(s);
+            ////    p.Click += new EventHandler(PaletteBox_Click);
+            ////    Panel_Palete.Controls.Add(p);
+
+            ////    t.Left = p.Left;
+            ////    t.Top = p.Top + p.Height;
+            ////    t.Tag = p.Name;
+            ////    t.Leave += new EventHandler(LetterBox_LostFocus);
+            ////    t.Enter += new EventHandler(LetterBox_Enter);
+            ////    t.TextChanged += new EventHandler(LetterBox_TextChanged);
+            ////    Panel_Palete.Controls.Add(t);
+
+            ////    tileSets.Add(new PaletteObject(p, t));
+            ////}
+
+            //txtMapCharacter.Visible = false;
+            //txtMapCharacter.Left = 0;
+            //txtMapCharacter.Top = 0;
+            //this.Controls.Add(txtMapCharacter);
+
+            //txtMapName.Focus();
         }
       
         public void CanvasBox_Click(object sender, EventArgs e)
@@ -335,8 +340,8 @@ namespace RPGTileMapCreator
 
                     p.BackColor = Color.Ivory;
                     p.SizeMode = PictureBoxSizeMode.StretchImage;
-                    p.Width = 51;
-                    p.Height = 51;
+                   // p.Width = 51;
+                   // p.Height = 51;
 
                     t.MaxLength = 1;
                     t.Height = 23;
@@ -351,8 +356,16 @@ namespace RPGTileMapCreator
                     }
 
                     p.Name = Path.GetFileName(s);
+                    //p.ImageLocation = Path.GetFullPath(s);
                     p.BorderStyle = BorderStyle.None;
                     p.Image = Image.FromFile(s);
+                    p.Width = p.Image.Width;
+                    p.Height = p.Image.Height;
+
+                    tileHeight = p.Height;
+                    tileWidth = p.Width;
+                    txtMapName.Text = tileWidth.ToString();
+                    
                     p.Click += new EventHandler(PaletteBox_Click);
                     Panel_Palete.Controls.Add(p);
 
@@ -362,12 +375,51 @@ namespace RPGTileMapCreator
                     t.Leave += new EventHandler(LetterBox_LostFocus);
                     t.Enter += new EventHandler(LetterBox_Enter);
                     t.TextChanged += new EventHandler(LetterBox_TextChanged);
+
                     Panel_Palete.Controls.Add(t);
 
                     tileSets.Add(new PaletteObject(p, t));
                 }
 
-                txtMapName.Focus();
+
+
+                for (int i = 1; i <= 10; i++)
+                {
+                    for (int j = 1; j <= 10; j++)
+                    {
+                        p = new PictureBox();
+
+                        p.BackColor = Color.Ivory;
+                        p.SizeMode = PictureBoxSizeMode.StretchImage;
+                        p.Width = tileWidth;
+                        p.Height = tileHeight;
+                        p.Left = tileWidth * i - tileWidth;
+                        p.Top = tileHeight * j - tileHeight;
+                        p.Name = p.Left.ToString() + "_" + p.Top.ToString();
+                        p.BorderStyle = BorderStyle.FixedSingle;
+                        p.MouseDown += (s, args) =>
+                        {
+                            if (args.Button == MouseButtons.Right)
+                            {
+                                CanvasBox_RightClick(s, args);
+                            }
+                            else if (args.Button == MouseButtons.Left)
+                            {
+                                CanvasBox_Click(s, args);
+                            }
+                        };
+                        //  p.DragOver += new EventHandler(CanvasBox_DragOver);
+                        this.Controls.Add(p);
+                    }
+                }
+
+
+                txtMapCharacter.Visible = false;
+                txtMapCharacter.Left = 0;
+                txtMapCharacter.Top = 0;
+                this.Controls.Add(txtMapCharacter);
+
+                txtMapName.Focus(); 
 
             }
         }
