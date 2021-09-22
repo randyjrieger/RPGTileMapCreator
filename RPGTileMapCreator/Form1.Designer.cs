@@ -39,9 +39,11 @@ namespace RPGTileMapCreator
             this.btnLoadTiles = new System.Windows.Forms.Button();
             this.openTileFolderDialog = new System.Windows.Forms.OpenFileDialog();
             this.button2 = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
+            this.openMapFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.Canvas_Panel = new System.Windows.Forms.Panel();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.Canvas_Panel.SuspendLayout();
             this.SuspendLayout();
             // 
             // Panel_Palete
@@ -83,9 +85,9 @@ namespace RPGTileMapCreator
             // btnSaveTileSet
             // 
             this.btnSaveTileSet.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-            this.btnSaveTileSet.Location = new System.Drawing.Point(1004, 44);
+            this.btnSaveTileSet.Location = new System.Drawing.Point(788, 41);
             this.btnSaveTileSet.Name = "btnSaveTileSet";
-            this.btnSaveTileSet.Size = new System.Drawing.Size(83, 23);
+            this.btnSaveTileSet.Size = new System.Drawing.Size(100, 23);
             this.btnSaveTileSet.TabIndex = 4;
             this.btnSaveTileSet.Text = "Save Tile Set";
             this.btnSaveTileSet.UseVisualStyleBackColor = false;
@@ -104,7 +106,7 @@ namespace RPGTileMapCreator
             // btnLoadTileSet
             // 
             this.btnLoadTileSet.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
-            this.btnLoadTileSet.Location = new System.Drawing.Point(898, 44);
+            this.btnLoadTileSet.Location = new System.Drawing.Point(788, 12);
             this.btnLoadTileSet.Name = "btnLoadTileSet";
             this.btnLoadTileSet.Size = new System.Drawing.Size(100, 23);
             this.btnLoadTileSet.TabIndex = 12;
@@ -115,7 +117,7 @@ namespace RPGTileMapCreator
             // btnLoadTiles
             // 
             this.btnLoadTiles.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-            this.btnLoadTiles.Location = new System.Drawing.Point(898, 12);
+            this.btnLoadTiles.Location = new System.Drawing.Point(675, 12);
             this.btnLoadTiles.Name = "btnLoadTiles";
             this.btnLoadTiles.Size = new System.Drawing.Size(100, 23);
             this.btnLoadTiles.TabIndex = 13;
@@ -125,13 +127,12 @@ namespace RPGTileMapCreator
             // 
             // openTileFolderDialog
             // 
-            this.openTileFolderDialog.Filter = "PNG|*.png|JPG|*.jpg";
-            this.openTileFolderDialog.Multiselect = true;
+            this.openTileFolderDialog.Filter = "JSON|*.json";
             // 
             // button2
             // 
             this.button2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-            this.button2.Location = new System.Drawing.Point(1004, 12);
+            this.button2.Location = new System.Drawing.Point(675, 44);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(100, 23);
             this.button2.TabIndex = 14;
@@ -139,30 +140,29 @@ namespace RPGTileMapCreator
             this.button2.UseVisualStyleBackColor = false;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // textBox1
+            // Canvas_Panel
             // 
-            this.textBox1.Location = new System.Drawing.Point(743, 14);
-            this.textBox1.MaxLength = 1;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(145, 23);
-            this.textBox1.TabIndex = 18;
+            this.Canvas_Panel.AutoScroll = true;
+            this.Canvas_Panel.Controls.Add(this.progressBar1);
+            this.Canvas_Panel.Location = new System.Drawing.Point(2, 3);
+            this.Canvas_Panel.Name = "Canvas_Panel";
+            this.Canvas_Panel.Size = new System.Drawing.Size(676, 502);
+            this.Canvas_Panel.TabIndex = 15;
             // 
-            // label2
+            // progressBar1
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(675, 17);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(64, 15);
-            this.label2.TabIndex = 19;
-            this.label2.Text = "Tile Folder:";
+            this.progressBar1.Location = new System.Drawing.Point(0, 0);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(676, 32);
+            this.progressBar1.TabIndex = 16;
+            this.progressBar1.Visible = false;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1164, 504);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.Canvas_Panel);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.btnLoadTiles);
             this.Controls.Add(this.btnSaveTileSet);
@@ -174,6 +174,7 @@ namespace RPGTileMapCreator
             this.Controls.Add(this.Panel_Palete);
             this.Name = "Form1";
             this.Text = "RPG Tile Map Creator";
+            this.Canvas_Panel.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -191,9 +192,10 @@ namespace RPGTileMapCreator
         private System.Windows.Forms.Button btnLoadTiles;
         private System.Windows.Forms.OpenFileDialog openTileFolderDialog;
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
+        private System.Windows.Forms.OpenFileDialog openMapFileDialog;
+        private System.Windows.Forms.Panel Canvas_Panel;
+        private System.Windows.Forms.ProgressBar progressBar1;
     }
 }
 

@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using RPGTileMapCreator.cls;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -166,7 +167,7 @@ namespace RPGTileMapCreator
                
                 if (dialogResult == DialogResult.Yes)
                 {
-                    foreach(PictureBox p in this.Controls.OfType<PictureBox>())
+                    foreach(PictureBox p in Canvas_Panel.Controls.OfType<PictureBox>())
                     {
                         if (p.Image == pb.tile.Image)
                         {
@@ -303,7 +304,18 @@ namespace RPGTileMapCreator
         private void LetterBox_TextChanged(object sender, EventArgs e)
         {
             TextBox activeTextBox = (TextBox)sender;
-            selectedTileSet.tile.Tag = activeTextBox.Text;
+
+            if (selectedTileSet.tile != null)
+            {
+                try
+                {
+                    selectedTileSet.tile.Tag = activeTextBox.Text;
+                }
+                catch (Exception ex)
+                {
+
+                }
+            }
         }
 
         private void btnSaveTileSet_Click(object sender, EventArgs e)
@@ -398,49 +410,13 @@ namespace RPGTileMapCreator
 
 
 
-                for (int i = 1; i <= 10; i++)
-                {
-                    for (int j = 1; j <= 10; j++)
-                    {
-                        p = new PictureBox();
-
-                        p.BackColor = Color.Ivory;
-                        p.SizeMode = PictureBoxSizeMode.StretchImage;
-                        p.Width = tileWidth;
-                        p.Height = tileHeight;
-                        p.Left = tileWidth * i - tileWidth;
-                        p.Top = tileHeight * j - tileHeight;
-                        p.Name = p.Left.ToString() + "_" + p.Top.ToString();
-                        p.BorderStyle = BorderStyle.FixedSingle;
-                        p.MouseDown += (s, args) =>
-                        {
-                            if (args.Button == MouseButtons.Right)
-                            {
-                                CanvasBox_RightClick(s, args);
-                            }
-                            else if (args.Button == MouseButtons.Left)
-                            {
-                                CanvasBox_Click(s, args);
-                            }
-                        };
-                        //  p.DragOver += new EventHandler(CanvasBox_DragOver);
-                        this.Controls.Add(p);
-                    }
-                }
-
-
                 txtMapCharacter.Visible = false;
                 txtMapCharacter.Left = 0;
                 txtMapCharacter.Top = 0;
-                this.Controls.Add(txtMapCharacter);
+                Canvas_Panel.Controls.Add(txtMapCharacter);
 
                 txtMapName.Focus(); 
 
-            }
-            else
-            {
-
-                txtMapName.Focus();
             }
         }
 
@@ -448,19 +424,30 @@ namespace RPGTileMapCreator
         {
             // reads path for tile configuration
 
-            // open json file
+          //  tileSets = new List<PaletteObject>();
 
-            // read tileFilePath
+            if (openTileFolderDialog.ShowDialog() == DialogResult.OK)
+            {               
+                var tileSetJson = JsonConvert.DeserializeObject<Root>(File.ReadAllText(@openTileFolderDialog.FileName));
 
-            // read in array of tilesets
+                // iterate through the tile list for those files and build tile selection pane
+                // also assign characters to these tiles
+           //     tileSets.Find(ts => ts.tile == tileSetJson)
+                foreach(var ts in tileSetJson.tileSettings.tilesets)
+                {
+                    if (!String.IsNullOrEmpty(ts.character))
+                    {
+                        var target = tileSets.Find(t => t.tile.Name == ts.fileName);
+                        target.letter.Text = ts.character;
+                        target.tile.Tag =  ts.character;
 
-            // iterate through the tile folder for those files and build tile selection pane
-            // also assign characters to these tiles
-
-           
-
+                    }
+                    // search for tile and update letter
+                }
 
 
+
+            }
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -475,9 +462,61 @@ namespace RPGTileMapCreator
 
         private void btnLoadMap_Click(object sender, EventArgs e)
         {
-            // read in ascii map file
+            int rows = 0;
+            int columns = 0;
+            string line;
+            PictureBox p;
 
-            // using the tileset array created in the Load Tileset method, build the canvas
+            if (openMapFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                var fileName = openMapFileDialog.FileName;
+                var lineCount = File.ReadLines(@fileName).Count();
+                progressBar1.Visible = true;
+                progressBar1.Maximum = lineCount;
+
+                using (StreamReader file = new System.IO.StreamReader(@fileName))
+                {
+                    while ((line = file.ReadLine()) != null)
+                    {
+                        rows++;
+                        columns = 0;
+                        progressBar1.Value = rows;
+                        // read each character in the line
+                        foreach (char s in line)
+                        {
+                            columns++;
+                            // create canvas PalleteObject and place
+                            // check character and fill in PO with tile and character
+
+                            p = new PictureBox();
+
+                            p.BackColor = Color.Ivory;
+                            p.SizeMode = PictureBoxSizeMode.StretchImage;
+                            p.Width = tileWidth;
+                            p.Height = tileHeight;
+                            p.Left = tileWidth * columns - tileWidth;
+                            p.Top = tileHeight * rows - tileHeight;
+                            p.Name = p.Left.ToString() + "_" + p.Top.ToString();
+                            p.BorderStyle = BorderStyle.FixedSingle;
+                            p.MouseDown += (s, args) =>
+                            {
+                                if (args.Button == MouseButtons.Right)
+                                {
+                                    CanvasBox_RightClick(s, args);
+                                }
+                                else if (args.Button == MouseButtons.Left)
+                                {
+                                    CanvasBox_Click(s, args);
+                                }
+                            };
+                            //  p.DragOver += new EventHandler(CanvasBox_DragOver);
+                            Canvas_Panel.Controls.Add(p);
+
+                        }
+                    }
+                    file.Close();
+                }
+            }
 
         }
     }
