@@ -438,8 +438,11 @@ namespace RPGTileMapCreator
                     if (!String.IsNullOrEmpty(ts.character))
                     {
                         var target = tileSets.Find(t => t.tile.Name == ts.fileName);
-                        target.letter.Text = ts.character;
-                        target.tile.Tag =  ts.character;
+                        if (target != null)
+                        {
+                            target.letter.Text = ts.character;
+                            target.tile.Tag = ts.character;
+                        }
 
                     }
                     // search for tile and update letter
@@ -484,12 +487,14 @@ namespace RPGTileMapCreator
                         // read each character in the line
                         foreach (char s in line)
                         {
+                            var selectedTileSet = tileSets.Find(t => t.letter.Text == s.ToString());
                             columns++;
                             // create canvas PalleteObject and place
                             // check character and fill in PO with tile and character
 
                             p = new PictureBox();
-
+                            if (selectedTileSet != null)
+                                p.Image = selectedTileSet.tile.Image; 
                             p.BackColor = Color.Ivory;
                             p.SizeMode = PictureBoxSizeMode.StretchImage;
                             p.Width = tileWidth;
