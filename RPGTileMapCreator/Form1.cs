@@ -18,9 +18,10 @@ namespace RPGTileMapCreator
         PictureBox formerSelected = new PictureBox();
         PaletteObject formerSelectedTileSet = new PaletteObject();
         PaletteObject selectedTileSet = new PaletteObject();
-
+        
         TextBox txtMapCharacter = new TextBox();
         List<PaletteObject> tileSets;
+        List<CanvasTile> canvasTiles = new List<CanvasTile>();
 
         protected int tileWidth = 0;
         protected int tileHeight = 0;
@@ -130,6 +131,10 @@ namespace RPGTileMapCreator
             {
                 p.Tag = selectedTileSet.tile.Tag;
             }
+
+            // must update the CanvasTile list
+            // locate canvas tile by location
+            // update character
         }
 
         public void CanvasBox_RightClick(object sender, EventArgs e)
@@ -167,6 +172,10 @@ namespace RPGTileMapCreator
                         {
                             p.Image = null;
                         }
+
+                        // must update the CanvasTile list
+                        // locate canvas tile by location
+                        // update character
                     }
                 }
                 else
@@ -330,10 +339,16 @@ namespace RPGTileMapCreator
             TextBox t;
 
             tileSets = new List<PaletteObject>();
-
-            if (openTileFolderDialog.ShowDialog() == DialogResult.OK)
+            DialogResult result = folderBrowserDialog1.ShowDialog();
+            if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(folderBrowserDialog1.SelectedPath))
             {
-                foreach (string s in @openTileFolderDialog.FileNames) // Directory.GetFiles(@"C:\git\thievesGuild\ThievesGuild\ThievesGuild\Resources\tiles"))
+                DirectoryInfo DirInfo = new DirectoryInfo(@folderBrowserDialog1.SelectedPath);
+
+                var tileImageFiles = from f in DirInfo.EnumerateFiles()
+                                     where f.Name.EndsWith(".png") || f.Name.EndsWith(".jpg")
+                                     select f;
+
+                foreach (var f in tileImageFiles)
                 {
                     p = new PictureBox();
                     t = new TextBox();
@@ -345,7 +360,6 @@ namespace RPGTileMapCreator
 
                     t.MaxLength = 1;
                     t.Height = 23;
-                    t.Width = p.Width;
 
                     p.Left = col * 51;
                     p.Top = row * 51 + row * t.Height;
@@ -355,10 +369,9 @@ namespace RPGTileMapCreator
                         col = 0; row++;
                     }
 
-                    p.Name = Path.GetFileName(s);
-                    //p.ImageLocation = Path.GetFullPath(s);
+                    p.Name = Path.GetFileName(f.Name);
                     p.BorderStyle = BorderStyle.None;
-                    p.Image = Image.FromFile(s);
+                    p.Image = Image.FromFile(f.FullName);
                     p.Width = p.Image.Width;
                     p.Height = p.Image.Height;
 
@@ -372,6 +385,8 @@ namespace RPGTileMapCreator
                     t.Left = p.Left;
                     t.Top = p.Top + p.Height;
                     t.Tag = p.Name;
+                    t.Width = p.Width;
+                    t.Height = p.Width;
                     t.Leave += new EventHandler(LetterBox_LostFocus);
                     t.Enter += new EventHandler(LetterBox_Enter);
                     t.TextChanged += new EventHandler(LetterBox_TextChanged);
@@ -422,10 +437,29 @@ namespace RPGTileMapCreator
                 txtMapName.Focus(); 
 
             }
+            else
+            {
+
+                txtMapName.Focus();
+            }
         }
 
         private void btnLoadTileSet_Click(object sender, EventArgs e)
         {
+            // reads path for tile configuration
+
+            // open json file
+
+            // read tileFilePath
+
+            // read in array of tilesets
+
+            // iterate through the tile folder for those files and build tile selection pane
+            // also assign characters to these tiles
+
+           
+
+
 
         }
 
@@ -437,6 +471,14 @@ namespace RPGTileMapCreator
                 Panel_Palete.Controls.Remove(po.letter);
             }
             tileSets.Clear();
+        }
+
+        private void btnLoadMap_Click(object sender, EventArgs e)
+        {
+            // read in ascii map file
+
+            // using the tileset array created in the Load Tileset method, build the canvas
+
         }
     }
 }
