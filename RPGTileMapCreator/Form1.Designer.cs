@@ -44,6 +44,8 @@ namespace RPGTileMapCreator
             this.button3 = new System.Windows.Forms.Button();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.Canvas_Panel = new System.Windows.Forms.Panel();
+            this.lblFavouriteTilesFolder = new System.Windows.Forms.Label();
+            this.lblFavouriteTileSet = new System.Windows.Forms.Label();
             this.Canvas_Panel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -86,7 +88,7 @@ namespace RPGTileMapCreator
             // btnSaveTileSet
             // 
             this.btnSaveTileSet.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-            this.btnSaveTileSet.Location = new System.Drawing.Point(788, 41);
+            this.btnSaveTileSet.Location = new System.Drawing.Point(772, 51);
             this.btnSaveTileSet.Name = "btnSaveTileSet";
             this.btnSaveTileSet.Size = new System.Drawing.Size(100, 23);
             this.btnSaveTileSet.TabIndex = 4;
@@ -107,7 +109,7 @@ namespace RPGTileMapCreator
             // btnLoadTileSet
             // 
             this.btnLoadTileSet.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
-            this.btnLoadTileSet.Location = new System.Drawing.Point(788, 12);
+            this.btnLoadTileSet.Location = new System.Drawing.Point(946, 26);
             this.btnLoadTileSet.Name = "btnLoadTileSet";
             this.btnLoadTileSet.Size = new System.Drawing.Size(100, 23);
             this.btnLoadTileSet.TabIndex = 12;
@@ -118,7 +120,7 @@ namespace RPGTileMapCreator
             // btnLoadTiles
             // 
             this.btnLoadTiles.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-            this.btnLoadTiles.Location = new System.Drawing.Point(675, 12);
+            this.btnLoadTiles.Location = new System.Drawing.Point(946, 3);
             this.btnLoadTiles.Name = "btnLoadTiles";
             this.btnLoadTiles.Size = new System.Drawing.Size(100, 23);
             this.btnLoadTiles.TabIndex = 13;
@@ -133,7 +135,7 @@ namespace RPGTileMapCreator
             // button2
             // 
             this.button2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-            this.button2.Location = new System.Drawing.Point(675, 44);
+            this.button2.Location = new System.Drawing.Point(675, 51);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(100, 23);
             this.button2.TabIndex = 14;
@@ -143,9 +145,9 @@ namespace RPGTileMapCreator
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(922, 11);
+            this.button3.Location = new System.Drawing.Point(1110, 69);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 23);
+            this.button3.Size = new System.Drawing.Size(50, 23);
             this.button3.TabIndex = 16;
             this.button3.Text = "button3";
             this.button3.UseVisualStyleBackColor = true;
@@ -166,13 +168,34 @@ namespace RPGTileMapCreator
             this.Canvas_Panel.Name = "Canvas_Panel";
             this.Canvas_Panel.Size = new System.Drawing.Size(676, 502);
             this.Canvas_Panel.TabIndex = 15;
+            this.Canvas_Panel.Visible = false;
             this.Canvas_Panel.Paint += new System.Windows.Forms.PaintEventHandler(this.Canvas_Panel_Paint);
+            // 
+            // lblFavouriteTilesFolder
+            // 
+            this.lblFavouriteTilesFolder.AutoSize = true;
+            this.lblFavouriteTilesFolder.Location = new System.Drawing.Point(685, 10);
+            this.lblFavouriteTilesFolder.Name = "lblFavouriteTilesFolder";
+            this.lblFavouriteTilesFolder.Size = new System.Drawing.Size(125, 15);
+            this.lblFavouriteTilesFolder.TabIndex = 17;
+            this.lblFavouriteTilesFolder.Text = "lblFavouriteTilesFolder";
+            // 
+            // lblFavouriteTileSet
+            // 
+            this.lblFavouriteTileSet.AutoSize = true;
+            this.lblFavouriteTileSet.Location = new System.Drawing.Point(685, 30);
+            this.lblFavouriteTileSet.Name = "lblFavouriteTileSet";
+            this.lblFavouriteTileSet.Size = new System.Drawing.Size(103, 15);
+            this.lblFavouriteTileSet.TabIndex = 18;
+            this.lblFavouriteTileSet.Text = "lblFavouriteTileSet";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1164, 504);
+            this.Controls.Add(this.lblFavouriteTileSet);
+            this.Controls.Add(this.lblFavouriteTilesFolder);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.Canvas_Panel);
             this.Controls.Add(this.button2);
@@ -209,6 +232,8 @@ namespace RPGTileMapCreator
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.Panel Canvas_Panel;
+        private System.Windows.Forms.Label lblFavouriteTilesFolder;
+        private System.Windows.Forms.Label lblFavouriteTileSet;
     }
 }
 

@@ -34,6 +34,8 @@ namespace RPGTileMapCreator
 
             InitializeComponent();
 
+            lblFavouriteTilesFolder.Text = @"c:\temp\tiles";
+            lblFavouriteTileSet.Text = @"c:\temp\lancer.json";
             //openTileFolderDialog = new OpenFileDialog();
 
             //PictureBox p;
@@ -349,12 +351,26 @@ namespace RPGTileMapCreator
             int col = 0;
             PictureBox p;
             TextBox t;
-
             tileSets = new List<PaletteObject>();
-            DialogResult result = folderBrowserDialog1.ShowDialog();
-            if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(folderBrowserDialog1.SelectedPath))
+            string tileFolder = "";
+
+            if (lblFavouriteTilesFolder.Text.Length > 0)
             {
-                DirectoryInfo DirInfo = new DirectoryInfo(@folderBrowserDialog1.SelectedPath);
+                tileFolder = lblFavouriteTilesFolder.Text;
+            }
+            else
+            {
+                DialogResult result = folderBrowserDialog1.ShowDialog();
+                if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(folderBrowserDialog1.SelectedPath))
+                {
+                    tileFolder = folderBrowserDialog1.SelectedPath;
+                }
+            }
+          //  DialogResult result = folderBrowserDialog1.ShowDialog();
+         //   if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(folderBrowserDialog1.SelectedPath))
+            {
+             //   DirectoryInfo DirInfo = new DirectoryInfo(@folderBrowserDialog1.SelectedPath);
+                DirectoryInfo DirInfo = new DirectoryInfo(tileFolder);
 
                 var tileImageFiles = from f in DirInfo.EnumerateFiles()
                                      where f.Name.EndsWith(".png") || f.Name.EndsWith(".jpg")
@@ -424,16 +440,29 @@ namespace RPGTileMapCreator
         {
             // reads path for tile configuration
 
-          //  tileSets = new List<PaletteObject>();
+            //  tileSets = new List<PaletteObject>();
+            string tileSetPath = "";
 
-            if (openTileFolderDialog.ShowDialog() == DialogResult.OK)
+            if (lblFavouriteTileSet.Text.Length > 0)
+            {
+                tileSetPath = lblFavouriteTileSet.Text;
+            }
+            else
+            {
+                if (openTileFolderDialog.ShowDialog() == DialogResult.OK)
+                {
+                    tileSetPath = @openTileFolderDialog.FileName;
+                }
+            }
+            // if (openTileFolderDialog.ShowDialog() == DialogResult.OK)
             {               
-                var tileSetJson = JsonConvert.DeserializeObject<Root>(File.ReadAllText(@openTileFolderDialog.FileName));
+              //  var tileSetJson = JsonConvert.DeserializeObject<Root>(File.ReadAllText(@openTileFolderDialog.FileName));
+                var tileSetJson = JsonConvert.DeserializeObject<Root>(File.ReadAllText(tileSetPath));
 
                 // iterate through the tile list for those files and build tile selection pane
                 // also assign characters to these tiles
-           //     tileSets.Find(ts => ts.tile == tileSetJson)
-                foreach(var ts in tileSetJson.tileSettings.tilesets)
+                //     tileSets.Find(ts => ts.tile == tileSetJson)
+                foreach (var ts in tileSetJson.tileSettings.tilesets)
                 {
                     if (!String.IsNullOrEmpty(ts.character))
                     {
@@ -447,10 +476,9 @@ namespace RPGTileMapCreator
                     }
                     // search for tile and update letter
                 }
-
-
-
             }
+
+            Canvas_Panel.Visible = true;
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -527,46 +555,116 @@ namespace RPGTileMapCreator
 
         private void button3_Click(object sender, EventArgs e)
         {
-            //int x = 0;
-            //int y = 0;
+            int rows = 0;
+            int columns = 0;
+            string line;
+            PictureBox p;
 
-            //Point loc;
-            //Graphics G;
-            //var fileName = openMapFileDialog.FileName;
-            //var lineCount = File.ReadLines(@fileName).Count();
-            //progressBar1.Visible = true;
-            //progressBar1.Maximum = lineCount;
-            //Rectangle rect;
+            if (openMapFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                var fileName = openMapFileDialog.FileName;
+                var lineCount = File.ReadLines(@fileName).Count();
+                progressBar1.Visible = true;
+                progressBar1.Maximum = lineCount;
 
-            //Bitmap sourceBmp = null;
-            //sourceBmp = new Bitmap(Image.FromFile(@"c:\temp\tiles\grass.jpg"));
-            //for (int j = 1; j < 10; j++)
-            //{
-            //    for (int i = 1; i < 10; i++)
-            //    {
-            //        x = i * 51;
-            //        y = j * 51;
+                using (StreamReader file = new System.IO.StreamReader(@fileName))
+                {
+                    while ((line = file.ReadLine()) != null)
+                    {
+                        rows++;
+                        columns = 0;
+                        progressBar1.Value = rows;
+                        // read each character in the line
+                        foreach (char s in line)
+                        {
+                            var selectedTileSet = tileSets.Find(t => t.letter.Text == s.ToString());
+                            columns++;
+                            // create canvas PalleteObject and place
+                            // check character and fill in PO with tile and character
 
-            //        loc = new Point(x, y);
-            //        rect = new Rectangle(loc, new Size(51, 51));
-            //        G = Graphics.DrawImage(sourceBmp,rect, 0 ,0, 51, 51, GraphicsUnit.Pixel );
-            //    }
-            //}
+                            p = new PictureBox();
+                            if (selectedTileSet != null)
+                                p.Image = selectedTileSet.tile.Image;
+                            p.BackColor = Color.Ivory;
+                            p.SizeMode = PictureBoxSizeMode.StretchImage;
+                            p.Width = tileWidth;
+                            p.Height = tileHeight;
+                            p.Left = tileWidth * columns - tileWidth;
+                            p.Top = tileHeight * rows - tileHeight;
+                            p.Name = p.Left.ToString() + "_" + p.Top.ToString();
+                            p.BorderStyle = BorderStyle.FixedSingle;
+                            p.MouseDown += (s, args) =>
+                            {
+                                if (args.Button == MouseButtons.Right)
+                                {
+                                    CanvasBox_RightClick(s, args);
+                                }
+                                else if (args.Button == MouseButtons.Left)
+                                {
+                                    CanvasBox_Click(s, args);
+                                }
+                            };
+                            //  p.DragOver += new EventHandler(CanvasBox_DragOver);
+                            Canvas_Panel.Controls.Add(p);
+
+                        }
+                    }
+                    file.Close();
+                }
+            }
             Canvas_Panel.Refresh();
         }
 
         private void Canvas_Panel_Paint(object sender, PaintEventArgs e)
         {
+            int x = 0;
+            int y = 0;
+            int rows = 0;
+            int columns = 0;
+            string line;
+            Point loc;
+            Rectangle rect;
+            Bitmap sourceBmp = null;
 
-            //Image imageFile = Image.FromFile(@"c:\temp\tiles\grass.jpg");
-            //Graphics newGraphics = Graphics.FromImage(imageFile);
+           // if (openMapFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                var fileName = @"c:\temp\lancer.txt";
+                var lineCount = File.ReadLines(@fileName).Count();
+                progressBar1.Visible = true;
+                progressBar1.Maximum = lineCount;
 
-            //e.Graphics.DrawImage(imageFile, new PointF(0.0F, 0.0F));
+                using (StreamReader file = new System.IO.StreamReader(@fileName))
+                {
+                    while ((line = file.ReadLine()) != null)
+                    {
+                        rows++;
+                        columns = 0;
+                        progressBar1.Value = rows;
+                        // read each character in the line
+                        foreach (char s in line)
+                        {
+                            progressBar1.Value = rows;
+                            var selectedTileSet = tileSets.Find(t => t.letter.Text == s.ToString());
+                            columns++;
+                            if (selectedTileSet != null)
+                                sourceBmp = new Bitmap(selectedTileSet.tile.Image);
 
-            ////   Dispose of graphics object.
-            //newGraphics.Dispose();
+                            x = columns * tileWidth;
+                            y = rows * tileHeight;
 
+                            loc = new Point(x, y);
+                            rect = new Rectangle(loc, new Size(tileWidth, tileHeight));
+                            e.Graphics.DrawImage(sourceBmp, rect, 0, 0, tileWidth, tileHeight, GraphicsUnit.Pixel);
 
+                        }
+                    }
+                    file.Close();
+                }
+            }
+        }
+
+        private void Canvas_Panel_Paint3(object sender, PaintEventArgs e)
+        {
             int x = 0;
             int y = 0;
 
