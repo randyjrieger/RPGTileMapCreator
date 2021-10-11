@@ -41,8 +41,9 @@ namespace RPGTileMapCreator
             this.button2 = new System.Windows.Forms.Button();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.openMapFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.Canvas_Panel = new System.Windows.Forms.Panel();
+            this.button3 = new System.Windows.Forms.Button();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.Canvas_Panel = new System.Windows.Forms.Panel();
             this.Canvas_Panel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -140,14 +141,14 @@ namespace RPGTileMapCreator
             this.button2.UseVisualStyleBackColor = false;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // Canvas_Panel
+            // button3
             // 
-            this.Canvas_Panel.AutoScroll = true;
-            this.Canvas_Panel.Controls.Add(this.progressBar1);
-            this.Canvas_Panel.Location = new System.Drawing.Point(2, 3);
-            this.Canvas_Panel.Name = "Canvas_Panel";
-            this.Canvas_Panel.Size = new System.Drawing.Size(676, 502);
-            this.Canvas_Panel.TabIndex = 15;
+            this.button3.Location = new System.Drawing.Point(922, 11);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(75, 23);
+            this.button3.TabIndex = 16;
+            this.button3.Text = "button3";
+            this.button3.UseVisualStyleBackColor = true;
             // 
             // progressBar1
             // 
@@ -157,11 +158,22 @@ namespace RPGTileMapCreator
             this.progressBar1.TabIndex = 16;
             this.progressBar1.Visible = false;
             // 
+            // Canvas_Panel
+            // 
+            this.Canvas_Panel.AutoScroll = true;
+            this.Canvas_Panel.Controls.Add(this.progressBar1);
+            this.Canvas_Panel.Location = new System.Drawing.Point(2, 3);
+            this.Canvas_Panel.Name = "Canvas_Panel";
+            this.Canvas_Panel.Size = new System.Drawing.Size(676, 502);
+            this.Canvas_Panel.TabIndex = 15;
+            this.Canvas_Panel.Paint += new System.Windows.Forms.PaintEventHandler(this.Canvas_Panel_Paint);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1164, 504);
+            this.Controls.Add(this.button3);
             this.Controls.Add(this.Canvas_Panel);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.btnLoadTiles);
@@ -194,8 +206,9 @@ namespace RPGTileMapCreator
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
         private System.Windows.Forms.OpenFileDialog openMapFileDialog;
-        private System.Windows.Forms.Panel Canvas_Panel;
+        private System.Windows.Forms.Button button3;
         private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.Panel Canvas_Panel;
     }
 }
 

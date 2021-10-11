@@ -524,5 +524,70 @@ namespace RPGTileMapCreator
             }
 
         }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            //int x = 0;
+            //int y = 0;
+
+            //Point loc;
+            //Graphics G;
+            //var fileName = openMapFileDialog.FileName;
+            //var lineCount = File.ReadLines(@fileName).Count();
+            //progressBar1.Visible = true;
+            //progressBar1.Maximum = lineCount;
+            //Rectangle rect;
+
+            //Bitmap sourceBmp = null;
+            //sourceBmp = new Bitmap(Image.FromFile(@"c:\temp\tiles\grass.jpg"));
+            //for (int j = 1; j < 10; j++)
+            //{
+            //    for (int i = 1; i < 10; i++)
+            //    {
+            //        x = i * 51;
+            //        y = j * 51;
+
+            //        loc = new Point(x, y);
+            //        rect = new Rectangle(loc, new Size(51, 51));
+            //        G = Graphics.DrawImage(sourceBmp,rect, 0 ,0, 51, 51, GraphicsUnit.Pixel );
+            //    }
+            //}
+            Canvas_Panel.Refresh();
+        }
+
+        private void Canvas_Panel_Paint(object sender, PaintEventArgs e)
+        {
+
+            //Image imageFile = Image.FromFile(@"c:\temp\tiles\grass.jpg");
+            //Graphics newGraphics = Graphics.FromImage(imageFile);
+
+            //e.Graphics.DrawImage(imageFile, new PointF(0.0F, 0.0F));
+
+            ////   Dispose of graphics object.
+            //newGraphics.Dispose();
+
+
+            int x = 0;
+            int y = 0;
+
+            Point loc;
+           // Graphics G;
+            Rectangle rect;
+
+            Bitmap sourceBmp = null;
+            sourceBmp = new Bitmap(Image.FromFile(@"c:\temp\tiles\grass.jpg"));
+            for (int j = 0; j < 10; j++)
+            {
+                for (int i = 0; i < 10; i++)
+                {
+                    x = i * 51;
+                    y = j * 51;
+
+                    loc = new Point(x, y);
+                    rect = new Rectangle(loc, new Size(51, 51));
+                    e.Graphics.DrawImage(sourceBmp, rect, 0, 0, 51, 51, GraphicsUnit.Pixel);
+                }
+            }
+        }
     }
 }
