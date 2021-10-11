@@ -36,6 +36,19 @@ namespace RPGTileMapCreator
 
             lblFavouriteTilesFolder.Text = @"c:\temp\tiles";
             lblFavouriteTileSet.Text = @"c:\temp\lancer.json";
+
+
+            Canvas_Panel.MouseDown += (s, args) =>
+            {
+                if (args.Button == MouseButtons.Right)
+                {
+                    CanvasPanel_Click(s, args, false, true);
+                }
+                else if (args.Button == MouseButtons.Left)
+                {
+                    CanvasPanel_Click(s, args, true, false);
+                }
+            };
             //openTileFolderDialog = new OpenFileDialog();
 
             //PictureBox p;
@@ -120,31 +133,62 @@ namespace RPGTileMapCreator
             //txtMapName.Focus();
         }
       
-        public void CanvasBox_Click(object sender, EventArgs e)
+        public void CanvasPanel_Click(object sender, EventArgs e, bool leftClick, bool rightClick)
         {
-            PictureBox p = (PictureBox)sender;
-            p.Image = selectedTileSet.tile.Image;
-            p.Tag = selectedTileSet.tile.Tag;
+            CanvasTile tileInPlay = null;
+            MouseEventArgs me = (MouseEventArgs)e;
+    
+            if (leftClick) {
+                //Return the CanvasTile where I clicked
+                tileInPlay = ReturnTileClickedOn(me.Location.X, me.Location.Y);
 
-            if ((selectedTileSet.tile.Tag == null) || (selectedTileSet.tile.Tag.ToString().Length == 0))
-            {
-                p.Image = null;
+                if (tileInPlay != null)
+                    MessageBox.Show(string.Format("Tile {0} at LT X: {1} , Y: {2}", tileInPlay.Character, me.Location.X, me.Location.Y));
+                else
+                    MessageBox.Show(string.Format("Cannot find tile at LT X: {0} , Y: {1}", me.Location.X, me.Location.Y));
+
             }
-            else
+
+            if (rightClick)
             {
-                p.Tag = selectedTileSet.tile.Tag;
+                MessageBox.Show(string.Format("RT X: {0} , Y: {1}", me.Location.X, me.Location.Y));
             }
+
+
+
+            ////PictureBox p = (PictureBox)sender;
+            ////p.Image = selectedTileSet.tile.Image;
+            ////p.Tag = selectedTileSet.tile.Tag;
+
+            ////if ((selectedTileSet.tile.Tag == null) || (selectedTileSet.tile.Tag.ToString().Length == 0))
+            ////{
+            ////    p.Image = null;
+            ////}
+            ////else
+            ////{
+            ////    p.Tag = selectedTileSet.tile.Tag;
+            ////}
 
             // must update the CanvasTile list
             // locate canvas tile by location
             // update character
         }
 
-        public void CanvasBox_RightClick(object sender, EventArgs e)
+        //public void CanvasBox_RightClick(object sender, EventArgs e)
+        //{
+        //    PictureBox p = (PictureBox)sender;
+        //    p.Tag = null;
+        //    p.Image = null;
+        //}
+
+        public CanvasTile ReturnTileClickedOn(int x, int y)
         {
-            PictureBox p = (PictureBox)sender;
-            p.Tag = null;
-            p.Image = null;
+            CanvasTile foundTile = null;
+
+            return foundTile = canvasTiles.Find(t => t.TopLeftPoint.X <= x 
+                && t.BottomRightPoint.X > x 
+                && t.TopLeftPoint.Y <= y 
+                && t.BottomRightPoint.Y > y);
         }
 
         public void LetterBox_LostFocus(object sender, EventArgs e)
@@ -535,11 +579,11 @@ namespace RPGTileMapCreator
                             {
                                 if (args.Button == MouseButtons.Right)
                                 {
-                                    CanvasBox_RightClick(s, args);
+                                    //CanvasBox_RightClick(s, args);
                                 }
                                 else if (args.Button == MouseButtons.Left)
                                 {
-                                    CanvasBox_Click(s, args);
+                                   // CanvasBox_Click(s, args);
                                 }
                             };
                             //  p.DragOver += new EventHandler(CanvasBox_DragOver);
@@ -597,11 +641,11 @@ namespace RPGTileMapCreator
                             {
                                 if (args.Button == MouseButtons.Right)
                                 {
-                                    CanvasBox_RightClick(s, args);
+                                   // CanvasBox_RightClick(s, args);
                                 }
                                 else if (args.Button == MouseButtons.Left)
                                 {
-                                    CanvasBox_Click(s, args);
+                                    //CanvasBox_Click(s, args);
                                 }
                             };
                             //  p.DragOver += new EventHandler(CanvasBox_DragOver);
@@ -625,67 +669,80 @@ namespace RPGTileMapCreator
             Point loc;
             Rectangle rect;
             Bitmap sourceBmp = null;
-
+            CanvasTile canvasTile = null;
            // if (openMapFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                var fileName = @"c:\temp\lancer.txt";
-                var lineCount = File.ReadLines(@fileName).Count();
-                progressBar1.Visible = true;
-                progressBar1.Maximum = lineCount;
+            
+            var fileName = @"c:\temp\lancer.txt";
+            var lineCount = File.ReadLines(@fileName).Count();
+            progressBar1.Visible = true;
+            progressBar1.Maximum = lineCount;
+          //  canvasTiles = new List<CanvasTile>();
 
-                using (StreamReader file = new System.IO.StreamReader(@fileName))
+            using (StreamReader file = new System.IO.StreamReader(@fileName))
+            {
+                canvasTiles.Clear();
+                while ((line = file.ReadLine()) != null)
                 {
-                    while ((line = file.ReadLine()) != null)
+                    rows++;
+                    columns = 0;
+                    progressBar1.Value = rows;
+                    // read each character in the line
+                    foreach (char s in line)
                     {
-                        rows++;
-                        columns = 0;
                         progressBar1.Value = rows;
-                        // read each character in the line
-                        foreach (char s in line)
-                        {
-                            progressBar1.Value = rows;
-                            var selectedTileSet = tileSets.Find(t => t.letter.Text == s.ToString());
-                            columns++;
-                            if (selectedTileSet != null)
-                                sourceBmp = new Bitmap(selectedTileSet.tile.Image);
+                        var selectedTileSet = tileSets.Find(t => t.letter.Text == s.ToString());
+                        columns++;
+                        if (selectedTileSet != null)
+                            sourceBmp = new Bitmap(selectedTileSet.tile.Image);
 
-                            x = columns * tileWidth;
-                            y = rows * tileHeight;
+                        x = columns * tileWidth;
+                        y = rows * tileHeight;
 
-                            loc = new Point(x, y);
-                            rect = new Rectangle(loc, new Size(tileWidth, tileHeight));
-                            e.Graphics.DrawImage(sourceBmp, rect, 0, 0, tileWidth, tileHeight, GraphicsUnit.Pixel);
+                        loc = new Point(x, y);
+                        rect = new Rectangle(loc, new Size(tileWidth, tileHeight));
+                        e.Graphics.DrawImage(sourceBmp, rect, 0, 0, tileWidth, tileHeight, GraphicsUnit.Pixel);
 
-                        }
+                        canvasTile = new CanvasTile
+                        {   
+                           TopLeftPoint = new Point(x, y),
+                           BottomRightPoint = new Point(x + 51, y + 51),
+                           Width = tileWidth,
+                           Height = tileHeight,
+                           TileImage = sourceBmp,
+                           Character = s.ToString()
+                        };
+
+                        canvasTiles.Add(canvasTile);
                     }
-                    file.Close();
                 }
+                file.Close();
             }
+         //   progressBar1.Visible = false;
         }
 
-        private void Canvas_Panel_Paint3(object sender, PaintEventArgs e)
-        {
-            int x = 0;
-            int y = 0;
+        //private void Canvas_Panel_Paint3(object sender, PaintEventArgs e)
+        //{
+        //    int x = 0;
+        //    int y = 0;
 
-            Point loc;
-           // Graphics G;
-            Rectangle rect;
+        //    Point loc;
+        //   // Graphics G;
+        //    Rectangle rect;
 
-            Bitmap sourceBmp = null;
-            sourceBmp = new Bitmap(Image.FromFile(@"c:\temp\tiles\grass.jpg"));
-            for (int j = 0; j < 10; j++)
-            {
-                for (int i = 0; i < 10; i++)
-                {
-                    x = i * 51;
-                    y = j * 51;
+        //    Bitmap sourceBmp = null;
+        //    sourceBmp = new Bitmap(Image.FromFile(@"c:\temp\tiles\grass.jpg"));
+        //    for (int j = 0; j < 10; j++)
+        //    {
+        //        for (int i = 0; i < 10; i++)
+        //        {
+        //            x = i * 51;
+        //            y = j * 51;
 
-                    loc = new Point(x, y);
-                    rect = new Rectangle(loc, new Size(51, 51));
-                    e.Graphics.DrawImage(sourceBmp, rect, 0, 0, 51, 51, GraphicsUnit.Pixel);
-                }
-            }
-        }
+        //            loc = new Point(x, y);
+        //            rect = new Rectangle(loc, new Size(51, 51));
+        //            e.Graphics.DrawImage(sourceBmp, rect, 0, 0, 51, 51, GraphicsUnit.Pixel);
+        //        }
+        //    }
+        //}
     }
 }
