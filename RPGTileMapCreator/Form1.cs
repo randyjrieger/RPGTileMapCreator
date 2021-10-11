@@ -7,6 +7,7 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -19,7 +20,7 @@ namespace RPGTileMapCreator
         PictureBox formerSelected = new PictureBox();
         PaletteObject formerSelectedTileSet = new PaletteObject();
         PaletteObject selectedTileSet = new PaletteObject();
-        
+
         TextBox txtMapCharacter = new TextBox();
         List<PaletteObject> tileSets;
         List<CanvasTile> canvasTiles = new List<CanvasTile>();
@@ -29,13 +30,16 @@ namespace RPGTileMapCreator
 
         public Form1()
         {
-            PictureBox p;
             TextBox t = new TextBox();
 
             InitializeComponent();
 
             lblFavouriteTilesFolder.Text = @"c:\temp\tiles";
             lblFavouriteTileSet.Text = @"c:\temp\lancer.json";
+
+            typeof(Panel).InvokeMember("DoubleBuffered",
+                BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic,
+                null, Canvas_Panel, new object[] { true });
 
 
             Canvas_Panel.MouseDown += (s, args) =>
@@ -49,88 +53,6 @@ namespace RPGTileMapCreator
                     CanvasPanel_Click(s, args, true, false);
                 }
             };
-            //openTileFolderDialog = new OpenFileDialog();
-
-            //PictureBox p;
-            //TextBox t = new TextBox();
-
-            //for (int i = 1; i <= 10; i++)
-            //{
-            //    for (int j = 1; j <= 10; j++)
-            //    {
-            //        p = new PictureBox();
-
-            //        p.BackColor = Color.Ivory;
-            //        p.SizeMode = PictureBoxSizeMode.StretchImage;
-            //        p.Width = 51;
-            //        p.Height = 51;
-            //        p.Left = 51 * i - 51;
-            //        p.Top = 51 * j - 51;
-            //        p.Name = p.Left.ToString() + "_" + p.Top.ToString();
-            //        p.BorderStyle = BorderStyle.FixedSingle;
-            //        p.MouseDown += (s, args) =>
-            //        {
-            //            if (args.Button == MouseButtons.Right)
-            //            {
-            //                CanvasBox_RightClick(s, args);
-            //            }
-            //            else if (args.Button == MouseButtons.Left)
-            //            {
-            //                CanvasBox_Click(s, args);
-            //            }
-            //        };
-            //        //  p.DragOver += new EventHandler(CanvasBox_DragOver);
-            //        this.Controls.Add(p);
-            //    }
-            //}
-
-            ////int row = 0;
-            ////int col = 0;
-            ////foreach (string s in Directory.GetFiles(@"C:\git\thievesGuild\ThievesGuild\ThievesGuild\Resources\tiles"))
-            ////{
-            ////    p = new PictureBox();
-            ////    t = new TextBox();
-
-            ////    p.BackColor = Color.Ivory;
-            ////    p.SizeMode = PictureBoxSizeMode.StretchImage;
-            ////    p.Width = 51;
-            ////    p.Height = 51;
-
-            ////    t.MaxLength = 1;
-            ////    t.Height = 23;
-            ////    t.Width = p.Width;
-
-            ////    p.Left = col * 51;
-            ////    p.Top = row * 51 + row * t.Height;
-            ////    col++;
-            ////    if (col == 9)
-            ////    {
-            ////        col = 0; row++;
-            ////    }
-
-            ////    p.Name = Path.GetFileName(s);
-            ////    p.BorderStyle = BorderStyle.None;
-            ////    p.Image = Image.FromFile(s);
-            ////    p.Click += new EventHandler(PaletteBox_Click);
-            ////    Panel_Palete.Controls.Add(p);
-
-            ////    t.Left = p.Left;
-            ////    t.Top = p.Top + p.Height;
-            ////    t.Tag = p.Name;
-            ////    t.Leave += new EventHandler(LetterBox_LostFocus);
-            ////    t.Enter += new EventHandler(LetterBox_Enter);
-            ////    t.TextChanged += new EventHandler(LetterBox_TextChanged);
-            ////    Panel_Palete.Controls.Add(t);
-
-            ////    tileSets.Add(new PaletteObject(p, t));
-            ////}
-
-            //txtMapCharacter.Visible = false;
-            //txtMapCharacter.Left = 0;
-            //txtMapCharacter.Top = 0;
-            //this.Controls.Add(txtMapCharacter);
-
-            //txtMapName.Focus();
         }
       
         public void CanvasPanel_Click(object sender, EventArgs e, bool leftClick, bool rightClick)
@@ -142,10 +64,23 @@ namespace RPGTileMapCreator
                 //Return the CanvasTile where I clicked
                 tileInPlay = ReturnTileClickedOn(me.Location.X, me.Location.Y);
 
-                if (tileInPlay != null)
-                    MessageBox.Show(string.Format("Tile {0} at LT X: {1} , Y: {2}", tileInPlay.Character, me.Location.X, me.Location.Y));
-                else
+                if (tileInPlay == null)
                     MessageBox.Show(string.Format("Cannot find tile at LT X: {0} , Y: {1}", me.Location.X, me.Location.Y));
+                else
+                {
+                    //MessageBox.Show(string.Format("Tile {0} at LT X: {1} , Y: {2}", tileInPlay.Character, me.Location.X, me.Location.Y));
+
+                    if (selectedTileSet != null)
+                    {
+                        if ((selectedTileSet.tile.Tag != null) && (selectedTileSet.tile.Tag.ToString().Length > 0))
+                        {
+                            tileInPlay.TileImage = selectedTileSet.tile.Image;
+                            tileInPlay.Character = selectedTileSet.letter.ToString();
+                        }
+
+                        Canvas_Panel.Refresh();
+                    }
+                }
 
             }
 
@@ -522,7 +457,7 @@ namespace RPGTileMapCreator
                 }
             }
 
-            Canvas_Panel.Visible = true;
+         //   Canvas_Panel.Visible = true;
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -599,84 +534,20 @@ namespace RPGTileMapCreator
 
         private void button3_Click(object sender, EventArgs e)
         {
-            int rows = 0;
-            int columns = 0;
-            string line;
-            PictureBox p;
-
-            if (openMapFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                var fileName = openMapFileDialog.FileName;
-                var lineCount = File.ReadLines(@fileName).Count();
-                progressBar1.Visible = true;
-                progressBar1.Maximum = lineCount;
-
-                using (StreamReader file = new System.IO.StreamReader(@fileName))
-                {
-                    while ((line = file.ReadLine()) != null)
-                    {
-                        rows++;
-                        columns = 0;
-                        progressBar1.Value = rows;
-                        // read each character in the line
-                        foreach (char s in line)
-                        {
-                            var selectedTileSet = tileSets.Find(t => t.letter.Text == s.ToString());
-                            columns++;
-                            // create canvas PalleteObject and place
-                            // check character and fill in PO with tile and character
-
-                            p = new PictureBox();
-                            if (selectedTileSet != null)
-                                p.Image = selectedTileSet.tile.Image;
-                            p.BackColor = Color.Ivory;
-                            p.SizeMode = PictureBoxSizeMode.StretchImage;
-                            p.Width = tileWidth;
-                            p.Height = tileHeight;
-                            p.Left = tileWidth * columns - tileWidth;
-                            p.Top = tileHeight * rows - tileHeight;
-                            p.Name = p.Left.ToString() + "_" + p.Top.ToString();
-                            p.BorderStyle = BorderStyle.FixedSingle;
-                            p.MouseDown += (s, args) =>
-                            {
-                                if (args.Button == MouseButtons.Right)
-                                {
-                                   // CanvasBox_RightClick(s, args);
-                                }
-                                else if (args.Button == MouseButtons.Left)
-                                {
-                                    //CanvasBox_Click(s, args);
-                                }
-                            };
-                            //  p.DragOver += new EventHandler(CanvasBox_DragOver);
-                            Canvas_Panel.Controls.Add(p);
-
-                        }
-                    }
-                    file.Close();
-                }
-            }
-            Canvas_Panel.Refresh();
-        }
-
-        private void Canvas_Panel_Paint(object sender, PaintEventArgs e)
-        {
             int x = 0;
             int y = 0;
             int rows = 0;
             int columns = 0;
             string line;
-            Point loc;
-            Rectangle rect;
             Bitmap sourceBmp = null;
             CanvasTile canvasTile = null;
-           // if (openMapFileDialog.ShowDialog() == DialogResult.OK)
-            
+            // if (openMapFileDialog.ShowDialog() == DialogResult.OK)
+
             var fileName = @"c:\temp\lancer.txt";
             var lineCount = File.ReadLines(@fileName).Count();
             progressBar1.Visible = true;
             progressBar1.Maximum = lineCount;
-          //  canvasTiles = new List<CanvasTile>();
+            //  canvasTiles = new List<CanvasTile>();
 
             using (StreamReader file = new System.IO.StreamReader(@fileName))
             {
@@ -698,18 +569,14 @@ namespace RPGTileMapCreator
                         x = columns * tileWidth;
                         y = rows * tileHeight;
 
-                        loc = new Point(x, y);
-                        rect = new Rectangle(loc, new Size(tileWidth, tileHeight));
-                        e.Graphics.DrawImage(sourceBmp, rect, 0, 0, tileWidth, tileHeight, GraphicsUnit.Pixel);
-
                         canvasTile = new CanvasTile
-                        {   
-                           TopLeftPoint = new Point(x, y),
-                           BottomRightPoint = new Point(x + 51, y + 51),
-                           Width = tileWidth,
-                           Height = tileHeight,
-                           TileImage = sourceBmp,
-                           Character = s.ToString()
+                        {
+                            TopLeftPoint = new Point(x, y),
+                            BottomRightPoint = new Point(x + 51, y + 51),
+                            Width = tileWidth,
+                            Height = tileHeight,
+                            TileImage = sourceBmp,
+                            Character = s.ToString()
                         };
 
                         canvasTiles.Add(canvasTile);
@@ -717,32 +584,24 @@ namespace RPGTileMapCreator
                 }
                 file.Close();
             }
-         //   progressBar1.Visible = false;
+            if (Canvas_Panel.Visible != true) {
+                Canvas_Panel.Visible = true;
+            }
+
+            Canvas_Panel.Refresh();
         }
 
-        //private void Canvas_Panel_Paint3(object sender, PaintEventArgs e)
-        //{
-        //    int x = 0;
-        //    int y = 0;
+        private void Canvas_Panel_Paint(object sender, PaintEventArgs e)
+        {
+            Point loc;
+            Rectangle rect;
 
-        //    Point loc;
-        //   // Graphics G;
-        //    Rectangle rect;
-
-        //    Bitmap sourceBmp = null;
-        //    sourceBmp = new Bitmap(Image.FromFile(@"c:\temp\tiles\grass.jpg"));
-        //    for (int j = 0; j < 10; j++)
-        //    {
-        //        for (int i = 0; i < 10; i++)
-        //        {
-        //            x = i * 51;
-        //            y = j * 51;
-
-        //            loc = new Point(x, y);
-        //            rect = new Rectangle(loc, new Size(51, 51));
-        //            e.Graphics.DrawImage(sourceBmp, rect, 0, 0, 51, 51, GraphicsUnit.Pixel);
-        //        }
-        //    }
-        //}
+            foreach( CanvasTile c in canvasTiles)
+            {
+                loc = c.TopLeftPoint;
+                rect = new Rectangle(loc, new Size(c.Width, c.Height));
+                e.Graphics.DrawImage(c.TileImage, rect, 0, 0, c.Width, c.Height, GraphicsUnit.Pixel);
+            }
+        }
     }
 }
