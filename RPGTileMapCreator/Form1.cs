@@ -33,14 +33,13 @@ namespace RPGTileMapCreator
             TextBox t = new TextBox();
 
             InitializeComponent();
-
+            Canvas_Panel.Width = 1000; Canvas_Panel.Height = 1000;
             lblFavouriteTilesFolder.Text = @"c:\temp\tiles";
             lblFavouriteTileSet.Text = @"c:\temp\lancer.json";
 
             typeof(Panel).InvokeMember("DoubleBuffered",
                 BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic,
                 null, Canvas_Panel, new object[] { true });
-
 
             Canvas_Panel.MouseDown += (s, args) =>
             {
@@ -54,25 +53,26 @@ namespace RPGTileMapCreator
                 }
             };
         }
-      
+
         public void CanvasPanel_Click(object sender, EventArgs e, bool leftClick, bool rightClick)
         {
             CanvasTile tileInPlay = null;
             MouseEventArgs me = (MouseEventArgs)e;
-    
-            if (leftClick) {
+
+            if (leftClick)
+            {
                 //Return the CanvasTile where I clicked
                 tileInPlay = ReturnTileClickedOn(me.Location.X, me.Location.Y);
 
-                if (tileInPlay == null)
-                    MessageBox.Show(string.Format("Cannot find tile at LT X: {0} , Y: {1}", me.Location.X, me.Location.Y));
-                else
+               // if (tileInPlay == null)
+                 //   MessageBox.Show(string.Format("Cannot find tile at LT X: {0} , Y: {1}", me.Location.X, me.Location.Y));
+                if (tileInPlay != null)
                 {
                     //MessageBox.Show(string.Format("Tile {0} at LT X: {1} , Y: {2}", tileInPlay.Character, me.Location.X, me.Location.Y));
 
                     if (selectedTileSet != null)
                     {
-                        if ((selectedTileSet.tile.Tag != null) && (selectedTileSet.tile.Tag.ToString().Length > 0))
+                        if (selectedTileSet.letter != null)
                         {
                             tileInPlay.TileImage = selectedTileSet.tile.Image;
                             tileInPlay.Character = selectedTileSet.letter.ToString();
@@ -88,33 +88,7 @@ namespace RPGTileMapCreator
             {
                 MessageBox.Show(string.Format("RT X: {0} , Y: {1}", me.Location.X, me.Location.Y));
             }
-
-
-
-            ////PictureBox p = (PictureBox)sender;
-            ////p.Image = selectedTileSet.tile.Image;
-            ////p.Tag = selectedTileSet.tile.Tag;
-
-            ////if ((selectedTileSet.tile.Tag == null) || (selectedTileSet.tile.Tag.ToString().Length == 0))
-            ////{
-            ////    p.Image = null;
-            ////}
-            ////else
-            ////{
-            ////    p.Tag = selectedTileSet.tile.Tag;
-            ////}
-
-            // must update the CanvasTile list
-            // locate canvas tile by location
-            // update character
         }
-
-        //public void CanvasBox_RightClick(object sender, EventArgs e)
-        //{
-        //    PictureBox p = (PictureBox)sender;
-        //    p.Tag = null;
-        //    p.Image = null;
-        //}
 
         public CanvasTile ReturnTileClickedOn(int x, int y)
         {
@@ -566,8 +540,8 @@ namespace RPGTileMapCreator
                         if (selectedTileSet != null)
                             sourceBmp = new Bitmap(selectedTileSet.tile.Image);
 
-                        x = columns * tileWidth;
-                        y = rows * tileHeight;
+                        x = columns * tileWidth - tileWidth;
+                        y = rows * tileHeight - tileHeight;
 
                         canvasTile = new CanvasTile
                         {
@@ -588,6 +562,10 @@ namespace RPGTileMapCreator
                 Canvas_Panel.Visible = true;
             }
 
+            Canvas_Panel.Width = columns * tileWidth;
+            Canvas_Panel.Height = rows * tileHeight;
+
+            progressBar1.Visible = false;
             Canvas_Panel.Refresh();
         }
 
@@ -602,6 +580,12 @@ namespace RPGTileMapCreator
                 rect = new Rectangle(loc, new Size(c.Width, c.Height));
                 e.Graphics.DrawImage(c.TileImage, rect, 0, 0, c.Width, c.Height, GraphicsUnit.Pixel);
             }
+            panel1.AutoScroll = true;
+        }
+
+        private void Canvas_Panel_Scroll(object sender, ScrollEventArgs e)
+        {
+
         }
     }
 }
