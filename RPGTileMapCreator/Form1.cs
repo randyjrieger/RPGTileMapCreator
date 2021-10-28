@@ -20,7 +20,7 @@ namespace RPGTileMapCreator
         PictureBox formerSelected = new PictureBox();
         PaletteObject formerSelectedTileSet = new PaletteObject();
         PaletteObject selectedTileSet = new PaletteObject();
-
+        PaletteObject defaultTileSet;
         TextBox txtMapCharacter = new TextBox();
         List<PaletteObject> tileSets;
         List<CanvasTile> canvasTiles = new List<CanvasTile>();
@@ -65,7 +65,7 @@ namespace RPGTileMapCreator
             {
                 //Return the CanvasTile where I clicked
                 tileInPlay = ReturnTileClickedOn(me.Location.X, me.Location.Y);
-                MessageBox.Show(String.Format("{0} {1}", tileInPlay.Row, tileInPlay.Col ));
+          //      MessageBox.Show(String.Format("{0} {1}", tileInPlay.Row, tileInPlay.Col ));
                // if (tileInPlay == null)
                  //   MessageBox.Show(string.Format("Cannot find tile at LT X: {0} , Y: {1}", me.Location.X, me.Location.Y));
                 if (tileInPlay != null)
@@ -428,7 +428,12 @@ namespace RPGTileMapCreator
                 }
             }
 
-         //   Canvas_Panel.Visible = true;
+            if (tileSets.Count > 0)
+            {
+                defaultTileSet = tileSets.First(ts => ts.letter.Text.Length > 0);
+               // defaultTileSet = tileSets[0];
+            }
+            //   Canvas_Panel.Visible = true;
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -489,8 +494,8 @@ namespace RPGTileMapCreator
                                 Width = tileWidth,
                                 Height = tileHeight,
                                 TileImage = sourceBmp,
-                                Character = s.ToString()
-                            };
+                                Character = s != ' ' ? s.ToString() : defaultTileSet.letter.Text.Substring(0,1)
+                        };
 
                             canvasTiles.Add(canvasTile);
                         }
