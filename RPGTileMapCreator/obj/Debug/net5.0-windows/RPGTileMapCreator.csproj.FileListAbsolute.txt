@@ -6,7 +6,6 @@ C:\git\RPGTileMapCreator\RPGTileMapCreator\RPGTileMapCreator\bin\Debug\net5.0-wi
 C:\git\RPGTileMapCreator\RPGTileMapCreator\RPGTileMapCreator\bin\Debug\net5.0-windows\ref\RPGTileMapCreator.dll
 C:\git\RPGTileMapCreator\RPGTileMapCreator\RPGTileMapCreator\bin\Debug\net5.0-windows\RPGTileMapCreator.pdb
 C:\git\RPGTileMapCreator\RPGTileMapCreator\RPGTileMapCreator\bin\Debug\net5.0-windows\Newtonsoft.Json.dll
-C:\git\RPGTileMapCreator\RPGTileMapCreator\RPGTileMapCreator\obj\Debug\net5.0-windows\RPGTileMapCreator.Form1.resources
 C:\git\RPGTileMapCreator\RPGTileMapCreator\RPGTileMapCreator\obj\Debug\net5.0-windows\RPGTileMapCreator.csproj.GenerateResource.cache
 C:\git\RPGTileMapCreator\RPGTileMapCreator\RPGTileMapCreator\obj\Debug\net5.0-windows\RPGTileMapCreator.GeneratedMSBuildEditorConfig.editorconfig
 C:\git\RPGTileMapCreator\RPGTileMapCreator\RPGTileMapCreator\obj\Debug\net5.0-windows\RPGTileMapCreator.AssemblyInfoInputs.cache
@@ -17,3 +16,4 @@ C:\git\RPGTileMapCreator\RPGTileMapCreator\RPGTileMapCreator\obj\Debug\net5.0-wi
 C:\git\RPGTileMapCreator\RPGTileMapCreator\RPGTileMapCreator\obj\Debug\net5.0-windows\RPGTileMapCreator.pdb
 C:\git\RPGTileMapCreator\RPGTileMapCreator\RPGTileMapCreator\obj\Debug\net5.0-windows\RPGTileMapCreator.genruntimeconfig.cache
 C:\git\RPGTileMapCreator\RPGTileMapCreator\RPGTileMapCreator\obj\Debug\net5.0-windows\RPGTileMapCreator.csproj.AssemblyReference.cache
+C:\git\RPGTileMapCreator\RPGTileMapCreator\RPGTileMapCreator\obj\Debug\net5.0-windows\RPGTileMapCreator.btnNewMap.resources
