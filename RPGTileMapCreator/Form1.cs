@@ -594,18 +594,36 @@ namespace RPGTileMapCreator
 
         private void btnAddColumnRight_Click(object sender, EventArgs e)
         {
-            // Determine # of columns now
+            CanvasTile ct = new CanvasTile();
+            int x, y;
 
-            // Determine # of rows now
+            columns++;
+
+            // Need to increase width of canvas
+            Canvas_Panel.Width += tileWidth;
 
             // Add (# of rows) cells to screen on right top to bottom
-            // each will have col++
-            // and iterate through the rows
+            for ( int r = 1; r <= rows; r++)
+            {
+                x = columns * tileWidth - tileWidth;
+                y = r * tileHeight - tileHeight;
 
-            // then wipe canvas
+                ct = new CanvasTile
+                {
+                    Character = defaultTileSet.letter.Text,
+                    TileImage = defaultTileSet.tile.Image,
+                    Row = r,
+                    Col = columns, 
+                    Width = tileWidth,
+                    Height = tileHeight,
+                    TopLeftPoint = new Point(x, y),
+                    BottomRightPoint = new Point(x + 51, y + 51),
+                };                   
 
-            // repaint
-            
+                canvasTiles.Add(ct);                
+            }
+
+            Canvas_Panel.Refresh();
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -615,6 +633,11 @@ namespace RPGTileMapCreator
 
         private void btnWipeCanvas_Click(object sender, EventArgs e)
         {
+            WipeCanvas();
+        }
+
+        private void WipeCanvas()
+        {
             clearCanvasFlag = true;
             canvasTiles.Clear();
             rows = 0;
@@ -622,6 +645,129 @@ namespace RPGTileMapCreator
             Canvas_Panel.Visible = false;
             selectedTileSet = null;
             Canvas_Panel.Refresh();
+        }
+
+        private void btnAddColumnLeft_Click(object sender, EventArgs e)
+        {
+            CanvasTile ct = new CanvasTile();
+            int x, y;
+
+            columns++;
+
+            // Need to increase width of canvas
+            Canvas_Panel.Width += tileWidth;
+
+            // Need to increase the column and location of all Tiles first
+            foreach(CanvasTile nudgeTile in canvasTiles)
+            {
+                nudgeTile.Col++;
+                nudgeTile.TopLeftPoint = new Point(nudgeTile.TopLeftPoint.X + tileWidth, nudgeTile.TopLeftPoint.Y);
+                nudgeTile.BottomRightPoint = new Point(nudgeTile.BottomRightPoint.X + tileWidth, nudgeTile.BottomRightPoint.Y);
+            }
+
+            // Add new column with column = 0;
+            for (int r = 1; r <= rows; r++)
+            {
+                x = 0;
+                y = r * tileHeight - tileHeight;
+
+                ct = new CanvasTile
+                {
+                    Character = defaultTileSet.letter.Text,
+                    TileImage = defaultTileSet.tile.Image,
+                    Row = r,
+                    Col = 1,
+                    Width = tileWidth,
+                    Height = tileHeight,
+                    TopLeftPoint = new Point(x, y),
+                    BottomRightPoint = new Point(x + 51, y + 51),
+                };
+
+                canvasTiles.Add(ct);
+            }
+
+            Canvas_Panel.Refresh();
+
+        }
+
+        private void btnAddRowBottom_Click(object sender, EventArgs e)
+        {
+            CanvasTile ct = new CanvasTile();
+            int x, y;
+
+            rows++;
+
+            // Need to increase width of canvas
+            Canvas_Panel.Height += tileHeight;
+
+            // Add (# of rows) cells to screen on right top to bottom
+            for (int c = 1; c <= columns; c++)
+            {
+                x = c * tileWidth - tileWidth;
+                y = rows * tileHeight - tileHeight;
+
+                ct = new CanvasTile
+                {
+                    Character = defaultTileSet.letter.Text,
+                    TileImage = defaultTileSet.tile.Image,
+                    Row = rows,
+                    Col = c,
+                    Width = tileWidth,
+                    Height = tileHeight,
+                    TopLeftPoint = new Point(x, y),
+                    BottomRightPoint = new Point(x + 51, y + 51),
+                };
+
+                canvasTiles.Add(ct);
+            }
+
+            Canvas_Panel.Refresh();
+
+        }
+
+        private void btnAddRowTop_Click(object sender, EventArgs e)
+        {
+            CanvasTile ct = new CanvasTile();
+            int x, y;
+
+            rows++;
+
+            // Need to increase width of canvas
+            Canvas_Panel.Height += tileHeight;
+
+            // Need to increase the column and location of all Tiles first
+            foreach (CanvasTile nudgeTile in canvasTiles)
+            {
+                nudgeTile.Row++;
+                nudgeTile.TopLeftPoint = new Point(nudgeTile.TopLeftPoint.X, nudgeTile.TopLeftPoint.Y + tileHeight);
+                nudgeTile.BottomRightPoint = new Point(nudgeTile.BottomRightPoint.X, nudgeTile.BottomRightPoint.Y + tileHeight);
+            }
+
+            // Add (# of rows) cells to screen on right top to bottom
+            for (int c = 1; c <= columns; c++)
+            {
+                x = c * tileWidth - tileWidth;
+                y = 0;
+
+                ct = new CanvasTile
+                {
+                    Character = defaultTileSet.letter.Text,
+                    TileImage = defaultTileSet.tile.Image,
+                    Row = 1,
+                    Col = c,
+                    Width = tileWidth,
+                    Height = tileHeight,
+                    TopLeftPoint = new Point(x, y),
+                    BottomRightPoint = new Point(x + 51, y + 51),
+                };
+
+                canvasTiles.Add(ct);
+            }
+
+
+            Canvas_Panel.Refresh();
+
+
         }
     }
 }

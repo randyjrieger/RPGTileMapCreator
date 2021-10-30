@@ -230,6 +230,7 @@ namespace RPGTileMapCreator
             this.btnAddRowTop.TabIndex = 20;
             this.btnAddRowTop.Text = "Top";
             this.btnAddRowTop.UseVisualStyleBackColor = false;
+            this.btnAddRowTop.Click += new System.EventHandler(this.btnAddRowTop_Click);
             // 
             // btnAddColumnRight
             // 
@@ -253,6 +254,7 @@ namespace RPGTileMapCreator
             this.btnAddColumnLeft.TabIndex = 22;
             this.btnAddColumnLeft.Text = "Left";
             this.btnAddColumnLeft.UseVisualStyleBackColor = false;
+            this.btnAddColumnLeft.Click += new System.EventHandler(this.btnAddColumnLeft_Click);
             // 
             // btnAddRowBottom
             // 
@@ -264,6 +266,7 @@ namespace RPGTileMapCreator
             this.btnAddRowBottom.TabIndex = 23;
             this.btnAddRowBottom.Text = "Bottom";
             this.btnAddRowBottom.UseVisualStyleBackColor = false;
+            this.btnAddRowBottom.Click += new System.EventHandler(this.btnAddRowBottom_Click);
             // 
             // label2
             // 
