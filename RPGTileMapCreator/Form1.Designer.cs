@@ -56,6 +56,7 @@ namespace RPGTileMapCreator
             this.rbAdd = new System.Windows.Forms.RadioButton();
             this.lblFavouriteTileSet = new System.Windows.Forms.Label();
             this.lblFavouriteTilesFolder = new System.Windows.Forms.Label();
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.Canvas_Panel.SuspendLayout();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -73,7 +74,7 @@ namespace RPGTileMapCreator
             // txtMapName
             // 
             this.txtMapName.Location = new System.Drawing.Point(593, 5);
-            this.txtMapName.MaxLength = 1;
+            this.txtMapName.MaxLength = 200;
             this.txtMapName.Name = "txtMapName";
             this.txtMapName.Size = new System.Drawing.Size(197, 23);
             this.txtMapName.TabIndex = 1;
@@ -390,6 +391,7 @@ namespace RPGTileMapCreator
         private System.Windows.Forms.RadioButton rbAdd;
         private System.Windows.Forms.Label lblFavouriteTileSet;
         private System.Windows.Forms.Label lblFavouriteTilesFolder;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
     }
 }
 

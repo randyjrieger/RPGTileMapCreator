@@ -549,7 +549,7 @@ namespace RPGTileMapCreator
         {
             // List<CanvasTile> rowOfTiles = new List<CanvasTile>();
             string rowString = "";
-            var fileName = @"c:\temp\lancer" + DateTime.Now.ToString("yyyyMMddHHmmssFFF") + ".txt";
+            var fileName = txtMapName.Text + DateTime.Now.ToString("yyyyMMddHHmmssFFF") + ".txt";
 
             using (StreamWriter file = new System.IO.StreamWriter(@fileName))
             {
@@ -650,12 +650,73 @@ namespace RPGTileMapCreator
 
         private void button4_Click(object sender, EventArgs e)
         {
-            // Save As dialog box
+            string line;
+            int x = 0;
+            int y = 0;
+            Bitmap sourceBmp = null;
+            CanvasTile canvasTile = null;
 
-            // Saves a 1 x 1 with default Tile
+            // Save As dialog box   
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                var fileName = saveFileDialog1.FileName;
+                txtMapName.Text = saveFileDialog1.FileName;
 
-            // Opens up on canvas
+                using (StreamWriter file = new System.IO.StreamWriter(@fileName))
+                {
+                    canvasTiles.Clear();
+                    // Saves a 1 x 1 with default Tile
+                    file.Write(".");
+                    file.Close();
+                }
+                using (StreamReader file = new System.IO.StreamReader(@fileName))
+                {
+                    canvasTiles.Clear();
+                    while ((line = file.ReadLine()) != null)
+                    {
+                        rows++;
+                        columns = 0;
+                        progressBar1.Value = rows;
+                        // read each character in the line
+                        foreach (char s in line)
+                        {
+                            progressBar1.Value = rows;
+                            var selectedTileSet = tileSets.Find(t => t.letter.Text == s.ToString());
+                            columns++;
+                            if (selectedTileSet != null)
+                                sourceBmp = new Bitmap(selectedTileSet.tile.Image);
 
+                            x = columns * tileWidth - tileWidth;
+                            y = rows * tileHeight - tileHeight;
+
+                            canvasTile = new CanvasTile
+                            {
+                                Row = rows,
+                                Col = columns,
+                                TopLeftPoint = new Point(x, y),
+                                BottomRightPoint = new Point(x + 51, y + 51),
+                                Width = tileWidth,
+                                Height = tileHeight,
+                                TileImage = sourceBmp,
+                                Character = s != ' ' ? s.ToString() : defaultTileSet.letter.Text.Substring(0, 1)
+                            };
+
+                            canvasTiles.Add(canvasTile);
+                        }
+                    }
+                    file.Close();
+                }
+                if (Canvas_Panel.Visible != true)
+                {
+                    Canvas_Panel.Visible = true;
+                }
+
+                Canvas_Panel.Width = columns * tileWidth;
+                Canvas_Panel.Height = rows * tileHeight;
+
+                progressBar1.Visible = false;
+                Canvas_Panel.Refresh();
+            }
         }
 
         private void btnWipeCanvas_Click(object sender, EventArgs e)
