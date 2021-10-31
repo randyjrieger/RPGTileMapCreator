@@ -628,7 +628,22 @@ namespace RPGTileMapCreator
 
             else if (rbDelete.Checked)
             {
+                List<CanvasTile> tilesToRemove = new List<CanvasTile>();
+                // Need to increase width of canvas
+                Canvas_Panel.Width -= tileWidth;
 
+                foreach (CanvasTile nudgeTile in canvasTiles)
+                {
+                    if (nudgeTile.Col == columns)
+                    {
+                        tilesToRemove.Add(nudgeTile);
+                    }
+                }
+
+                columns--;
+
+                // remove those tiles in canvasTiles that are in tilesToRemove
+                canvasTiles.RemoveAll(x => tilesToRemove.Contains(x));   
             }
             Canvas_Panel.Refresh();
         }
@@ -703,6 +718,30 @@ namespace RPGTileMapCreator
 
             else if (rbDelete.Checked)
             {
+                columns--;
+
+                List<CanvasTile> tilesToRemove = new List<CanvasTile>();
+                // Need to increase width of canvas
+                Canvas_Panel.Width -= tileWidth;
+
+                foreach (CanvasTile nudgeTile in canvasTiles)
+                {
+                    if (nudgeTile.Col == 1)
+                    {
+                        tilesToRemove.Add(nudgeTile);
+                    }
+                }
+
+                // remove those tiles in canvasTiles that are in tilesToRemove
+                canvasTiles.RemoveAll(x => tilesToRemove.Contains(x));
+
+                // Need to increase the column and location of all Tiles first
+                foreach (CanvasTile nudgeTile in canvasTiles)
+                {                  
+                    nudgeTile.Col--;
+                    nudgeTile.TopLeftPoint = new Point(nudgeTile.TopLeftPoint.X - tileWidth, nudgeTile.TopLeftPoint.Y);
+                    nudgeTile.BottomRightPoint = new Point(nudgeTile.BottomRightPoint.X - tileWidth, nudgeTile.BottomRightPoint.Y);
+                }
 
             }
             Canvas_Panel.Refresh();
@@ -745,7 +784,22 @@ namespace RPGTileMapCreator
 
             else if (rbDelete.Checked)
             {
+                List<CanvasTile> tilesToRemove = new List<CanvasTile>();
+                // Need to increase width of canvas
+                Canvas_Panel.Height -= tileHeight;
 
+                foreach (CanvasTile nudgeTile in canvasTiles)
+                {
+                    if (nudgeTile.Row == rows)
+                    {
+                        tilesToRemove.Add(nudgeTile);
+                    }
+                }
+
+                rows--;
+
+                // remove those tiles in canvasTiles that are in tilesToRemove
+                canvasTiles.RemoveAll(x => tilesToRemove.Contains(x));
             }
             Canvas_Panel.Refresh();
 
@@ -794,7 +848,30 @@ namespace RPGTileMapCreator
             }
             else if (rbDelete.Checked)
             {
+                rows--;
 
+                List<CanvasTile> tilesToRemove = new List<CanvasTile>();
+                // Need to increase width of canvas
+                Canvas_Panel.Height -= tileHeight;
+
+                foreach (CanvasTile nudgeTile in canvasTiles)
+                {
+                    if (nudgeTile.Row == 1)
+                    {
+                        tilesToRemove.Add(nudgeTile);
+                    }
+                }
+
+                // remove those tiles in canvasTiles that are in tilesToRemove
+                canvasTiles.RemoveAll(x => tilesToRemove.Contains(x));
+
+                // Need to increase the column and location of all Tiles first
+                foreach (CanvasTile nudgeTile in canvasTiles)
+                {
+                    nudgeTile.Row--;
+                    nudgeTile.TopLeftPoint = new Point(nudgeTile.TopLeftPoint.X, nudgeTile.TopLeftPoint.Y - tileHeight);
+                    nudgeTile.BottomRightPoint = new Point(nudgeTile.BottomRightPoint.X, nudgeTile.BottomRightPoint.Y - tileHeight);
+                }
             }
 
             Canvas_Panel.Refresh();
