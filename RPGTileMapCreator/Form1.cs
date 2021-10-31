@@ -597,37 +597,49 @@ namespace RPGTileMapCreator
             CanvasTile ct = new CanvasTile();
             int x, y;
 
-            columns++;
-
-            // Need to increase width of canvas
-            Canvas_Panel.Width += tileWidth;
-
-            // Add (# of rows) cells to screen on right top to bottom
-            for ( int r = 1; r <= rows; r++)
+            if (rbAdd.Checked)
             {
-                x = columns * tileWidth - tileWidth;
-                y = r * tileHeight - tileHeight;
+                columns++;
 
-                ct = new CanvasTile
+                // Need to increase width of canvas
+                Canvas_Panel.Width += tileWidth;
+
+                // Add (# of rows) cells to screen on right top to bottom
+                for (int r = 1; r <= rows; r++)
                 {
-                    Character = defaultTileSet.letter.Text,
-                    TileImage = defaultTileSet.tile.Image,
-                    Row = r,
-                    Col = columns, 
-                    Width = tileWidth,
-                    Height = tileHeight,
-                    TopLeftPoint = new Point(x, y),
-                    BottomRightPoint = new Point(x + 51, y + 51),
-                };                   
+                    x = columns * tileWidth - tileWidth;
+                    y = r * tileHeight - tileHeight;
 
-                canvasTiles.Add(ct);                
+                    ct = new CanvasTile
+                    {
+                        Character = defaultTileSet.letter.Text,
+                        TileImage = defaultTileSet.tile.Image,
+                        Row = r,
+                        Col = columns,
+                        Width = tileWidth,
+                        Height = tileHeight,
+                        TopLeftPoint = new Point(x, y),
+                        BottomRightPoint = new Point(x + 51, y + 51),
+                    };
+
+                    canvasTiles.Add(ct);
+                }
             }
 
+            else if (rbDelete.Checked)
+            {
+
+            }
             Canvas_Panel.Refresh();
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
+            // Save As dialog box
+
+            // Saves a 1 x 1 with default Tile
+
+            // Opens up on canvas
 
         }
 
@@ -652,40 +664,47 @@ namespace RPGTileMapCreator
             CanvasTile ct = new CanvasTile();
             int x, y;
 
-            columns++;
-
-            // Need to increase width of canvas
-            Canvas_Panel.Width += tileWidth;
-
-            // Need to increase the column and location of all Tiles first
-            foreach(CanvasTile nudgeTile in canvasTiles)
+            if (rbAdd.Checked)
             {
-                nudgeTile.Col++;
-                nudgeTile.TopLeftPoint = new Point(nudgeTile.TopLeftPoint.X + tileWidth, nudgeTile.TopLeftPoint.Y);
-                nudgeTile.BottomRightPoint = new Point(nudgeTile.BottomRightPoint.X + tileWidth, nudgeTile.BottomRightPoint.Y);
-            }
+                columns++;
 
-            // Add new column with column = 0;
-            for (int r = 1; r <= rows; r++)
-            {
-                x = 0;
-                y = r * tileHeight - tileHeight;
+                // Need to increase width of canvas
+                Canvas_Panel.Width += tileWidth;
 
-                ct = new CanvasTile
+                // Need to increase the column and location of all Tiles first
+                foreach (CanvasTile nudgeTile in canvasTiles)
                 {
-                    Character = defaultTileSet.letter.Text,
-                    TileImage = defaultTileSet.tile.Image,
-                    Row = r,
-                    Col = 1,
-                    Width = tileWidth,
-                    Height = tileHeight,
-                    TopLeftPoint = new Point(x, y),
-                    BottomRightPoint = new Point(x + 51, y + 51),
-                };
+                    nudgeTile.Col++;
+                    nudgeTile.TopLeftPoint = new Point(nudgeTile.TopLeftPoint.X + tileWidth, nudgeTile.TopLeftPoint.Y);
+                    nudgeTile.BottomRightPoint = new Point(nudgeTile.BottomRightPoint.X + tileWidth, nudgeTile.BottomRightPoint.Y);
+                }
 
-                canvasTiles.Add(ct);
+                // Add new column with column = 0;
+                for (int r = 1; r <= rows; r++)
+                {
+                    x = 0;
+                    y = r * tileHeight - tileHeight;
+
+                    ct = new CanvasTile
+                    {
+                        Character = defaultTileSet.letter.Text,
+                        TileImage = defaultTileSet.tile.Image,
+                        Row = r,
+                        Col = 1,
+                        Width = tileWidth,
+                        Height = tileHeight,
+                        TopLeftPoint = new Point(x, y),
+                        BottomRightPoint = new Point(x + 51, y + 51),
+                    };
+
+                    canvasTiles.Add(ct);
+                }
             }
 
+            else if (rbDelete.Checked)
+            {
+
+            }
             Canvas_Panel.Refresh();
 
         }
@@ -695,32 +714,39 @@ namespace RPGTileMapCreator
             CanvasTile ct = new CanvasTile();
             int x, y;
 
-            rows++;
-
-            // Need to increase width of canvas
-            Canvas_Panel.Height += tileHeight;
-
-            // Add (# of rows) cells to screen on right top to bottom
-            for (int c = 1; c <= columns; c++)
+            if (rbAdd.Checked)
             {
-                x = c * tileWidth - tileWidth;
-                y = rows * tileHeight - tileHeight;
+                rows++;
 
-                ct = new CanvasTile
+                // Need to increase width of canvas
+                Canvas_Panel.Height += tileHeight;
+
+                // Add (# of rows) cells to screen on right top to bottom
+                for (int c = 1; c <= columns; c++)
                 {
-                    Character = defaultTileSet.letter.Text,
-                    TileImage = defaultTileSet.tile.Image,
-                    Row = rows,
-                    Col = c,
-                    Width = tileWidth,
-                    Height = tileHeight,
-                    TopLeftPoint = new Point(x, y),
-                    BottomRightPoint = new Point(x + 51, y + 51),
-                };
+                    x = c * tileWidth - tileWidth;
+                    y = rows * tileHeight - tileHeight;
 
-                canvasTiles.Add(ct);
+                    ct = new CanvasTile
+                    {
+                        Character = defaultTileSet.letter.Text,
+                        TileImage = defaultTileSet.tile.Image,
+                        Row = rows,
+                        Col = c,
+                        Width = tileWidth,
+                        Height = tileHeight,
+                        TopLeftPoint = new Point(x, y),
+                        BottomRightPoint = new Point(x + 51, y + 51),
+                    };
+
+                    canvasTiles.Add(ct);
+                }
             }
 
+            else if (rbDelete.Checked)
+            {
+
+            }
             Canvas_Panel.Refresh();
 
         }
@@ -730,40 +756,46 @@ namespace RPGTileMapCreator
             CanvasTile ct = new CanvasTile();
             int x, y;
 
-            rows++;
-
-            // Need to increase width of canvas
-            Canvas_Panel.Height += tileHeight;
-
-            // Need to increase the column and location of all Tiles first
-            foreach (CanvasTile nudgeTile in canvasTiles)
+            if (rbAdd.Checked)
             {
-                nudgeTile.Row++;
-                nudgeTile.TopLeftPoint = new Point(nudgeTile.TopLeftPoint.X, nudgeTile.TopLeftPoint.Y + tileHeight);
-                nudgeTile.BottomRightPoint = new Point(nudgeTile.BottomRightPoint.X, nudgeTile.BottomRightPoint.Y + tileHeight);
-            }
+                rows++;
 
-            // Add (# of rows) cells to screen on right top to bottom
-            for (int c = 1; c <= columns; c++)
-            {
-                x = c * tileWidth - tileWidth;
-                y = 0;
+                // Need to increase width of canvas
+                Canvas_Panel.Height += tileHeight;
 
-                ct = new CanvasTile
+                // Need to increase the column and location of all Tiles first
+                foreach (CanvasTile nudgeTile in canvasTiles)
                 {
-                    Character = defaultTileSet.letter.Text,
-                    TileImage = defaultTileSet.tile.Image,
-                    Row = 1,
-                    Col = c,
-                    Width = tileWidth,
-                    Height = tileHeight,
-                    TopLeftPoint = new Point(x, y),
-                    BottomRightPoint = new Point(x + 51, y + 51),
-                };
+                    nudgeTile.Row++;
+                    nudgeTile.TopLeftPoint = new Point(nudgeTile.TopLeftPoint.X, nudgeTile.TopLeftPoint.Y + tileHeight);
+                    nudgeTile.BottomRightPoint = new Point(nudgeTile.BottomRightPoint.X, nudgeTile.BottomRightPoint.Y + tileHeight);
+                }
 
-                canvasTiles.Add(ct);
+                // Add (# of rows) cells to screen on right top to bottom
+                for (int c = 1; c <= columns; c++)
+                {
+                    x = c * tileWidth - tileWidth;
+                    y = 0;
+
+                    ct = new CanvasTile
+                    {
+                        Character = defaultTileSet.letter.Text,
+                        TileImage = defaultTileSet.tile.Image,
+                        Row = 1,
+                        Col = c,
+                        Width = tileWidth,
+                        Height = tileHeight,
+                        TopLeftPoint = new Point(x, y),
+                        BottomRightPoint = new Point(x + 51, y + 51),
+                    };
+
+                    canvasTiles.Add(ct);
+                }
             }
+            else if (rbDelete.Checked)
+            {
 
+            }
 
             Canvas_Panel.Refresh();
 
