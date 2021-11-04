@@ -1,7 +1,7 @@
 ﻿
 namespace RPGTileMapCreator
 {
-    partial class btnNewMap
+    partial class Form_Map
     {
         /// <summary>
         ///  Required designer variable.
@@ -118,7 +118,7 @@ namespace RPGTileMapCreator
             this.btnLoadTileSet.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.btnLoadTileSet.Location = new System.Drawing.Point(257, 2);
             this.btnLoadTileSet.Name = "btnLoadTileSet";
-            this.btnLoadTileSet.Size = new System.Drawing.Size(100, 25);
+            this.btnLoadTileSet.Size = new System.Drawing.Size(100, 23);
             this.btnLoadTileSet.TabIndex = 12;
             this.btnLoadTileSet.Text = "Load Tile Set";
             this.btnLoadTileSet.UseVisualStyleBackColor = false;
@@ -129,7 +129,7 @@ namespace RPGTileMapCreator
             this.btnLoadTiles.BackColor = System.Drawing.Color.DarkOrange;
             this.btnLoadTiles.Location = new System.Drawing.Point(0, 2);
             this.btnLoadTiles.Name = "btnLoadTiles";
-            this.btnLoadTiles.Size = new System.Drawing.Size(91, 23);
+            this.btnLoadTiles.Size = new System.Drawing.Size(100, 23);
             this.btnLoadTiles.TabIndex = 13;
             this.btnLoadTiles.Text = "Load Tiles";
             this.btnLoadTiles.UseVisualStyleBackColor = false;
@@ -144,7 +144,7 @@ namespace RPGTileMapCreator
             this.button2.BackColor = System.Drawing.Color.White;
             this.button2.Location = new System.Drawing.Point(0, 29);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(91, 23);
+            this.button2.Size = new System.Drawing.Size(100, 23);
             this.button2.TabIndex = 14;
             this.button2.Text = "Clear Tiles";
             this.button2.UseVisualStyleBackColor = false;
@@ -208,9 +208,9 @@ namespace RPGTileMapCreator
             // 
             this.btnAddRowTop.BackColor = System.Drawing.Color.DarkSeaGreen;
             this.btnAddRowTop.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.btnAddRowTop.Location = new System.Drawing.Point(964, 5);
+            this.btnAddRowTop.Location = new System.Drawing.Point(942, 12);
             this.btnAddRowTop.Name = "btnAddRowTop";
-            this.btnAddRowTop.Size = new System.Drawing.Size(91, 25);
+            this.btnAddRowTop.Size = new System.Drawing.Size(100, 23);
             this.btnAddRowTop.TabIndex = 20;
             this.btnAddRowTop.Text = "Top Row";
             this.btnAddRowTop.UseVisualStyleBackColor = false;
@@ -220,9 +220,9 @@ namespace RPGTileMapCreator
             // 
             this.btnAddColumnRight.BackColor = System.Drawing.Color.DarkSeaGreen;
             this.btnAddColumnRight.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.btnAddColumnRight.Location = new System.Drawing.Point(1061, 30);
+            this.btnAddColumnRight.Location = new System.Drawing.Point(1039, 37);
             this.btnAddColumnRight.Name = "btnAddColumnRight";
-            this.btnAddColumnRight.Size = new System.Drawing.Size(91, 25);
+            this.btnAddColumnRight.Size = new System.Drawing.Size(100, 23);
             this.btnAddColumnRight.TabIndex = 21;
             this.btnAddColumnRight.Text = "Right Column";
             this.btnAddColumnRight.UseVisualStyleBackColor = false;
@@ -232,9 +232,9 @@ namespace RPGTileMapCreator
             // 
             this.btnAddColumnLeft.BackColor = System.Drawing.Color.DarkSeaGreen;
             this.btnAddColumnLeft.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.btnAddColumnLeft.Location = new System.Drawing.Point(964, 31);
+            this.btnAddColumnLeft.Location = new System.Drawing.Point(942, 38);
             this.btnAddColumnLeft.Name = "btnAddColumnLeft";
-            this.btnAddColumnLeft.Size = new System.Drawing.Size(91, 25);
+            this.btnAddColumnLeft.Size = new System.Drawing.Size(100, 23);
             this.btnAddColumnLeft.TabIndex = 22;
             this.btnAddColumnLeft.Text = "Left Column";
             this.btnAddColumnLeft.UseVisualStyleBackColor = false;
@@ -244,9 +244,9 @@ namespace RPGTileMapCreator
             // 
             this.btnAddRowBottom.BackColor = System.Drawing.Color.DarkSeaGreen;
             this.btnAddRowBottom.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.btnAddRowBottom.Location = new System.Drawing.Point(1061, 5);
+            this.btnAddRowBottom.Location = new System.Drawing.Point(1039, 12);
             this.btnAddRowBottom.Name = "btnAddRowBottom";
-            this.btnAddRowBottom.Size = new System.Drawing.Size(91, 25);
+            this.btnAddRowBottom.Size = new System.Drawing.Size(100, 23);
             this.btnAddRowBottom.TabIndex = 23;
             this.btnAddRowBottom.Text = "Bottom Row";
             this.btnAddRowBottom.UseVisualStyleBackColor = false;
@@ -268,7 +268,7 @@ namespace RPGTileMapCreator
             this.button4.BackColor = System.Drawing.Color.OrangeRed;
             this.button4.Location = new System.Drawing.Point(699, 29);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(91, 23);
+            this.button4.Size = new System.Drawing.Size(100, 23);
             this.button4.TabIndex = 27;
             this.button4.Text = "New Map";
             this.button4.UseVisualStyleBackColor = false;
@@ -326,7 +326,7 @@ namespace RPGTileMapCreator
             this.lblFavouriteTilesFolder.TabIndex = 17;
             this.lblFavouriteTilesFolder.Text = "lblFavouriteTilesFolder";
             // 
-            // btnNewMap
+            // Form_Map
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -351,7 +351,7 @@ namespace RPGTileMapCreator
             this.Controls.Add(this.btnSaveMap);
             this.Controls.Add(this.txtMapName);
             this.Controls.Add(this.Panel_Palete);
-            this.Name = "btnNewMap";
+            this.Name = "Form_Map";
             this.Text = "RPG Tile Map Creator";
             this.Canvas_Panel.ResumeLayout(false);
             this.panel1.ResumeLayout(false);

@@ -14,7 +14,10 @@ using System.Windows.Forms;
 
 namespace RPGTileMapCreator
 {
-    public partial class btnNewMap : Form
+    // TODO browse for files
+    // TODO '?' as CONST
+    // TODO use tilewidth/height - not 51
+    public partial class Form_Map : Form
     {
         PictureBox SelectedPaletteBox = new PictureBox();
         PictureBox formerSelected = new PictureBox();
@@ -31,9 +34,14 @@ namespace RPGTileMapCreator
         protected int rows = 0;
         protected int columns = 0;
 
-        public btnNewMap()
+        public Form_Map()
         {
             TextBox t = new TextBox();
+            defaultTileSet = new PaletteObject();
+            defaultTileSet.letter = new TextBox();
+            defaultTileSet.letter.Text = "?";
+            defaultTileSet.tile = new PictureBox();
+            defaultTileSet.tile.Image = Resource1._default;
 
             InitializeComponent();
             Canvas_Panel.Width = 1000; Canvas_Panel.Height = 1000;
@@ -429,11 +437,11 @@ namespace RPGTileMapCreator
                 }
             }
 
-            if (tileSets.Count > 0)
-            {
-                defaultTileSet = tileSets.First(ts => ts.letter.Text.Length > 0);
-               // defaultTileSet = tileSets[0];
-            }
+            //if (tileSets.Count > 0)
+            //{
+            //    defaultTileSet = tileSets.First(ts => ts.letter.Text.Length > 0);
+            //   // defaultTileSet = tileSets[0];
+            //}
             //   Canvas_Panel.Visible = true;
         }
 
@@ -494,9 +502,9 @@ namespace RPGTileMapCreator
                                 BottomRightPoint = new Point(x + 51, y + 51),
                                 Width = tileWidth,
                                 Height = tileHeight,
-                                TileImage = sourceBmp,
-                                Character = s != ' ' ? s.ToString() : defaultTileSet.letter.Text.Substring(0,1)
-                        };
+                                TileImage = (s == ' ' || s == '?') ? new Bitmap(defaultTileSet.tile.Image) : sourceBmp,
+                                Character = (s == ' ' || s == '?') ? defaultTileSet.letter.Text.Substring(0,1) : s.ToString()
+                            };
 
                             canvasTiles.Add(canvasTile);
                         }
@@ -592,61 +600,23 @@ namespace RPGTileMapCreator
 
         }
 
-        private void btnAddColumnRight_Click(object sender, EventArgs e)
+
+        private void btnWipeCanvas_Click(object sender, EventArgs e)
         {
-            CanvasTile ct = new CanvasTile();
-            int x, y;
+            WipeCanvas();
+        }
 
-            if (rbAdd.Checked)
-            {
-                columns++;
-
-                // Need to increase width of canvas
-                Canvas_Panel.Width += tileWidth;
-
-                // Add (# of rows) cells to screen on right top to bottom
-                for (int r = 1; r <= rows; r++)
-                {
-                    x = columns * tileWidth - tileWidth;
-                    y = r * tileHeight - tileHeight;
-
-                    ct = new CanvasTile
-                    {
-                        Character = defaultTileSet.letter.Text,
-                        TileImage = defaultTileSet.tile.Image,
-                        Row = r,
-                        Col = columns,
-                        Width = tileWidth,
-                        Height = tileHeight,
-                        TopLeftPoint = new Point(x, y),
-                        BottomRightPoint = new Point(x + 51, y + 51),
-                    };
-
-                    canvasTiles.Add(ct);
-                }
-            }
-
-            else if (rbDelete.Checked)
-            {
-                List<CanvasTile> tilesToRemove = new List<CanvasTile>();
-                // Need to increase width of canvas
-                Canvas_Panel.Width -= tileWidth;
-
-                foreach (CanvasTile nudgeTile in canvasTiles)
-                {
-                    if (nudgeTile.Col == columns)
-                    {
-                        tilesToRemove.Add(nudgeTile);
-                    }
-                }
-
-                columns--;
-
-                // remove those tiles in canvasTiles that are in tilesToRemove
-                canvasTiles.RemoveAll(x => tilesToRemove.Contains(x));   
-            }
+        private void WipeCanvas()
+        {
+            clearCanvasFlag = true;
+            canvasTiles.Clear();
+            rows = 0;
+            columns = 0;
+            Canvas_Panel.Visible = false;
+            selectedTileSet = null;
             Canvas_Panel.Refresh();
         }
+
 
         private void button4_Click(object sender, EventArgs e)
         {
@@ -719,19 +689,65 @@ namespace RPGTileMapCreator
             }
         }
 
-        private void btnWipeCanvas_Click(object sender, EventArgs e)
+        private void btnAddColumnRight_Click(object sender, EventArgs e)
         {
-            WipeCanvas();
-        }
+            CanvasTile ct = new CanvasTile();
+            int x, y;
 
-        private void WipeCanvas()
-        {
-            clearCanvasFlag = true;
-            canvasTiles.Clear();
-            rows = 0;
-            columns = 0;
-            Canvas_Panel.Visible = false;
-            selectedTileSet = null;
+            if (rbAdd.Checked)
+            {
+                if (columns + 1 <= 100)
+                {
+                    columns++;
+
+                    // Need to increase width of canvas
+                    Canvas_Panel.Width += tileWidth;
+
+                    // Add (# of rows) cells to screen on right top to bottom
+                    for (int r = 1; r <= rows; r++)
+                    {
+                        x = columns * tileWidth - tileWidth;
+                        y = r * tileHeight - tileHeight;
+
+                        ct = new CanvasTile
+                        {
+                            Character = defaultTileSet.letter.Text,
+                            TileImage = new Bitmap(defaultTileSet.tile.Image),
+                            Row = r,
+                            Col = columns,
+                            Width = tileWidth,
+                            Height = tileHeight,
+                            TopLeftPoint = new Point(x, y),
+                            BottomRightPoint = new Point(x + 51, y + 51),
+                        };
+
+                        canvasTiles.Add(ct);
+                    }
+                }
+            }
+
+            else if (rbDelete.Checked)
+            {
+                if (columns - 1 >= 0)
+                {
+                    List<CanvasTile> tilesToRemove = new List<CanvasTile>();
+                    // Need to increase width of canvas
+                    Canvas_Panel.Width -= tileWidth;
+
+                    foreach (CanvasTile nudgeTile in canvasTiles)
+                    {
+                        if (nudgeTile.Col == columns)
+                        {
+                            tilesToRemove.Add(nudgeTile);
+                        }
+                    }
+
+                    columns--;
+
+                    // remove those tiles in canvasTiles that are in tilesToRemove
+                    canvasTiles.RemoveAll(x => tilesToRemove.Contains(x));
+                }
+            }
             Canvas_Panel.Refresh();
         }
 
@@ -742,66 +758,72 @@ namespace RPGTileMapCreator
 
             if (rbAdd.Checked)
             {
-                columns++;
-
-                // Need to increase width of canvas
-                Canvas_Panel.Width += tileWidth;
-
-                // Need to increase the column and location of all Tiles first
-                foreach (CanvasTile nudgeTile in canvasTiles)
+                if (columns + 1 <= 300)
                 {
-                    nudgeTile.Col++;
-                    nudgeTile.TopLeftPoint = new Point(nudgeTile.TopLeftPoint.X + tileWidth, nudgeTile.TopLeftPoint.Y);
-                    nudgeTile.BottomRightPoint = new Point(nudgeTile.BottomRightPoint.X + tileWidth, nudgeTile.BottomRightPoint.Y);
-                }
+                    columns++;
 
-                // Add new column with column = 0;
-                for (int r = 1; r <= rows; r++)
-                {
-                    x = 0;
-                    y = r * tileHeight - tileHeight;
+                    // Need to increase width of canvas
+                    Canvas_Panel.Width += tileWidth;
 
-                    ct = new CanvasTile
+                    // Need to increase the column and location of all Tiles first
+                    foreach (CanvasTile nudgeTile in canvasTiles)
                     {
-                        Character = defaultTileSet.letter.Text,
-                        TileImage = defaultTileSet.tile.Image,
-                        Row = r,
-                        Col = 1,
-                        Width = tileWidth,
-                        Height = tileHeight,
-                        TopLeftPoint = new Point(x, y),
-                        BottomRightPoint = new Point(x + 51, y + 51),
-                    };
+                        nudgeTile.Col++;
+                        nudgeTile.TopLeftPoint = new Point(nudgeTile.TopLeftPoint.X + tileWidth, nudgeTile.TopLeftPoint.Y);
+                        nudgeTile.BottomRightPoint = new Point(nudgeTile.BottomRightPoint.X + tileWidth, nudgeTile.BottomRightPoint.Y);
+                    }
 
-                    canvasTiles.Add(ct);
-                }
-            }
-
-            else if (rbDelete.Checked)
-            {
-                columns--;
-
-                List<CanvasTile> tilesToRemove = new List<CanvasTile>();
-                // Need to increase width of canvas
-                Canvas_Panel.Width -= tileWidth;
-
-                foreach (CanvasTile nudgeTile in canvasTiles)
-                {
-                    if (nudgeTile.Col == 1)
+                    // Add new column with column = 0;
+                    for (int r = 1; r <= rows; r++)
                     {
-                        tilesToRemove.Add(nudgeTile);
+                        x = 0;
+                        y = r * tileHeight - tileHeight;
+
+                        ct = new CanvasTile
+                        {
+                            Character = defaultTileSet.letter.Text,
+                            TileImage = new Bitmap(defaultTileSet.tile.Image),
+                            Row = r,
+                            Col = 1,
+                            Width = tileWidth,
+                            Height = tileHeight,
+                            TopLeftPoint = new Point(x, y),
+                            BottomRightPoint = new Point(x + 51, y + 51),
+                        };
+
+                        canvasTiles.Add(ct);
                     }
                 }
 
-                // remove those tiles in canvasTiles that are in tilesToRemove
-                canvasTiles.RemoveAll(x => tilesToRemove.Contains(x));
+            }
+            else if (rbDelete.Checked)
+            {
+                if (columns - 1 >= 0)
+                {
+                    columns--;
 
-                // Need to increase the column and location of all Tiles first
-                foreach (CanvasTile nudgeTile in canvasTiles)
-                {                  
-                    nudgeTile.Col--;
-                    nudgeTile.TopLeftPoint = new Point(nudgeTile.TopLeftPoint.X - tileWidth, nudgeTile.TopLeftPoint.Y);
-                    nudgeTile.BottomRightPoint = new Point(nudgeTile.BottomRightPoint.X - tileWidth, nudgeTile.BottomRightPoint.Y);
+                    List<CanvasTile> tilesToRemove = new List<CanvasTile>();
+                    // Need to increase width of canvas
+                    Canvas_Panel.Width -= tileWidth;
+
+                    foreach (CanvasTile nudgeTile in canvasTiles)
+                    {
+                        if (nudgeTile.Col == 1)
+                        {
+                            tilesToRemove.Add(nudgeTile);
+                        }
+                    }
+
+                    // remove those tiles in canvasTiles that are in tilesToRemove
+                    canvasTiles.RemoveAll(x => tilesToRemove.Contains(x));
+
+                    // Need to increase the column and location of all Tiles first
+                    foreach (CanvasTile nudgeTile in canvasTiles)
+                    {
+                        nudgeTile.Col--;
+                        nudgeTile.TopLeftPoint = new Point(nudgeTile.TopLeftPoint.X - tileWidth, nudgeTile.TopLeftPoint.Y);
+                        nudgeTile.BottomRightPoint = new Point(nudgeTile.BottomRightPoint.X - tileWidth, nudgeTile.BottomRightPoint.Y);
+                    }
                 }
 
             }
@@ -816,51 +838,57 @@ namespace RPGTileMapCreator
 
             if (rbAdd.Checked)
             {
-                rows++;
-
-                // Need to increase width of canvas
-                Canvas_Panel.Height += tileHeight;
-
-                // Add (# of rows) cells to screen on right top to bottom
-                for (int c = 1; c <= columns; c++)
+                if (rows + 1 <= 300)
                 {
-                    x = c * tileWidth - tileWidth;
-                    y = rows * tileHeight - tileHeight;
+                    rows++;
 
-                    ct = new CanvasTile
+                    // Need to increase width of canvas
+                    Canvas_Panel.Height += tileHeight;
+
+                    // Add (# of rows) cells to screen on right top to bottom
+                    for (int c = 1; c <= columns; c++)
                     {
-                        Character = defaultTileSet.letter.Text,
-                        TileImage = defaultTileSet.tile.Image,
-                        Row = rows,
-                        Col = c,
-                        Width = tileWidth,
-                        Height = tileHeight,
-                        TopLeftPoint = new Point(x, y),
-                        BottomRightPoint = new Point(x + 51, y + 51),
-                    };
+                        x = c * tileWidth - tileWidth;
+                        y = rows * tileHeight - tileHeight;
 
-                    canvasTiles.Add(ct);
+                        ct = new CanvasTile
+                        {
+                            Character = defaultTileSet.letter.Text,
+                            TileImage = new Bitmap(defaultTileSet.tile.Image),
+                            Row = rows,
+                            Col = c,
+                            Width = tileWidth,
+                            Height = tileHeight,
+                            TopLeftPoint = new Point(x, y),
+                            BottomRightPoint = new Point(x + 51, y + 51),
+                        };
+
+                        canvasTiles.Add(ct);
+                    }
                 }
             }
 
             else if (rbDelete.Checked)
             {
-                List<CanvasTile> tilesToRemove = new List<CanvasTile>();
-                // Need to increase width of canvas
-                Canvas_Panel.Height -= tileHeight;
-
-                foreach (CanvasTile nudgeTile in canvasTiles)
+                if (rows - 1 >= 0)
                 {
-                    if (nudgeTile.Row == rows)
+                    List<CanvasTile> tilesToRemove = new List<CanvasTile>();
+                    // Need to increase width of canvas
+                    Canvas_Panel.Height -= tileHeight;
+
+                    foreach (CanvasTile nudgeTile in canvasTiles)
                     {
-                        tilesToRemove.Add(nudgeTile);
+                        if (nudgeTile.Row == rows)
+                        {
+                            tilesToRemove.Add(nudgeTile);
+                        }
                     }
+
+                    rows--;
+
+                    // remove those tiles in canvasTiles that are in tilesToRemove
+                    canvasTiles.RemoveAll(x => tilesToRemove.Contains(x));
                 }
-
-                rows--;
-
-                // remove those tiles in canvasTiles that are in tilesToRemove
-                canvasTiles.RemoveAll(x => tilesToRemove.Contains(x));
             }
             Canvas_Panel.Refresh();
 
@@ -873,71 +901,74 @@ namespace RPGTileMapCreator
 
             if (rbAdd.Checked)
             {
-                rows++;
-
-                // Need to increase width of canvas
-                Canvas_Panel.Height += tileHeight;
-
-                // Need to increase the column and location of all Tiles first
-                foreach (CanvasTile nudgeTile in canvasTiles)
+                if (rows + 1 <= 100)
                 {
-                    nudgeTile.Row++;
-                    nudgeTile.TopLeftPoint = new Point(nudgeTile.TopLeftPoint.X, nudgeTile.TopLeftPoint.Y + tileHeight);
-                    nudgeTile.BottomRightPoint = new Point(nudgeTile.BottomRightPoint.X, nudgeTile.BottomRightPoint.Y + tileHeight);
-                }
+                    rows++;
 
-                // Add (# of rows) cells to screen on right top to bottom
-                for (int c = 1; c <= columns; c++)
-                {
-                    x = c * tileWidth - tileWidth;
-                    y = 0;
+                    // Need to increase width of canvas
+                    Canvas_Panel.Height += tileHeight;
 
-                    ct = new CanvasTile
+                    // Need to increase the column and location of all Tiles first
+                    foreach (CanvasTile nudgeTile in canvasTiles)
                     {
-                        Character = defaultTileSet.letter.Text,
-                        TileImage = defaultTileSet.tile.Image,
-                        Row = 1,
-                        Col = c,
-                        Width = tileWidth,
-                        Height = tileHeight,
-                        TopLeftPoint = new Point(x, y),
-                        BottomRightPoint = new Point(x + 51, y + 51),
-                    };
+                        nudgeTile.Row++;
+                        nudgeTile.TopLeftPoint = new Point(nudgeTile.TopLeftPoint.X, nudgeTile.TopLeftPoint.Y + tileHeight);
+                        nudgeTile.BottomRightPoint = new Point(nudgeTile.BottomRightPoint.X, nudgeTile.BottomRightPoint.Y + tileHeight);
+                    }
 
-                    canvasTiles.Add(ct);
+                    // Add (# of rows) cells to screen on right top to bottom
+                    for (int c = 1; c <= columns; c++)
+                    {
+                        x = c * tileWidth - tileWidth;
+                        y = 0;
+
+                        ct = new CanvasTile
+                        {
+                            Character = defaultTileSet.letter.Text,
+                            TileImage = new Bitmap(defaultTileSet.tile.Image),
+                            Row = 1,
+                            Col = c,
+                            Width = tileWidth,
+                            Height = tileHeight,
+                            TopLeftPoint = new Point(x, y),
+                            BottomRightPoint = new Point(x + 51, y + 51),
+                        };
+
+                        canvasTiles.Add(ct);
+                    }
                 }
             }
             else if (rbDelete.Checked)
             {
-                rows--;
-
-                List<CanvasTile> tilesToRemove = new List<CanvasTile>();
-                // Need to increase width of canvas
-                Canvas_Panel.Height -= tileHeight;
-
-                foreach (CanvasTile nudgeTile in canvasTiles)
+                if (rows - 1 >= 0)
                 {
-                    if (nudgeTile.Row == 1)
+                    rows--;
+
+                    List<CanvasTile> tilesToRemove = new List<CanvasTile>();
+                    // Need to increase width of canvas
+                    Canvas_Panel.Height -= tileHeight;
+
+                    foreach (CanvasTile nudgeTile in canvasTiles)
                     {
-                        tilesToRemove.Add(nudgeTile);
+                        if (nudgeTile.Row == 1)
+                        {
+                            tilesToRemove.Add(nudgeTile);
+                        }
+                    }
+
+                    // remove those tiles in canvasTiles that are in tilesToRemove
+                    canvasTiles.RemoveAll(x => tilesToRemove.Contains(x));
+
+                    // Need to increase the column and location of all Tiles first
+                    foreach (CanvasTile nudgeTile in canvasTiles)
+                    {
+                        nudgeTile.Row--;
+                        nudgeTile.TopLeftPoint = new Point(nudgeTile.TopLeftPoint.X, nudgeTile.TopLeftPoint.Y - tileHeight);
+                        nudgeTile.BottomRightPoint = new Point(nudgeTile.BottomRightPoint.X, nudgeTile.BottomRightPoint.Y - tileHeight);
                     }
                 }
-
-                // remove those tiles in canvasTiles that are in tilesToRemove
-                canvasTiles.RemoveAll(x => tilesToRemove.Contains(x));
-
-                // Need to increase the column and location of all Tiles first
-                foreach (CanvasTile nudgeTile in canvasTiles)
-                {
-                    nudgeTile.Row--;
-                    nudgeTile.TopLeftPoint = new Point(nudgeTile.TopLeftPoint.X, nudgeTile.TopLeftPoint.Y - tileHeight);
-                    nudgeTile.BottomRightPoint = new Point(nudgeTile.BottomRightPoint.X, nudgeTile.BottomRightPoint.Y - tileHeight);
-                }
             }
-
             Canvas_Panel.Refresh();
-
-
         }
     }
 }

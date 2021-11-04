@@ -17,7 +17,7 @@ namespace RPGTileMapCreator
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new btnNewMap());
+            Application.Run(new Form_Map());
         }
     }
 }
