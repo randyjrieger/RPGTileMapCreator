@@ -50,7 +50,7 @@ namespace RPGTileMapCreator
             this.btnAddColumnLeft = new System.Windows.Forms.Button();
             this.btnAddRowBottom = new System.Windows.Forms.Button();
             this.btnWipeCanvas = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
+            this.btnNewMap = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.rbDelete = new System.Windows.Forms.RadioButton();
             this.rbAdd = new System.Windows.Forms.RadioButton();
@@ -263,16 +263,16 @@ namespace RPGTileMapCreator
             this.btnWipeCanvas.UseVisualStyleBackColor = false;
             this.btnWipeCanvas.Click += new System.EventHandler(this.btnWipeCanvas_Click);
             // 
-            // button4
+            // btnNewMap
             // 
-            this.button4.BackColor = System.Drawing.Color.OrangeRed;
-            this.button4.Location = new System.Drawing.Point(699, 29);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(100, 23);
-            this.button4.TabIndex = 27;
-            this.button4.Text = "New Map";
-            this.button4.UseVisualStyleBackColor = false;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
+            this.btnNewMap.BackColor = System.Drawing.Color.OrangeRed;
+            this.btnNewMap.Location = new System.Drawing.Point(699, 29);
+            this.btnNewMap.Name = "btnNewMap";
+            this.btnNewMap.Size = new System.Drawing.Size(100, 23);
+            this.btnNewMap.TabIndex = 27;
+            this.btnNewMap.Text = "New Map";
+            this.btnNewMap.UseVisualStyleBackColor = false;
+            this.btnNewMap.Click += new System.EventHandler(this.btnNewMap_Click);
             // 
             // groupBox1
             // 
@@ -333,7 +333,7 @@ namespace RPGTileMapCreator
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.ClientSize = new System.Drawing.Size(1164, 580);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.button4);
+            this.Controls.Add(this.btnNewMap);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.btnWipeCanvas);
             this.Controls.Add(this.btnAddRowBottom);
@@ -353,6 +353,7 @@ namespace RPGTileMapCreator
             this.Controls.Add(this.Panel_Palete);
             this.Name = "Form_Map";
             this.Text = "RPG Tile Map Creator";
+            this.Load += new System.EventHandler(this.Form_Map_Load);
             this.Canvas_Panel.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
@@ -385,7 +386,7 @@ namespace RPGTileMapCreator
         private System.Windows.Forms.Button btnAddColumnLeft;
         private System.Windows.Forms.Button btnAddRowBottom;
         private System.Windows.Forms.Button btnWipeCanvas;
-        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button btnNewMap;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.RadioButton rbDelete;
         private System.Windows.Forms.RadioButton rbAdd;

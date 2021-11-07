@@ -74,9 +74,9 @@ namespace RPGTileMapCreator
             {
                 //Return the CanvasTile where I clicked
                 tileInPlay = ReturnTileClickedOn(me.Location.X, me.Location.Y);
-          //      MessageBox.Show(String.Format("{0} {1}", tileInPlay.Row, tileInPlay.Col ));
-               // if (tileInPlay == null)
-                 //   MessageBox.Show(string.Format("Cannot find tile at LT X: {0} , Y: {1}", me.Location.X, me.Location.Y));
+                //      MessageBox.Show(String.Format("{0} {1}", tileInPlay.Row, tileInPlay.Col ));
+                // if (tileInPlay == null)
+                //   MessageBox.Show(string.Format("Cannot find tile at LT X: {0} , Y: {1}", me.Location.X, me.Location.Y));
                 if (tileInPlay != null)
                 {
                     //MessageBox.Show(string.Format("Tile {0} at LT X: {1} , Y: {2}", tileInPlay.Character, me.Location.X, me.Location.Y));
@@ -105,9 +105,9 @@ namespace RPGTileMapCreator
         {
             CanvasTile foundTile = null;
 
-            return foundTile = canvasTiles.Find(t => t.TopLeftPoint.X <= x 
-                && t.BottomRightPoint.X > x 
-                && t.TopLeftPoint.Y <= y 
+            return foundTile = canvasTiles.Find(t => t.TopLeftPoint.X <= x
+                && t.BottomRightPoint.X > x
+                && t.TopLeftPoint.Y <= y
                 && t.BottomRightPoint.Y > y);
         }
 
@@ -120,20 +120,20 @@ namespace RPGTileMapCreator
                 pb.tile.Tag = letter.Text;
             }
             // Can only be one
-          /*  if (tileSets.Count(p => p.letter == letter) > 1)
-            {
-                DialogResult dialogResult = MessageBox.Show("This character assignment already exists.", "Character Already Used", MessageBoxButtons.OK);
-                pb.letter.Text = "";
-                pb.tile.Tag = null;
-            }*/
+            /*  if (tileSets.Count(p => p.letter == letter) > 1)
+              {
+                  DialogResult dialogResult = MessageBox.Show("This character assignment already exists.", "Character Already Used", MessageBoxButtons.OK);
+                  pb.letter.Text = "";
+                  pb.tile.Tag = null;
+              }*/
 
             if (String.IsNullOrEmpty(letter.Text))
             {
-              DialogResult dialogResult = MessageBox.Show("There is no character for this tile. If you leave it blank, these tiles will be removed from canvas. Proceed?", "You Goofed!", MessageBoxButtons.YesNo);
-               
+                DialogResult dialogResult = MessageBox.Show("There is no character for this tile. If you leave it blank, these tiles will be removed from canvas. Proceed?", "You Goofed!", MessageBoxButtons.YesNo);
+
                 if (dialogResult == DialogResult.Yes)
                 {
-                    foreach(PictureBox p in Canvas_Panel.Controls.OfType<PictureBox>())
+                    foreach (PictureBox p in Canvas_Panel.Controls.OfType<PictureBox>())
                     {
                         if (p.Image == pb.tile.Image)
                         {
@@ -147,7 +147,7 @@ namespace RPGTileMapCreator
                 }
                 else
                 {
-                    letter.Focus(); 
+                    letter.Focus();
                 }
             }
         }
@@ -208,7 +208,7 @@ namespace RPGTileMapCreator
             PictureBox p = (PictureBox)sender;
             p.BorderStyle = BorderStyle.FixedSingle;
         }
-        
+
         private void button1_Click(object sender, EventArgs e)
         {
 
@@ -283,10 +283,10 @@ namespace RPGTileMapCreator
         {
             List<PaletteDetails> palettes = new List<PaletteDetails>();
 
-           // foreach (PictureBox p in Panel_Palete.Controls.OfType<PictureBox>())
-           
+            // foreach (PictureBox p in Panel_Palete.Controls.OfType<PictureBox>())
+
             foreach (PictureBox p in tileSets.Select(ts => ts.tile).ToList())
-                {
+            {
                 palettes.Add(new PaletteDetails
                 {
                     fileName = p.Name,
@@ -296,7 +296,7 @@ namespace RPGTileMapCreator
             }
 
 
-         //   File.WriteAllText(@"c:\temp\tileset.json", JsonConvert.SerializeObject(palettes));
+            //   File.WriteAllText(@"c:\temp\tileset.json", JsonConvert.SerializeObject(palettes));
             using (StreamWriter file = File.CreateText(@"c:\temp\tileset.json"))
             {
                 JsonSerializer serializer = new JsonSerializer();
@@ -325,10 +325,10 @@ namespace RPGTileMapCreator
                     tileFolder = folderBrowserDialog1.SelectedPath;
                 }
             }
-          //  DialogResult result = folderBrowserDialog1.ShowDialog();
-         //   if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(folderBrowserDialog1.SelectedPath))
+            //  DialogResult result = folderBrowserDialog1.ShowDialog();
+            //   if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(folderBrowserDialog1.SelectedPath))
             {
-             //   DirectoryInfo DirInfo = new DirectoryInfo(@folderBrowserDialog1.SelectedPath);
+                //   DirectoryInfo DirInfo = new DirectoryInfo(@folderBrowserDialog1.SelectedPath);
                 DirectoryInfo DirInfo = new DirectoryInfo(tileFolder);
 
                 var tileImageFiles = from f in DirInfo.EnumerateFiles()
@@ -342,8 +342,8 @@ namespace RPGTileMapCreator
 
                     p.BackColor = Color.Ivory;
                     p.SizeMode = PictureBoxSizeMode.StretchImage;
-                   // p.Width = 51;
-                   // p.Height = 51;
+                    // p.Width = 51;
+                    // p.Height = 51;
 
                     t.MaxLength = 1;
                     t.Height = 23;
@@ -365,7 +365,7 @@ namespace RPGTileMapCreator
                     tileHeight = p.Height;
                     tileWidth = p.Width;
                     txtMapName.Text = tileWidth.ToString();
-                    
+
                     p.Click += new EventHandler(PaletteBox_Click);
                     Panel_Palete.Controls.Add(p);
 
@@ -390,7 +390,7 @@ namespace RPGTileMapCreator
                 txtMapCharacter.Top = 0;
                 Canvas_Panel.Controls.Add(txtMapCharacter);
 
-                txtMapName.Focus(); 
+                txtMapName.Focus();
 
             }
         }
@@ -414,8 +414,8 @@ namespace RPGTileMapCreator
                 }
             }
             // if (openTileFolderDialog.ShowDialog() == DialogResult.OK)
-            {               
-              //  var tileSetJson = JsonConvert.DeserializeObject<Root>(File.ReadAllText(@openTileFolderDialog.FileName));
+            {
+                //  var tileSetJson = JsonConvert.DeserializeObject<Root>(File.ReadAllText(@openTileFolderDialog.FileName));
                 var tileSetJson = JsonConvert.DeserializeObject<Root>(File.ReadAllText(tileSetPath));
 
                 // iterate through the tile list for those files and build tile selection pane
@@ -503,7 +503,7 @@ namespace RPGTileMapCreator
                                 Width = tileWidth,
                                 Height = tileHeight,
                                 TileImage = (s == ' ' || s == '?') ? new Bitmap(defaultTileSet.tile.Image) : sourceBmp,
-                                Character = (s == ' ' || s == '?') ? defaultTileSet.letter.Text.Substring(0,1) : s.ToString()
+                                Character = (s == ' ' || s == '?') ? defaultTileSet.letter.Text.Substring(0, 1) : s.ToString()
                             };
 
                             canvasTiles.Add(canvasTile);
@@ -577,7 +577,7 @@ namespace RPGTileMapCreator
                         }
 
                         file.WriteLine(rowString + Environment.NewLine);
-                       // MessageBox.Show(rowString);
+                        // MessageBox.Show(rowString);
                     }
                     // Open Save Dialog - only txt files
 
@@ -617,13 +617,10 @@ namespace RPGTileMapCreator
             Canvas_Panel.Refresh();
         }
 
-
-        private void button4_Click(object sender, EventArgs e)
+        private void btnNewMap_Click(object sender, EventArgs e)
         {
-            string line;
             int x = 0;
             int y = 0;
-            Bitmap sourceBmp = null;
             CanvasTile canvasTile = null;
 
             // Save As dialog box   
@@ -636,46 +633,31 @@ namespace RPGTileMapCreator
                 {
                     canvasTiles.Clear();
                     // Saves a 1 x 1 with default Tile
-                    file.Write(".");
+                    file.Write("?");
                     file.Close();
                 }
-                using (StreamReader file = new System.IO.StreamReader(@fileName))
+
+                //Add single tile to CanvasTiles
+
+                //Paint it
+                canvasTiles.Clear();
+                rows++;
+                columns++;
+
+                canvasTile = new CanvasTile
                 {
-                    canvasTiles.Clear();
-                    while ((line = file.ReadLine()) != null)
-                    {
-                        rows++;
-                        columns = 0;
-                        progressBar1.Value = rows;
-                        // read each character in the line
-                        foreach (char s in line)
-                        {
-                            progressBar1.Value = rows;
-                            var selectedTileSet = tileSets.Find(t => t.letter.Text == s.ToString());
-                            columns++;
-                            if (selectedTileSet != null)
-                                sourceBmp = new Bitmap(selectedTileSet.tile.Image);
+                    Row = rows,
+                    Col = columns,
+                    TopLeftPoint = new Point(x, y),
+                    BottomRightPoint = new Point(x + 51, y + 51),
+                    Width = tileWidth,
+                    Height = tileHeight,
+                    TileImage = defaultTileSet.tile.Image,
+                    Character = defaultTileSet.letter.Text.Substring(0, 1)
+                };
 
-                            x = columns * tileWidth - tileWidth;
-                            y = rows * tileHeight - tileHeight;
+                canvasTiles.Add(canvasTile);
 
-                            canvasTile = new CanvasTile
-                            {
-                                Row = rows,
-                                Col = columns,
-                                TopLeftPoint = new Point(x, y),
-                                BottomRightPoint = new Point(x + 51, y + 51),
-                                Width = tileWidth,
-                                Height = tileHeight,
-                                TileImage = sourceBmp,
-                                Character = s != ' ' ? s.ToString() : defaultTileSet.letter.Text.Substring(0, 1)
-                            };
-
-                            canvasTiles.Add(canvasTile);
-                        }
-                    }
-                    file.Close();
-                }
                 if (Canvas_Panel.Visible != true)
                 {
                     Canvas_Panel.Visible = true;
@@ -683,11 +665,11 @@ namespace RPGTileMapCreator
 
                 Canvas_Panel.Width = columns * tileWidth;
                 Canvas_Panel.Height = rows * tileHeight;
-
-                progressBar1.Visible = false;
-                Canvas_Panel.Refresh();
             }
+
+            Canvas_Panel.Refresh();
         }
+
 
         private void btnAddColumnRight_Click(object sender, EventArgs e)
         {
@@ -889,8 +871,8 @@ namespace RPGTileMapCreator
                     // remove those tiles in canvasTiles that are in tilesToRemove
                     canvasTiles.RemoveAll(x => tilesToRemove.Contains(x));
                 }
+                Canvas_Panel.Refresh();
             }
-            Canvas_Panel.Refresh();
 
         }
 
@@ -969,6 +951,11 @@ namespace RPGTileMapCreator
                 }
             }
             Canvas_Panel.Refresh();
+        }
+
+        private void Form_Map_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
