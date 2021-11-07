@@ -57,6 +57,7 @@ namespace RPGTileMapCreator
             this.lblFavouriteTileSet = new System.Windows.Forms.Label();
             this.lblFavouriteTilesFolder = new System.Windows.Forms.Label();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.button1 = new System.Windows.Forms.Button();
             this.Canvas_Panel.SuspendLayout();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -76,7 +77,7 @@ namespace RPGTileMapCreator
             this.txtMapName.Location = new System.Drawing.Point(593, 5);
             this.txtMapName.MaxLength = 200;
             this.txtMapName.Name = "txtMapName";
-            this.txtMapName.Size = new System.Drawing.Size(197, 23);
+            this.txtMapName.Size = new System.Drawing.Size(203, 23);
             this.txtMapName.TabIndex = 1;
             // 
             // btnSaveMap
@@ -142,9 +143,9 @@ namespace RPGTileMapCreator
             // button2
             // 
             this.button2.BackColor = System.Drawing.Color.White;
-            this.button2.Location = new System.Drawing.Point(0, 29);
+            this.button2.Location = new System.Drawing.Point(699, 29);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(100, 23);
+            this.button2.Size = new System.Drawing.Size(97, 23);
             this.button2.TabIndex = 14;
             this.button2.Text = "Clear Tiles";
             this.button2.UseVisualStyleBackColor = false;
@@ -266,7 +267,7 @@ namespace RPGTileMapCreator
             // btnNewMap
             // 
             this.btnNewMap.BackColor = System.Drawing.Color.OrangeRed;
-            this.btnNewMap.Location = new System.Drawing.Point(699, 29);
+            this.btnNewMap.Location = new System.Drawing.Point(0, 29);
             this.btnNewMap.Name = "btnNewMap";
             this.btnNewMap.Size = new System.Drawing.Size(100, 23);
             this.btnNewMap.TabIndex = 27;
@@ -326,12 +327,24 @@ namespace RPGTileMapCreator
             this.lblFavouriteTilesFolder.TabIndex = 17;
             this.lblFavouriteTilesFolder.Text = "lblFavouriteTilesFolder";
             // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.Color.RosyBrown;
+            this.button1.Location = new System.Drawing.Point(366, 29);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(100, 23);
+            this.button1.TabIndex = 29;
+            this.button1.Text = "Update Canvas";
+            this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click_1);
+            // 
             // Form_Map
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.ClientSize = new System.Drawing.Size(1164, 580);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btnNewMap);
             this.Controls.Add(this.progressBar1);
@@ -393,6 +406,7 @@ namespace RPGTileMapCreator
         private System.Windows.Forms.Label lblFavouriteTileSet;
         private System.Windows.Forms.Label lblFavouriteTilesFolder;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
+        private System.Windows.Forms.Button button1;
     }
 }
 

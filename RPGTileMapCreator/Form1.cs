@@ -313,18 +313,18 @@ namespace RPGTileMapCreator
             tileSets = new List<PaletteObject>();
             string tileFolder = "";
 
-            if (lblFavouriteTilesFolder.Text.Length > 0)
-            {
-                tileFolder = lblFavouriteTilesFolder.Text;
-            }
-            else
-            {
+            //if (lblFavouriteTilesFolder.Text.Length > 0)
+            //{
+            //    tileFolder = lblFavouriteTilesFolder.Text;
+            //}
+            //else
+            //{
                 DialogResult result = folderBrowserDialog1.ShowDialog();
                 if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(folderBrowserDialog1.SelectedPath))
                 {
                     tileFolder = folderBrowserDialog1.SelectedPath;
                 }
-            }
+         //   }
             //  DialogResult result = folderBrowserDialog1.ShowDialog();
             //   if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(folderBrowserDialog1.SelectedPath))
             {
@@ -402,20 +402,18 @@ namespace RPGTileMapCreator
             //  tileSets = new List<PaletteObject>();
             string tileSetPath = "";
 
-            if (lblFavouriteTileSet.Text.Length > 0)
-            {
-                tileSetPath = lblFavouriteTileSet.Text;
-            }
-            else
-            {
+            //if (lblFavouriteTileSet.Text.Length > 0)
+            //{
+            //    tileSetPath = lblFavouriteTileSet.Text;
+            //}
+            //else
+            //{
                 if (openTileFolderDialog.ShowDialog() == DialogResult.OK)
                 {
                     tileSetPath = @openTileFolderDialog.FileName;
                 }
-            }
-            // if (openTileFolderDialog.ShowDialog() == DialogResult.OK)
-            {
-                //  var tileSetJson = JsonConvert.DeserializeObject<Root>(File.ReadAllText(@openTileFolderDialog.FileName));
+          //  }
+            
                 var tileSetJson = JsonConvert.DeserializeObject<Root>(File.ReadAllText(tileSetPath));
 
                 // iterate through the tile list for those files and build tile selection pane
@@ -435,14 +433,7 @@ namespace RPGTileMapCreator
                     }
                     // search for tile and update letter
                 }
-            }
-
-            //if (tileSets.Count > 0)
-            //{
-            //    defaultTileSet = tileSets.First(ts => ts.letter.Text.Length > 0);
-            //   // defaultTileSet = tileSets[0];
-            //}
-            //   Canvas_Panel.Visible = true;
+            
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -472,7 +463,6 @@ namespace RPGTileMapCreator
 
                 progressBar1.Visible = true;
                 progressBar1.Maximum = lineCount;
-                //  canvasTiles = new List<CanvasTile>();
 
                 using (StreamReader file = new System.IO.StreamReader(@fileName))
                 {
@@ -494,23 +484,44 @@ namespace RPGTileMapCreator
                             x = columns * tileWidth - tileWidth;
                             y = rows * tileHeight - tileHeight;
 
-                            canvasTile = new CanvasTile
+                            if (tileSets.Exists(t => t.letter.Text == s.ToString()))
                             {
-                                Row = rows,
-                                Col = columns,
-                                TopLeftPoint = new Point(x, y),
-                                BottomRightPoint = new Point(x + 51, y + 51),
-                                Width = tileWidth,
-                                Height = tileHeight,
-                                TileImage = (s == ' ' || s == '?') ? new Bitmap(defaultTileSet.tile.Image) : sourceBmp,
-                                Character = (s == ' ' || s == '?') ? defaultTileSet.letter.Text.Substring(0, 1) : s.ToString()
-                            };
 
-                            canvasTiles.Add(canvasTile);
+                                canvasTile = new CanvasTile
+                                {
+                                    Row = rows,
+                                    Col = columns,
+                                    TopLeftPoint = new Point(x, y),
+                                    BottomRightPoint = new Point(x + 51, y + 51),
+                                    Width = tileWidth,
+                                    Height = tileHeight,
+                                    TileImage = (s == ' ' || s == '?') ? new Bitmap(defaultTileSet.tile.Image) : sourceBmp,
+                                    Character = (s == ' ' || s == '?') ? defaultTileSet.letter.Text.Substring(0, 1) : s.ToString()
+                                };
+
+                                canvasTiles.Add(canvasTile);
+                            }
+                            else
+                            {
+                                canvasTile = new CanvasTile
+                                {
+                                    Row = rows,
+                                    Col = columns,
+                                    TopLeftPoint = new Point(x, y),
+                                    BottomRightPoint = new Point(x + 51, y + 51),
+                                    Width = tileWidth,
+                                    Height = tileHeight,
+                                    TileImage = new Bitmap(defaultTileSet.tile.Image),
+                                    Character = (s == ' ' || s == '?') ? defaultTileSet.letter.Text.Substring(0, 1) : s.ToString()
+                                };
+
+                                canvasTiles.Add(canvasTile);
+                            }
                         }
                     }
                     file.Close();
                 }
+
                 if (Canvas_Panel.Visible != true)
                 {
                     Canvas_Panel.Visible = true;
@@ -534,6 +545,10 @@ namespace RPGTileMapCreator
             {
                 foreach (CanvasTile c in canvasTiles)
                 {
+                    if (c.Character == "x")
+                    {
+                        loc = c.TopLeftPoint;
+                    }
                     loc = c.TopLeftPoint;
                     rect = new Rectangle(loc, new Size(c.Width, c.Height));
                     e.Graphics.DrawImage(c.TileImage, rect, 0, 0, c.Width, c.Height, GraphicsUnit.Pixel);
@@ -573,25 +588,14 @@ namespace RPGTileMapCreator
                         rowString = "";
                         foreach (CanvasTile ct in rowOfTiles)
                         {   // need default
-                            rowString += ct.Character != null ? ct.Character : ".";
+                            rowString += ct.Character != null ? ct.Character : "?";
                         }
 
                         file.WriteLine(rowString + Environment.NewLine);
-                        // MessageBox.Show(rowString);
                     }
-                    // Open Save Dialog - only txt files
-
-                    // Get Folder and Filename choosen
-
-
-
-
-                    // iterate through collection, row by row, building file
-
-
-
-                    // nulls = space
                 }
+
+                file.Close();
             }
         }
 
@@ -956,6 +960,31 @@ namespace RPGTileMapCreator
         private void Form_Map_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            progressBar1.Visible = true;
+            progressBar1.Maximum = tileSets.Count;
+            progressBar1.Value = 0;
+
+            foreach (var ts in tileSets)
+            {
+                progressBar1.Value++;
+
+                foreach (var ct in canvasTiles.FindAll(ct => ct.Character == ts.letter.Text))
+                {
+                    ct.TileImage = ts.tile.Image;
+                }
+            }
+
+            if (Canvas_Panel.Visible != true)
+            {
+                Canvas_Panel.Visible = true;
+            }
+
+            progressBar1.Visible = false;
+            Canvas_Panel.Refresh();
         }
     }
 }
