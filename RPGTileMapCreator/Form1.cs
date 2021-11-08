@@ -383,8 +383,24 @@ namespace RPGTileMapCreator
                     tileSets.Add(new PaletteObject(p, t));
                 }
 
+                btnNewMap.Visible = true;
+                btnLoadTileSet.Visible = true;
+                btnSaveTileSet.Visible = true;
+                button2.Visible = true; // clear tiles
+                btnLoadMap.Visible = false;
+                btnSaveMap.Visible = false;
+                button1.Visible = false;  // clear map
+                btnWipeCanvas.Visible = false;
+                button3.Visible = false; // reset tileset
+                btnAddColumnLeft.Visible = false; 
+                btnAddColumnRight.Visible = false;
+                btnAddRowBottom.Visible = false;
+                btnAddRowTop.Visible = false;
+                rbAdd.Visible = false;
+                rbDelete.Visible = false;
+                chkCopyMapFile.Visible = false;
 
-
+                lblFavouriteTilesFolder.Visible = true;
                 txtMapCharacter.Visible = false;
                 txtMapCharacter.Left = 0;
                 txtMapCharacter.Top = 0;
@@ -433,7 +449,25 @@ namespace RPGTileMapCreator
                     }
                     // search for tile and update letter
                 }
-            
+
+            btnNewMap.Visible = true;
+            btnLoadTileSet.Visible = true;
+            btnSaveTileSet.Visible = true;
+            button2.Visible = true; // clear tiles
+            btnLoadMap.Visible = true;
+            btnSaveMap.Visible = false;
+            button1.Visible = false;  // clear map
+            btnWipeCanvas.Visible = false;
+            button3.Visible = true; // reset tileset
+            btnAddColumnLeft.Visible = false;
+            btnAddColumnRight.Visible = false;
+            btnAddRowBottom.Visible = false;
+            btnAddRowTop.Visible = false;
+            rbAdd.Visible = false;
+            rbDelete.Visible = false;
+            chkCopyMapFile.Visible = false;
+            lblFavouriteTileSet.Visible = true;
+
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -456,13 +490,17 @@ namespace RPGTileMapCreator
 
             if (openMapFileDialog.ShowDialog() == DialogResult.OK)
             {
-                //var fileName = openMapFileDialog.FileName;
-                var fileName = @"c:\temp\lancer.txt";
+                var fileName = openMapFileDialog.FileName;
                 var lineCount = File.ReadLines(@fileName).Count();
                 txtMapName.Text = openMapFileDialog.FileName;
 
                 progressBar1.Visible = true;
                 progressBar1.Maximum = lineCount;
+
+                if (tileSets == null)
+                {
+                    tileSets = new List<PaletteObject>();
+                }
 
                 using (StreamReader file = new System.IO.StreamReader(@fileName))
                 {
@@ -533,6 +571,24 @@ namespace RPGTileMapCreator
                 progressBar1.Visible = false;
                 Canvas_Panel.Refresh();
             }
+
+            btnNewMap.Visible = true;
+            btnLoadTileSet.Visible = true;
+            btnSaveTileSet.Visible = true;
+            button2.Visible = true; // clear tiles
+            btnLoadMap.Visible = true;
+            btnSaveMap.Visible = true;
+            button1.Visible = true;  // clear map
+            btnWipeCanvas.Visible = true;
+            button3.Visible = true; // reset tileset
+            btnAddColumnLeft.Visible = true;
+            btnAddColumnRight.Visible = true;
+            btnAddRowBottom.Visible = true;
+            btnAddRowTop.Visible = true;
+            rbAdd.Visible = true;
+            rbDelete.Visible = true;
+            chkCopyMapFile.Visible = true;
+            txtMapName.Visible = true;
         }
 
 
@@ -572,7 +628,22 @@ namespace RPGTileMapCreator
         {
             // List<CanvasTile> rowOfTiles = new List<CanvasTile>();
             string rowString = "";
-            var fileName = txtMapName.Text + DateTime.Now.ToString("yyyyMMddHHmmssFFF") + ".txt";
+            string fileName = txtMapName.Text;
+
+            if (!chkCopyMapFile.Checked)
+            {
+                var result = MessageBox.Show("Do you want to save over your map file?", "Save Over Map File", MessageBoxButtons.YesNo);
+
+                if (result != DialogResult.Yes)
+                {
+                    return;
+                }
+            }
+            else
+            {
+                string path = Path.GetFullPath(fileName);
+                fileName = path.Substring(0, fileName.Length - 4) + DateTime.Now.ToString("yyyyMMddHHmmssFFF") + ".txt";
+            }
 
             using (StreamWriter file = new System.IO.StreamWriter(@fileName))
             {
@@ -672,6 +743,23 @@ namespace RPGTileMapCreator
             }
 
             Canvas_Panel.Refresh();
+
+            btnLoadTiles.Visible = true;
+            btnLoadTileSet.Visible = false;
+            btnSaveTileSet.Visible = false;
+            button2.Visible = true; // clear tiles
+            btnLoadMap.Visible = true;
+            btnSaveMap.Visible = true;
+            button1.Visible = false;  // clear map
+            btnWipeCanvas.Visible = false;
+            button3.Visible = false; // reset tileset
+            btnAddColumnLeft.Visible = true;
+            btnAddColumnRight.Visible = true;
+            btnAddRowBottom.Visible = true;
+            btnAddRowTop.Visible = true;
+            rbAdd.Visible = true;
+            rbDelete.Visible = true;
+            chkCopyMapFile.Visible = true;
         }
 
 

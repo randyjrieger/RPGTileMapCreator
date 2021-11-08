@@ -58,6 +58,8 @@ namespace RPGTileMapCreator
             this.lblFavouriteTilesFolder = new System.Windows.Forms.Label();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.button1 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
+            this.chkCopyMapFile = new System.Windows.Forms.CheckBox();
             this.Canvas_Panel.SuspendLayout();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -79,6 +81,7 @@ namespace RPGTileMapCreator
             this.txtMapName.Name = "txtMapName";
             this.txtMapName.Size = new System.Drawing.Size(203, 23);
             this.txtMapName.TabIndex = 1;
+            this.txtMapName.Visible = false;
             // 
             // btnSaveMap
             // 
@@ -89,6 +92,7 @@ namespace RPGTileMapCreator
             this.btnSaveMap.TabIndex = 2;
             this.btnSaveMap.Text = "Save Map";
             this.btnSaveMap.UseVisualStyleBackColor = false;
+            this.btnSaveMap.Visible = false;
             this.btnSaveMap.Click += new System.EventHandler(this.btnSaveMap_Click);
             // 
             // btnSaveTileSet
@@ -100,6 +104,7 @@ namespace RPGTileMapCreator
             this.btnSaveTileSet.TabIndex = 4;
             this.btnSaveTileSet.Text = "Save Tile Set";
             this.btnSaveTileSet.UseVisualStyleBackColor = false;
+            this.btnSaveTileSet.Visible = false;
             this.btnSaveTileSet.Click += new System.EventHandler(this.btnSaveTileSet_Click);
             // 
             // btnLoadMap
@@ -111,6 +116,7 @@ namespace RPGTileMapCreator
             this.btnLoadMap.TabIndex = 5;
             this.btnLoadMap.Text = "Load Map";
             this.btnLoadMap.UseVisualStyleBackColor = false;
+            this.btnLoadMap.Visible = false;
             this.btnLoadMap.Click += new System.EventHandler(this.btnLoadMap_Click);
             // 
             // btnLoadTileSet
@@ -123,6 +129,7 @@ namespace RPGTileMapCreator
             this.btnLoadTileSet.TabIndex = 12;
             this.btnLoadTileSet.Text = "Load Tile Set";
             this.btnLoadTileSet.UseVisualStyleBackColor = false;
+            this.btnLoadTileSet.Visible = false;
             this.btnLoadTileSet.Click += new System.EventHandler(this.btnLoadTileSet_Click);
             // 
             // btnLoadTiles
@@ -143,12 +150,13 @@ namespace RPGTileMapCreator
             // button2
             // 
             this.button2.BackColor = System.Drawing.Color.White;
-            this.button2.Location = new System.Drawing.Point(699, 29);
+            this.button2.Location = new System.Drawing.Point(106, 29);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(97, 23);
+            this.button2.Size = new System.Drawing.Size(100, 23);
             this.button2.TabIndex = 14;
             this.button2.Text = "Clear Tiles";
             this.button2.UseVisualStyleBackColor = false;
+            this.button2.Visible = false;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // progressBar1
@@ -215,6 +223,7 @@ namespace RPGTileMapCreator
             this.btnAddRowTop.TabIndex = 20;
             this.btnAddRowTop.Text = "Top Row";
             this.btnAddRowTop.UseVisualStyleBackColor = false;
+            this.btnAddRowTop.Visible = false;
             this.btnAddRowTop.Click += new System.EventHandler(this.btnAddRowTop_Click);
             // 
             // btnAddColumnRight
@@ -227,6 +236,7 @@ namespace RPGTileMapCreator
             this.btnAddColumnRight.TabIndex = 21;
             this.btnAddColumnRight.Text = "Right Column";
             this.btnAddColumnRight.UseVisualStyleBackColor = false;
+            this.btnAddColumnRight.Visible = false;
             this.btnAddColumnRight.Click += new System.EventHandler(this.btnAddColumnRight_Click);
             // 
             // btnAddColumnLeft
@@ -239,6 +249,7 @@ namespace RPGTileMapCreator
             this.btnAddColumnLeft.TabIndex = 22;
             this.btnAddColumnLeft.Text = "Left Column";
             this.btnAddColumnLeft.UseVisualStyleBackColor = false;
+            this.btnAddColumnLeft.Visible = false;
             this.btnAddColumnLeft.Click += new System.EventHandler(this.btnAddColumnLeft_Click);
             // 
             // btnAddRowBottom
@@ -251,17 +262,19 @@ namespace RPGTileMapCreator
             this.btnAddRowBottom.TabIndex = 23;
             this.btnAddRowBottom.Text = "Bottom Row";
             this.btnAddRowBottom.UseVisualStyleBackColor = false;
+            this.btnAddRowBottom.Visible = false;
             this.btnAddRowBottom.Click += new System.EventHandler(this.btnAddRowBottom_Click);
             // 
             // btnWipeCanvas
             // 
             this.btnWipeCanvas.BackColor = System.Drawing.Color.White;
-            this.btnWipeCanvas.Location = new System.Drawing.Point(593, 29);
+            this.btnWipeCanvas.Location = new System.Drawing.Point(696, 29);
             this.btnWipeCanvas.Name = "btnWipeCanvas";
             this.btnWipeCanvas.Size = new System.Drawing.Size(100, 23);
             this.btnWipeCanvas.TabIndex = 26;
-            this.btnWipeCanvas.Text = "Wipe Canvas";
+            this.btnWipeCanvas.Text = "Clear Map";
             this.btnWipeCanvas.UseVisualStyleBackColor = false;
+            this.btnWipeCanvas.Visible = false;
             this.btnWipeCanvas.Click += new System.EventHandler(this.btnWipeCanvas_Click);
             // 
             // btnNewMap
@@ -283,7 +296,7 @@ namespace RPGTileMapCreator
             this.groupBox1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.groupBox1.Location = new System.Drawing.Point(872, 7);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(86, 51);
+            this.groupBox1.Size = new System.Drawing.Size(64, 51);
             this.groupBox1.TabIndex = 28;
             this.groupBox1.TabStop = false;
             // 
@@ -296,6 +309,7 @@ namespace RPGTileMapCreator
             this.rbDelete.TabIndex = 1;
             this.rbDelete.Text = "Delete";
             this.rbDelete.UseVisualStyleBackColor = true;
+            this.rbDelete.Visible = false;
             // 
             // rbAdd
             // 
@@ -308,6 +322,7 @@ namespace RPGTileMapCreator
             this.rbAdd.TabStop = true;
             this.rbAdd.Text = "Add";
             this.rbAdd.UseVisualStyleBackColor = true;
+            this.rbAdd.Visible = false;
             // 
             // lblFavouriteTileSet
             // 
@@ -317,6 +332,7 @@ namespace RPGTileMapCreator
             this.lblFavouriteTileSet.Size = new System.Drawing.Size(103, 15);
             this.lblFavouriteTileSet.TabIndex = 18;
             this.lblFavouriteTileSet.Text = "lblFavouriteTileSet";
+            this.lblFavouriteTileSet.Visible = false;
             // 
             // lblFavouriteTilesFolder
             // 
@@ -326,17 +342,43 @@ namespace RPGTileMapCreator
             this.lblFavouriteTilesFolder.Size = new System.Drawing.Size(125, 15);
             this.lblFavouriteTilesFolder.TabIndex = 17;
             this.lblFavouriteTilesFolder.Text = "lblFavouriteTilesFolder";
+            this.lblFavouriteTilesFolder.Visible = false;
             // 
             // button1
             // 
             this.button1.BackColor = System.Drawing.Color.RosyBrown;
-            this.button1.Location = new System.Drawing.Point(366, 29);
+            this.button1.Location = new System.Drawing.Point(593, 29);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(100, 23);
             this.button1.TabIndex = 29;
-            this.button1.Text = "Update Canvas";
+            this.button1.Text = "Update Map";
             this.button1.UseVisualStyleBackColor = false;
+            this.button1.Visible = false;
             this.button1.Click += new System.EventHandler(this.button1_Click_1);
+            // 
+            // button3
+            // 
+            this.button3.BackColor = System.Drawing.Color.White;
+            this.button3.Location = new System.Drawing.Point(363, 29);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(97, 23);
+            this.button3.TabIndex = 30;
+            this.button3.Text = "Reset Tile Set";
+            this.button3.UseVisualStyleBackColor = false;
+            this.button3.Visible = false;
+            // 
+            // chkCopyMapFile
+            // 
+            this.chkCopyMapFile.AutoSize = true;
+            this.chkCopyMapFile.Checked = true;
+            this.chkCopyMapFile.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkCopyMapFile.Location = new System.Drawing.Point(487, 53);
+            this.chkCopyMapFile.Name = "chkCopyMapFile";
+            this.chkCopyMapFile.Size = new System.Drawing.Size(231, 19);
+            this.chkCopyMapFile.TabIndex = 31;
+            this.chkCopyMapFile.Text = "Make New Copy With DateTime Stamp";
+            this.chkCopyMapFile.UseVisualStyleBackColor = true;
+            this.chkCopyMapFile.Visible = false;
             // 
             // Form_Map
             // 
@@ -344,6 +386,8 @@ namespace RPGTileMapCreator
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.ClientSize = new System.Drawing.Size(1164, 580);
+            this.Controls.Add(this.chkCopyMapFile);
+            this.Controls.Add(this.button3);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btnNewMap);
@@ -407,6 +451,8 @@ namespace RPGTileMapCreator
         private System.Windows.Forms.Label lblFavouriteTilesFolder;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.CheckBox chkCopyMapFile;
     }
 }
 

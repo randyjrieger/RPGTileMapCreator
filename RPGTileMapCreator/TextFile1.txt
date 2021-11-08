@@ -1,5 +1,0 @@
-﻿TODO
-
-if same file name (format) then only load first tile (water, lava, etc)
-palette box tag for ascii which transfers to picture boxes for file writing
-set up tags for palette boxes
