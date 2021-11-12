@@ -14,6 +14,16 @@ using System.Windows.Forms;
 
 namespace RPGTileMapCreator
 {
+    public enum ReadyState
+    {
+        None,
+        FormLoaded,
+        TilesLoaded,
+        TilesetLoaded,
+        MapLoaded,
+        NewMap
+    };
+
     // TODO browse for files
     // TODO '?' as CONST
     // TODO use tilewidth/height - not 51
@@ -27,6 +37,7 @@ namespace RPGTileMapCreator
         TextBox txtMapCharacter = new TextBox();
         List<PaletteObject> tileSets;
         List<CanvasTile> canvasTiles = new List<CanvasTile>();
+        ReadyState readyState = ReadyState.None;
 
         protected bool clearCanvasFlag = false;
         protected int tileWidth = 0;
@@ -34,19 +45,12 @@ namespace RPGTileMapCreator
         protected int rows = 0;
         protected int columns = 0;
 
+
+
         public Form_Map()
         {
-            TextBox t = new TextBox();
-            defaultTileSet = new PaletteObject();
-            defaultTileSet.letter = new TextBox();
-            defaultTileSet.letter.Text = "?";
-            defaultTileSet.tile = new PictureBox();
-            defaultTileSet.tile.Image = Resource1._default;
-
             InitializeComponent();
             Canvas_Panel.Width = 1000; Canvas_Panel.Height = 1000;
-            lblFavouriteTilesFolder.Text = @"c:\temp\tiles";
-            lblFavouriteTileSet.Text = @"c:\temp\lancer.json";
 
             typeof(Panel).InvokeMember("DoubleBuffered",
                 BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic,
@@ -63,6 +67,35 @@ namespace RPGTileMapCreator
                     CanvasPanel_Click(s, args, true, false);
                 }
             };
+
+            // set Default Tileset
+            defaultTileSet = new PaletteObject();
+            defaultTileSet.letter = txtDefaultChar;
+            defaultTileSet.tile = new PictureBox();
+            defaultTileSet.tile.Image = Resource1._default;
+
+            lblFavouriteTileSet.Text = "";
+            lblFavouriteTilesFolder.Text = "";
+
+            if( int.TryParse(txtW.Text, out int w))
+            {
+                tileWidth = w;
+            }
+            else
+            {
+                tileWidth = 51;
+                txtW.Text = "51";
+            }
+
+            if (int.TryParse(txtH.Text, out int h))
+            {
+                tileHeight = h;
+            }
+            else
+            {
+                tileHeight = 51;
+                txtH.Text = "51";
+            }
         }
 
         public void CanvasPanel_Click(object sender, EventArgs e, bool leftClick, bool rightClick)
@@ -266,15 +299,18 @@ namespace RPGTileMapCreator
         {
             TextBox activeTextBox = (TextBox)sender;
 
-            if (selectedTileSet.tile != null)
+            if (selectedTileSet != null)
             {
-                try
+                if (selectedTileSet.tile != null)
                 {
-                    selectedTileSet.tile.Tag = activeTextBox.Text;
-                }
-                catch (Exception ex)
-                {
+                    try
+                    {
+                        selectedTileSet.tile.Tag = activeTextBox.Text;
+                    }
+                    catch (Exception ex)
+                    {
 
+                    }
                 }
             }
         }
@@ -284,26 +320,41 @@ namespace RPGTileMapCreator
             List<PaletteDetails> palettes = new List<PaletteDetails>();
 
             // foreach (PictureBox p in Panel_Palete.Controls.OfType<PictureBox>())
+            var root = new Root();
+            root.tileSettings = new TileSettings();
+            root.tileSettings.tilesets = new List<Tileset>();
+            root.tileSettings.tileFilePath = "c:\\temp\\tileset";
 
             foreach (PictureBox p in tileSets.Select(ts => ts.tile).ToList())
             {
-                palettes.Add(new PaletteDetails
+                root.tileSettings.tilesets.Add(new Tileset
                 {
                     fileName = p.Name,
-                    filePath = p.ImageLocation,
                     character = p.Tag == null ? "" : p.Tag.ToString()
                 });
             }
-
-
-            //   File.WriteAllText(@"c:\temp\tileset.json", JsonConvert.SerializeObject(palettes));
-            using (StreamWriter file = File.CreateText(@"c:\temp\tileset.json"))
+            //TODO hardcoded path
+            //TODO save in proper format - see btnLoadTileSet
+            using (StreamWriter file = File.CreateText(@"c:\temp\tileset" + DateTime.Now.ToString("yyyyMMddHHmmssFFF") + ".json"))
             {
                 JsonSerializer serializer = new JsonSerializer();
-                serializer.Serialize(file, palettes);
+                serializer.Serialize(file, root);
             }
         }
 
+        private void btnResetTileSet_Click(object sender, EventArgs e)
+        {
+            foreach (PaletteObject ts in tileSets)
+            {
+                ts.letter.Text = "";
+            }
+
+            readyState = ReadyState.TilesLoaded;
+            UpdateFormState();
+
+            WipeCanvas();
+
+        }
         private void btnLoadTiles_Click(object sender, EventArgs e)
         {
             int row = 0;
@@ -313,13 +364,7 @@ namespace RPGTileMapCreator
             tileSets = new List<PaletteObject>();
             string tileFolder = "";
 
-            //if (lblFavouriteTilesFolder.Text.Length > 0)
-            //{
-            //    tileFolder = lblFavouriteTilesFolder.Text;
-            //}
-            //else
-            //{
-                DialogResult result = folderBrowserDialog1.ShowDialog();
+            DialogResult result = folderBrowserDialog1.ShowDialog();
                 if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(folderBrowserDialog1.SelectedPath))
                 {
                     tileFolder = folderBrowserDialog1.SelectedPath;
@@ -329,6 +374,8 @@ namespace RPGTileMapCreator
             //   if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(folderBrowserDialog1.SelectedPath))
             {
                 //   DirectoryInfo DirInfo = new DirectoryInfo(@folderBrowserDialog1.SelectedPath);
+
+                lblFavouriteTilesFolder.Text = tileFolder;
                 DirectoryInfo DirInfo = new DirectoryInfo(tileFolder);
 
                 var tileImageFiles = from f in DirInfo.EnumerateFiles()
@@ -342,14 +389,14 @@ namespace RPGTileMapCreator
 
                     p.BackColor = Color.Ivory;
                     p.SizeMode = PictureBoxSizeMode.StretchImage;
-                    // p.Width = 51;
-                    // p.Height = 51;
+                    p.Width = tileWidth;
+                    p.Height = tileHeight;
 
                     t.MaxLength = 1;
                     t.Height = 23;
 
-                    p.Left = col * 51;
-                    p.Top = row * 51 + row * t.Height;
+                    p.Left = col * tileWidth;
+                    p.Top = row * tileHeight + row * t.Height;
                     col++;
                     if (col == 9)
                     {
@@ -359,12 +406,12 @@ namespace RPGTileMapCreator
                     p.Name = Path.GetFileName(f.Name);
                     p.BorderStyle = BorderStyle.None;
                     p.Image = Image.FromFile(f.FullName);
-                    p.Width = p.Image.Width;
-                    p.Height = p.Image.Height;
+                  //  p.Width = p.Image.Width;
+                  //  p.Height = p.Image.Height;
 
-                    tileHeight = p.Height;
-                    tileWidth = p.Width;
-                    txtMapName.Text = tileWidth.ToString();
+                   // tileHeight = p.Height;
+                  //  tileWidth = p.Width;
+                   // txtMapName.Text = tileWidth.ToString();
 
                     p.Click += new EventHandler(PaletteBox_Click);
                     Panel_Palete.Controls.Add(p);
@@ -383,27 +430,8 @@ namespace RPGTileMapCreator
                     tileSets.Add(new PaletteObject(p, t));
                 }
 
-                btnNewMap.Visible = true;
-                btnLoadTileSet.Visible = true;
-                btnSaveTileSet.Visible = true;
-                button2.Visible = true; // clear tiles
-                btnLoadMap.Visible = false;
-                btnSaveMap.Visible = false;
-                button1.Visible = false;  // clear map
-                btnWipeCanvas.Visible = false;
-                button3.Visible = false; // reset tileset
-                btnAddColumnLeft.Visible = false; 
-                btnAddColumnRight.Visible = false;
-                btnAddRowBottom.Visible = false;
-                btnAddRowTop.Visible = false;
-                rbAdd.Visible = false;
-                rbDelete.Visible = false;
-                chkCopyMapFile.Visible = false;
-
-                lblFavouriteTilesFolder.Visible = true;
-                txtMapCharacter.Visible = false;
-                txtMapCharacter.Left = 0;
-                txtMapCharacter.Top = 0;
+                readyState = ReadyState.TilesLoaded;
+                UpdateFormState();
                 Canvas_Panel.Controls.Add(txtMapCharacter);
 
                 txtMapName.Focus();
@@ -424,12 +452,12 @@ namespace RPGTileMapCreator
             //}
             //else
             //{
-                if (openTileFolderDialog.ShowDialog() == DialogResult.OK)
+            if (openTileFolderDialog.ShowDialog() == DialogResult.OK)
                 {
                     tileSetPath = @openTileFolderDialog.FileName;
                 }
-          //  }
-            
+            //  }
+            lblFavouriteTileSet.Text = tileSetPath;
                 var tileSetJson = JsonConvert.DeserializeObject<Root>(File.ReadAllText(tileSetPath));
 
                 // iterate through the tile list for those files and build tile selection pane
@@ -450,23 +478,8 @@ namespace RPGTileMapCreator
                     // search for tile and update letter
                 }
 
-            btnNewMap.Visible = true;
-            btnLoadTileSet.Visible = true;
-            btnSaveTileSet.Visible = true;
-            button2.Visible = true; // clear tiles
-            btnLoadMap.Visible = true;
-            btnSaveMap.Visible = false;
-            button1.Visible = false;  // clear map
-            btnWipeCanvas.Visible = false;
-            button3.Visible = true; // reset tileset
-            btnAddColumnLeft.Visible = false;
-            btnAddColumnRight.Visible = false;
-            btnAddRowBottom.Visible = false;
-            btnAddRowTop.Visible = false;
-            rbAdd.Visible = false;
-            rbDelete.Visible = false;
-            chkCopyMapFile.Visible = false;
-            lblFavouriteTileSet.Visible = true;
+            readyState = ReadyState.TilesetLoaded;
+            UpdateFormState();
 
         }
 
@@ -477,10 +490,17 @@ namespace RPGTileMapCreator
                 Panel_Palete.Controls.Remove(po.tile);
                 Panel_Palete.Controls.Remove(po.letter);
             }
+
+            readyState = ReadyState.FormLoaded;
+            UpdateFormState();
+            WipeCanvas();
+
             tileSets.Clear();
+            readyState = ReadyState.FormLoaded;
+            UpdateFormState();
         }
 
-        private void btnLoadMap_Click(object sender, EventArgs e)
+        private void LoadMap(string fileName)
         {
             int x = 0;
             int y = 0;
@@ -488,107 +508,103 @@ namespace RPGTileMapCreator
             Bitmap sourceBmp = null;
             CanvasTile canvasTile = null;
 
-            if (openMapFileDialog.ShowDialog() == DialogResult.OK)
+            var lineCount = File.ReadLines(@fileName).Count();
+            txtMapName.Text = openMapFileDialog.FileName;
+
+            progressBar1.Visible = true;
+            progressBar1.Maximum = lineCount;
+
+            if (tileSets == null)
             {
-                var fileName = openMapFileDialog.FileName;
-                var lineCount = File.ReadLines(@fileName).Count();
-                txtMapName.Text = openMapFileDialog.FileName;
-
-                progressBar1.Visible = true;
-                progressBar1.Maximum = lineCount;
-
-                if (tileSets == null)
-                {
-                    tileSets = new List<PaletteObject>();
-                }
-
-                using (StreamReader file = new System.IO.StreamReader(@fileName))
-                {
-                    canvasTiles.Clear();
-                    while ((line = file.ReadLine()) != null)
-                    {
-                        rows++;
-                        columns = 0;
-                        progressBar1.Value = rows;
-                        // read each character in the line
-                        foreach (char s in line)
-                        {
-                            progressBar1.Value = rows;
-                            var selectedTileSet = tileSets.Find(t => t.letter.Text == s.ToString());
-                            columns++;
-                            if (selectedTileSet != null)
-                                sourceBmp = new Bitmap(selectedTileSet.tile.Image);
-
-                            x = columns * tileWidth - tileWidth;
-                            y = rows * tileHeight - tileHeight;
-
-                            if (tileSets.Exists(t => t.letter.Text == s.ToString()))
-                            {
-
-                                canvasTile = new CanvasTile
-                                {
-                                    Row = rows,
-                                    Col = columns,
-                                    TopLeftPoint = new Point(x, y),
-                                    BottomRightPoint = new Point(x + 51, y + 51),
-                                    Width = tileWidth,
-                                    Height = tileHeight,
-                                    TileImage = (s == ' ' || s == '?') ? new Bitmap(defaultTileSet.tile.Image) : sourceBmp,
-                                    Character = (s == ' ' || s == '?') ? defaultTileSet.letter.Text.Substring(0, 1) : s.ToString()
-                                };
-
-                                canvasTiles.Add(canvasTile);
-                            }
-                            else
-                            {
-                                canvasTile = new CanvasTile
-                                {
-                                    Row = rows,
-                                    Col = columns,
-                                    TopLeftPoint = new Point(x, y),
-                                    BottomRightPoint = new Point(x + 51, y + 51),
-                                    Width = tileWidth,
-                                    Height = tileHeight,
-                                    TileImage = new Bitmap(defaultTileSet.tile.Image),
-                                    Character = (s == ' ' || s == '?') ? defaultTileSet.letter.Text.Substring(0, 1) : s.ToString()
-                                };
-
-                                canvasTiles.Add(canvasTile);
-                            }
-                        }
-                    }
-                    file.Close();
-                }
-
-                if (Canvas_Panel.Visible != true)
-                {
-                    Canvas_Panel.Visible = true;
-                }
-
-                Canvas_Panel.Width = columns * tileWidth;
-                Canvas_Panel.Height = rows * tileHeight;
-
-                progressBar1.Visible = false;
-                Canvas_Panel.Refresh();
+                tileSets = new List<PaletteObject>();
             }
 
-            btnNewMap.Visible = true;
-            btnLoadTileSet.Visible = true;
-            btnSaveTileSet.Visible = true;
-            button2.Visible = true; // clear tiles
-            btnLoadMap.Visible = true;
-            btnSaveMap.Visible = true;
-            button1.Visible = true;  // clear map
-            btnWipeCanvas.Visible = true;
-            button3.Visible = true; // reset tileset
-            btnAddColumnLeft.Visible = true;
-            btnAddColumnRight.Visible = true;
-            btnAddRowBottom.Visible = true;
-            btnAddRowTop.Visible = true;
-            rbAdd.Visible = true;
-            rbDelete.Visible = true;
-            chkCopyMapFile.Visible = true;
-            txtMapName.Visible = true;
+            using (StreamReader file = new System.IO.StreamReader(@fileName))
+            {
+                canvasTiles.Clear();
+                while ((line = file.ReadLine()) != null)
+                {
+                    rows++;
+                    columns = 0;
+                    progressBar1.Value = rows;
+                    // read each character in the line
+                    foreach (char s in line)
+                    {
+                        progressBar1.Value = rows;
+                        var selectedTileSet = tileSets.Find(t => t.letter.Text == s.ToString());
+                        columns++;
+                        if (selectedTileSet != null)
+                            sourceBmp = new Bitmap(selectedTileSet.tile.Image);
+                        else
+                            sourceBmp = new Bitmap(defaultTileSet.tile.Image);
+
+                        x = columns * tileWidth - tileWidth;
+                        y = rows * tileHeight - tileHeight;
+
+                        if (tileSets.Exists(t => t.letter.Text == s.ToString()))
+                        {
+
+                            canvasTile = new CanvasTile
+                            {
+                                Row = rows,
+                                Col = columns,
+                                TopLeftPoint = new Point(x, y),
+                                BottomRightPoint = new Point(x + tileWidth, y + tileHeight),
+                                Width = tileWidth,
+                                Height = tileHeight,
+                                TileImage = (s == ' ' || s.ToString() == defaultTileSet.letter.Text.Substring(0, 1)) ? new Bitmap(defaultTileSet.tile.Image) : sourceBmp,
+                                Character = (s == ' ' || s.ToString() == defaultTileSet.letter.Text.Substring(0, 1)) ? defaultTileSet.letter.Text.Substring(0, 1) : s.ToString()
+                            };
+
+                            canvasTiles.Add(canvasTile);
+                        }
+                        else
+                        {
+                            canvasTile = new CanvasTile
+                            {
+                                Row = rows,
+                                Col = columns,
+                                TopLeftPoint = new Point(x, y),
+                                BottomRightPoint = new Point(x + tileWidth, y + tileHeight),
+                                Width = tileWidth,
+                                Height = tileHeight,
+                                TileImage = new Bitmap(defaultTileSet.tile.Image),
+                                Character = (s == ' ' || s.ToString() == defaultTileSet.letter.Text.Substring(0, 1)) ? defaultTileSet.letter.Text.Substring(0, 1) : s.ToString()
+                            };
+
+                            canvasTiles.Add(canvasTile);
+                        }
+                    }
+                }
+                file.Close();
+            }
+
+            if (Canvas_Panel.Visible != true)
+            {
+                Canvas_Panel.Visible = true;
+            }
+
+            Canvas_Panel.Width = columns * tileWidth;
+            Canvas_Panel.Height = rows * tileHeight;
+
+            progressBar1.Visible = false;
+            Canvas_Panel.Refresh();
+        }
+
+        private void btnLoadMap_Click(object sender, EventArgs e)
+        {
+
+            if (openMapFileDialog.ShowDialog() == DialogResult.OK)
+            {
+
+                var fileName = openMapFileDialog.FileName;
+
+                LoadMap(fileName);
+
+                readyState = ReadyState.MapLoaded;
+                UpdateFormState();
+            }
+
         }
 
 
@@ -659,7 +675,7 @@ namespace RPGTileMapCreator
                         rowString = "";
                         foreach (CanvasTile ct in rowOfTiles)
                         {   // need default
-                            rowString += ct.Character != null ? ct.Character : "?";
+                            rowString += ct.Character != null ? ct.Character : txtDefaultChar.Text;
                         }
 
                         file.WriteLine(rowString + Environment.NewLine);
@@ -689,13 +705,14 @@ namespace RPGTileMapCreator
             columns = 0;
             Canvas_Panel.Visible = false;
             selectedTileSet = null;
+
+            readyState = ReadyState.FormLoaded;
+            UpdateFormState();
             Canvas_Panel.Refresh();
         }
 
         private void btnNewMap_Click(object sender, EventArgs e)
         {
-            int x = 0;
-            int y = 0;
             CanvasTile canvasTile = null;
 
             // Save As dialog box   
@@ -708,7 +725,7 @@ namespace RPGTileMapCreator
                 {
                     canvasTiles.Clear();
                     // Saves a 1 x 1 with default Tile
-                    file.Write("?");
+                    file.Write(defaultTileSet.letter.Text.Substring(0, 1));
                     file.Close();
                 }
 
@@ -716,50 +733,62 @@ namespace RPGTileMapCreator
 
                 //Paint it
                 canvasTiles.Clear();
-                rows++;
-                columns++;
-
-                canvasTile = new CanvasTile
+                rows = 0;
+                columns = 0;
+                
+                if (int.TryParse(txtW.Text, out int w))
                 {
-                    Row = rows,
-                    Col = columns,
-                    TopLeftPoint = new Point(x, y),
-                    BottomRightPoint = new Point(x + 51, y + 51),
-                    Width = tileWidth,
-                    Height = tileHeight,
-                    TileImage = defaultTileSet.tile.Image,
-                    Character = defaultTileSet.letter.Text.Substring(0, 1)
-                };
-
-                canvasTiles.Add(canvasTile);
-
-                if (Canvas_Panel.Visible != true)
+                    tileWidth = w;
+                }
+                else
                 {
-                    Canvas_Panel.Visible = true;
+                    tileWidth = 51;
+                    txtW.Text = "51";
                 }
 
-                Canvas_Panel.Width = columns * tileWidth;
-                Canvas_Panel.Height = rows * tileHeight;
+                if (int.TryParse(txtH.Text, out int h))
+                {
+                    tileHeight = h;
+                }
+                else
+                {
+                    tileHeight = 51;
+                    txtH.Text = "51";
+                }
+
+                LoadMap(fileName);
+
+
+                //    rows++;
+                //    columns++;
+
+                //    canvasTile = new CanvasTile
+                //    {
+                //        Row = rows,
+                //        Col = columns,
+                //        TopLeftPoint = new Point(x, y),
+                //        BottomRightPoint = new Point(x + 51, y + 51),
+                //        Width = tileWidth,
+                //        Height = tileHeight,
+                //        TileImage = defaultTileSet.tile.Image,
+                //        Character = defaultTileSet.letter.Text.Substring(0, 1)
+                //    };
+
+                //    canvasTiles.Add(canvasTile);
+
+                //    if (Canvas_Panel.Visible != true)
+                //    {
+                //        Canvas_Panel.Visible = true;
+                //    }
+
+                //    Canvas_Panel.Width = columns * tileWidth;
+                //    Canvas_Panel.Height = rows * tileHeight;
+                //}
+
+                //Canvas_Panel.Refresh();
+                readyState = ReadyState.NewMap;
+                UpdateFormState();
             }
-
-            Canvas_Panel.Refresh();
-
-            btnLoadTiles.Visible = true;
-            btnLoadTileSet.Visible = false;
-            btnSaveTileSet.Visible = false;
-            button2.Visible = true; // clear tiles
-            btnLoadMap.Visible = true;
-            btnSaveMap.Visible = true;
-            button1.Visible = false;  // clear map
-            btnWipeCanvas.Visible = false;
-            button3.Visible = false; // reset tileset
-            btnAddColumnLeft.Visible = true;
-            btnAddColumnRight.Visible = true;
-            btnAddRowBottom.Visible = true;
-            btnAddRowTop.Visible = true;
-            rbAdd.Visible = true;
-            rbDelete.Visible = true;
-            chkCopyMapFile.Visible = true;
         }
 
 
@@ -792,7 +821,7 @@ namespace RPGTileMapCreator
                             Width = tileWidth,
                             Height = tileHeight,
                             TopLeftPoint = new Point(x, y),
-                            BottomRightPoint = new Point(x + 51, y + 51),
+                            BottomRightPoint = new Point(x + tileWidth, y + tileHeight),
                         };
 
                         canvasTiles.Add(ct);
@@ -862,7 +891,7 @@ namespace RPGTileMapCreator
                             Width = tileWidth,
                             Height = tileHeight,
                             TopLeftPoint = new Point(x, y),
-                            BottomRightPoint = new Point(x + 51, y + 51),
+                            BottomRightPoint = new Point(x + tileWidth, y + tileHeight),
                         };
 
                         canvasTiles.Add(ct);
@@ -934,7 +963,7 @@ namespace RPGTileMapCreator
                             Width = tileWidth,
                             Height = tileHeight,
                             TopLeftPoint = new Point(x, y),
-                            BottomRightPoint = new Point(x + 51, y + 51),
+                            BottomRightPoint = new Point(x + tileWidth, y + tileHeight),
                         };
 
                         canvasTiles.Add(ct);
@@ -1005,7 +1034,7 @@ namespace RPGTileMapCreator
                             Width = tileWidth,
                             Height = tileHeight,
                             TopLeftPoint = new Point(x, y),
-                            BottomRightPoint = new Point(x + 51, y + 51),
+                            BottomRightPoint = new Point(x + tileWidth, y + tileHeight),
                         };
 
                         canvasTiles.Add(ct);
@@ -1047,7 +1076,6 @@ namespace RPGTileMapCreator
 
         private void Form_Map_Load(object sender, EventArgs e)
         {
-
         }
 
         private void button1_Click_1(object sender, EventArgs e)
@@ -1072,7 +1100,162 @@ namespace RPGTileMapCreator
             }
 
             progressBar1.Visible = false;
+
+            readyState = ReadyState.FormLoaded;
+            UpdateFormState();
             Canvas_Panel.Refresh();
         }
+
+        public void UpdateFormState()
+        {
+            switch (readyState)
+            {
+                case ReadyState.FormLoaded:
+                    btnNewMap.Visible = true;
+                    btnLoadTiles.Visible = true;
+                    lblFavouriteTilesFolder.Text = "";
+                    lblFavouriteTilesFolder.Visible = false;
+                    lblFavouriteTileSet.Text = "";
+                    btnLoadTileSet.Visible = false;
+                    btnSaveTileSet.Visible = false;
+                    lblFavouriteTileSet.Visible = false;
+                    button2.Visible = false; // clear tiles
+                    btnLoadMap.Visible = false;
+                    btnSaveMap.Visible = false;
+                    button1.Visible = false;  // clear map
+                    btnWipeCanvas.Visible = false;
+                    btnResetTileSet.Visible = false; // reset tileset
+                    btnAddColumnLeft.Visible = false;
+                    btnAddColumnRight.Visible = false;
+                    btnAddRowBottom.Visible = false;
+                    btnAddRowTop.Visible = false;
+                    rbAdd.Visible = false;
+                    rbDelete.Visible = false;
+                    chkCopyMapFile.Visible = false;
+                    txtMapName.Visible = false;
+                    break;
+
+            /*    case ReadyState.TilesLoaded:
+                    btnNewMap.Visible = true;
+                    btnLoadTiles.Visible = true;
+                    btnLoadTileSet.Visible = true;
+                    btnSaveTileSet.Visible = false;
+                    lblFavouriteTilesFolder.Visible = true;
+                    lblFavouriteTileSet.Text = "";
+                    button2.Visible = true; // clear tiles
+                    btnLoadMap.Visible = false;
+                    btnSaveMap.Visible = false;
+                    button1.Visible = false;  // clear map
+                    btnWipeCanvas.Visible = false;
+                    btnResetTileSet.Visible = false; // reset tileset
+                    btnAddColumnLeft.Visible = false;
+                    btnAddColumnRight.Visible = false;
+                    btnAddRowBottom.Visible = false;
+                    btnAddRowTop.Visible = false;
+                    rbAdd.Visible = false;
+                    rbDelete.Visible = false;
+                    chkCopyMapFile.Visible = false;
+                    txtMapCharacter.Visible = false;
+                    txtMapCharacter.Left = 0;
+                    txtMapCharacter.Top = 0;
+                    txtMapName.Visible = false;
+                    break;*/
+
+                case ReadyState.TilesetLoaded : case ReadyState.TilesLoaded:
+                    btnNewMap.Visible = true;
+                    btnLoadTiles.Visible = true;
+                    btnLoadTileSet.Visible = true;
+                    btnSaveTileSet.Visible = true;
+                    lblFavouriteTilesFolder.Visible = true;
+                    lblFavouriteTileSet.Visible = true;
+                    lblFavouriteTilesFolder.Text = "";
+                    button2.Visible = true; // clear tiles
+                    btnLoadMap.Visible = true;
+                    btnSaveMap.Visible = false;
+                    button1.Visible = false;  // clear map
+                    btnWipeCanvas.Visible = false;
+                    btnResetTileSet.Visible = true; // reset tileset
+                    btnAddColumnLeft.Visible = false;
+                    btnAddColumnRight.Visible = false;
+                    btnAddRowBottom.Visible = false;
+                    btnAddRowTop.Visible = false;
+                    rbAdd.Visible = false;
+                    rbDelete.Visible = false;
+                    chkCopyMapFile.Visible = false;
+                    txtMapName.Visible = false;
+                    break;
+
+                case ReadyState.MapLoaded:
+                    btnNewMap.Visible = true;
+                    btnLoadTiles.Visible = true;
+                    btnLoadTileSet.Visible = true;
+                    btnSaveTileSet.Visible = true;
+                    lblFavouriteTileSet.Visible = true;
+                    btnLoadMap.Visible = true;
+                    btnSaveMap.Visible = true;
+                    button1.Visible = true;  // clear map
+                    btnWipeCanvas.Visible = true;
+                    btnResetTileSet.Visible = true; // reset tileset
+                    btnAddColumnLeft.Visible = true;
+                    btnAddColumnRight.Visible = true;
+                    btnAddRowBottom.Visible = true;
+                    btnAddRowTop.Visible = true;
+                    rbAdd.Visible = true;
+                    rbDelete.Visible = true;
+                    chkCopyMapFile.Visible = true;
+                    txtMapName.Visible = true;
+                    break;
+
+                case ReadyState.NewMap:
+                    btnNewMap.Visible = true;
+                    btnLoadTiles.Visible = true;
+                    btnLoadTileSet.Visible = false;
+                    btnSaveTileSet.Visible = false;
+                    lblFavouriteTileSet.Visible = false;
+                    btnLoadMap.Visible = true;
+                    btnSaveMap.Visible = true;
+                    button1.Visible = true;  // clear map
+                    btnWipeCanvas.Visible = true;
+                    btnResetTileSet.Visible = false; // reset tileset
+                    btnAddColumnLeft.Visible = true;
+                    btnAddColumnRight.Visible = true;
+                    btnAddRowBottom.Visible = true;
+                    btnAddRowTop.Visible = true;
+                    rbAdd.Visible = true;
+                    rbDelete.Visible = true;
+                    chkCopyMapFile.Visible = true;
+                    txtMapName.Visible = true;
+                    break;
+
+                default:
+                    btnNewMap.Visible = true;
+                    btnLoadTiles.Visible = true;
+                    lblFavouriteTilesFolder.Text = "";
+                    lblFavouriteTilesFolder.Visible = false;
+                    lblFavouriteTileSet.Text = "";
+                    btnLoadTileSet.Visible = false;
+                    btnSaveTileSet.Visible = false;
+                    lblFavouriteTileSet.Visible = false;
+                    button2.Visible = false; // clear tiles
+                    btnLoadMap.Visible = false;
+                    btnSaveMap.Visible = false;
+                    button1.Visible = false;  // clear map
+                    btnWipeCanvas.Visible = false;
+                    btnResetTileSet.Visible = false; // reset tileset
+                    btnAddColumnLeft.Visible = false;
+                    btnAddColumnRight.Visible = false;
+                    btnAddRowBottom.Visible = false;
+                    btnAddRowTop.Visible = false;
+                    rbAdd.Visible = false;
+                    rbDelete.Visible = false;
+                    chkCopyMapFile.Visible = false;
+            lblFavouriteTilesFolder.Text = "";
+
+                    break;
+
+            }
+
+        }
+
     }
 }
