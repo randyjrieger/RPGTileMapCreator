@@ -19,3 +19,4 @@ C:\git\RPGTileMapCreator\RPGTileMapCreator\RPGTileMapCreator\obj\Debug\net5.0-wi
 C:\git\RPGTileMapCreator\RPGTileMapCreator\RPGTileMapCreator\obj\Debug\net5.0-windows\RPGTileMapCreator.pdb
 C:\git\RPGTileMapCreator\RPGTileMapCreator\RPGTileMapCreator\obj\Debug\net5.0-windows\RPGTileMapCreator.genruntimeconfig.cache
 C:\git\RPGTileMapCreator\RPGTileMapCreator\RPGTileMapCreator\obj\Debug\net5.0-windows\RPGTileMapCreator.csproj.AssemblyReference.cache
+C:\git\RPGTileMapCreator\RPGTileMapCreator\RPGTileMapCreator\obj\Debug\net5.0-windows\RPGTileMapCreator.NewProject.NewProject.resources
