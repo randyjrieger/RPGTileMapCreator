@@ -79,6 +79,8 @@ namespace RPGTileMapCreator
             pnlCanvasBase.AutoScroll = true;
 
             Resizer();
+
+            openMapFileDialog.Filter = "RPGTileMapCreator Project Files| *.rpg";
         }
 
         public void CanvasPanel_Click(object sender, EventArgs e, bool leftClick, bool rightClick)
@@ -477,7 +479,23 @@ namespace RPGTileMapCreator
             UpdateFormState();
         }
 
-        private void LoadMap(string fileName)
+        private void btnLoadMap_Click(object sender, EventArgs e)
+        {
+            string projectFile = "";
+
+            if (openMapFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                projectFile = openMapFileDialog.FileName;
+
+                LoadMap(projectFile);
+
+                // readyState = ReadyState.MapLoaded;
+                UpdateFormState();
+            }
+
+        }
+
+        private void LoadMap(string projectFile)
         {
             int x = 0;
             int y = 0;
@@ -485,8 +503,14 @@ namespace RPGTileMapCreator
             Bitmap sourceBmp = null;
             CanvasTile canvasTile = null;
 
-            var lineCount = File.ReadLines(@fileName).Count();
-            // txtMapName.Text = openMapFileDialog.FileName;
+            // open project file
+            string json = File.ReadAllText(projectFile);
+
+            // Deserialize JSON to object
+            var project = JsonConvert.DeserializeObject<ProjectFile>(json);
+
+
+            var lineCount = File.ReadLines(project.MapFile).Count();
 
             progressBar1.Visible = true;
             progressBar1.Maximum = lineCount;
@@ -496,7 +520,10 @@ namespace RPGTileMapCreator
                 tileSets = new List<PaletteObject>();
             }
 
-            using (StreamReader file = new System.IO.StreamReader(@fileName))
+
+            // read in map file
+
+            using (StreamReader file = new System.IO.StreamReader(project.MapFile))
             {
                 canvasTiles.Clear();
                 while ((line = file.ReadLine()) != null)
@@ -570,24 +597,6 @@ namespace RPGTileMapCreator
             progressBar1.Visible = false;
             Canvas_Panel.Refresh();
         }
-
-        private void btnLoadMap_Click(object sender, EventArgs e)
-        {
-
-            if (openMapFileDialog.ShowDialog() == DialogResult.OK)
-            {
-
-                var fileName = openMapFileDialog.FileName;
-                ProjectInfo.MapFilePath = fileName;
-
-                LoadMap(fileName);
-
-                // readyState = ReadyState.MapLoaded;
-                UpdateFormState();
-            }
-
-        }
-
 
         private void Canvas_Panel_Paint(object sender, PaintEventArgs e)
         {
