@@ -1,0 +1,118 @@
+# Visual Studio temporary files
+.vs/
+bin/
+obj/
+
+# Build results
+[Dd]ebug/
+[Rr]elease/
+
+# Visual Studio code coverage files
+*.coverage
+*.suo
+*.testsettings
+
+# MSTest test Results
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+
+# Resharper
+_resharper*/
+
+# NuGet
+packages/
+*.nupkg
+*.nupkg.sha512
+
+# User-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build results of an older app
+*_ReSharper.*
+
+# Roslyn cache directories
+*.ide/
+
+# StyleCop
+StyleCopReport.xml
+
+# NCrunch
+_NCrunch_*
+*.ncrunch*
+.*crunch*.local.xml
+
+# Installshield output folder
+[Ee]xpress/
+
+# JetBrains Rider
+.idea/
+*.sln.iml
+
+# CodeRush
+.cr/
+
+# Windows Azure build artifacts
+csx
+*.build.csdef
+
+# Build output
+[Bb]uild/
+
+# SQL Server files
+*.mdf
+*.ldf
+
+# Business Intelligence projects
+*.rdl.data
+*.bim.layout
+*.bim_*.settings
+*.rptproj.rsuser
+
+# Microsoft Fakes
+FakesAssemblies/
+
+# Click-Once manifests
+publish/
+
+# Log files
+*.log
+*.log.*
+
+# SQLite database files
+*.sqlite
+*.sqlite3
+*.db3
+
+# Microsoft Azure local development files
+AzureWebJobsDashboard
+AzureWebJobsStorage
+
+# Windows Service
+*.exe
+*.exe.config
+*.pdb
+*.dll
+*.installstate
+*.msi
+*.local.txt
+
+# RIA/Silverlight projects
+Generated_Code/
+
+# Miscellaneous
+[Tt]humbs.db
+*.dbmdl
+*.[Pp]ublish.xml
+*.publishproj
+*.publishsettings
+*.pubxml
+*.user
+
+# Exclude package lock file
+package-lock.json
+
+# Exclude .NET Core build/
+build/

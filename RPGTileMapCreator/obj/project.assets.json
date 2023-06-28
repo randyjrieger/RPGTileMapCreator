@@ -2,6 +2,15 @@
   "version": 3,
   "targets": {
     "net5.0-windows7.0": {
+      "AdvancedWizard/4.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/AdvancedWizard.dll": {}
+        },
+        "runtime": {
+          "lib/AdvancedWizard.dll": {}
+        }
+      },
       "Newtonsoft.Json/13.0.1": {
         "type": "package",
         "compile": {
@@ -14,6 +23,18 @@
     }
   },
   "libraries": {
+    "AdvancedWizard/4.0.0": {
+      "sha512": "DEXl/KsL2buP3L1FHfqhqNMQnB5KmH46qlAZ9eIICP9iUVTzUGqF1f9mng6RSI+B/mp5nvGsMRVcvbkXsCZGHQ==",
+      "type": "package",
+      "path": "advancedwizard/4.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "advancedwizard.4.0.0.nupkg.sha512",
+        "advancedwizard.nuspec",
+        "lib/AdvancedWizard.dll"
+      ]
+    },
     "Newtonsoft.Json/13.0.1": {
       "sha512": "ppPFpBcvxdsfUonNcvITKqLl3bqxWbDCZIzDWHzjpdAHRFfZe0Dw9HmA0+za13IdyrgJwpkDTDA9fHaxOrt20A==",
       "type": "package",
@@ -44,6 +65,7 @@
   },
   "projectFileDependencyGroups": {
     "net5.0-windows7.0": [
+      "AdvancedWizard >= 4.0.0",
       "Newtonsoft.Json >= 13.0.1"
     ]
   },
@@ -86,6 +108,10 @@
       "net5.0-windows7.0": {
         "targetAlias": "net5.0-windows",
         "dependencies": {
+          "AdvancedWizard": {
+            "target": "Package",
+            "version": "[4.0.0, )"
+          },
           "Newtonsoft.Json": {
             "target": "Package",
             "version": "[13.0.1, )"
@@ -112,5 +138,17 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.408\\RuntimeIdentifierGraph.json"
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'AdvancedWizard 4.0.0' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net5.0-windows7.0'. This package may not be fully compatible with your project.",
+      "libraryId": "AdvancedWizard",
+      "targetGraphs": [
+        "net5.0-windows7.0"
+      ]
+    }
+  ]
 }

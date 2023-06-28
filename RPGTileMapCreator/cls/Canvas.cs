@@ -8,7 +8,7 @@ namespace RPGTileMapCreator.cls
 {
     public class Canvas
     {
-        int Width;
-        int Height;
+       // int Width;
+        //int Height;
     }
 }

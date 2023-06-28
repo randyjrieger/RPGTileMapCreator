@@ -40,20 +40,26 @@ namespace RPGTileMapCreator
             this.pnlCanvasBase = new System.Windows.Forms.Panel();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.pnlToolbar = new System.Windows.Forms.Panel();
+            this.lblDefault = new System.Windows.Forms.TextBox();
+            this.lblTileH = new System.Windows.Forms.Label();
+            this.lblTileW = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.lblMapH = new System.Windows.Forms.Label();
+            this.lblMapW = new System.Windows.Forms.Label();
+            this.lblProjectName = new System.Windows.Forms.Label();
+            this.btnWipeCanvas = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.btnLoadMap = new System.Windows.Forms.Button();
+            this.btnSaveMap = new System.Windows.Forms.Button();
+            this.gbTileSets = new System.Windows.Forms.GroupBox();
+            this.btnSaveTileSet = new System.Windows.Forms.Button();
+            this.btnLoadTileSet = new System.Windows.Forms.Button();
             this.gbTiles = new System.Windows.Forms.GroupBox();
             this.button2 = new System.Windows.Forms.Button();
             this.btnLoadTiles = new System.Windows.Forms.Button();
-            this.gbTileSets = new System.Windows.Forms.GroupBox();
-            this.btnResetTileSet = new System.Windows.Forms.Button();
-            this.btnSaveTileSet = new System.Windows.Forms.Button();
-            this.btnLoadTileSet = new System.Windows.Forms.Button();
-            this.gbMap = new System.Windows.Forms.GroupBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.btnWipeCanvas = new System.Windows.Forms.Button();
-            this.btnLoadMap = new System.Windows.Forms.Button();
-            this.btnSaveMap = new System.Windows.Forms.Button();
-            this.txtMapName = new System.Windows.Forms.TextBox();
             this.gbResize = new System.Windows.Forms.GroupBox();
+            this.btnResetTileSet = new System.Windows.Forms.Button();
             this.btnAddRowBottom = new System.Windows.Forms.Button();
             this.btnAddColumnLeft = new System.Windows.Forms.Button();
             this.btnAddColumnRight = new System.Windows.Forms.Button();
@@ -62,18 +68,15 @@ namespace RPGTileMapCreator
             this.rbDelete = new System.Windows.Forms.RadioButton();
             this.lblH = new System.Windows.Forms.Label();
             this.lblW = new System.Windows.Forms.Label();
-            this.txtH = new System.Windows.Forms.TextBox();
-            this.txtW = new System.Windows.Forms.TextBox();
             this.lblTileDim = new System.Windows.Forms.Label();
-            this.txtDefaultChar = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.btnNewMap = new System.Windows.Forms.Button();
+            this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.Canvas_Panel.SuspendLayout();
             this.pnlCanvasBase.SuspendLayout();
             this.pnlToolbar.SuspendLayout();
-            this.gbTiles.SuspendLayout();
             this.gbTileSets.SuspendLayout();
-            this.gbMap.SuspendLayout();
+            this.gbTiles.SuspendLayout();
             this.gbResize.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -103,7 +106,7 @@ namespace RPGTileMapCreator
             // Canvas_Panel
             // 
             this.Canvas_Panel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.Canvas_Panel.BackColor = System.Drawing.Color.LightCoral;
+            this.Canvas_Panel.BackColor = System.Drawing.Color.AntiqueWhite;
             this.Canvas_Panel.Controls.Add(this.btnBottom);
             this.Canvas_Panel.Controls.Add(this.btnRight);
             this.Canvas_Panel.Location = new System.Drawing.Point(0, 0);
@@ -151,16 +154,23 @@ namespace RPGTileMapCreator
             // 
             // pnlToolbar
             // 
-            this.pnlToolbar.Controls.Add(this.gbTiles);
+            this.pnlToolbar.Controls.Add(this.lblDefault);
+            this.pnlToolbar.Controls.Add(this.lblTileH);
+            this.pnlToolbar.Controls.Add(this.lblTileW);
+            this.pnlToolbar.Controls.Add(this.label4);
+            this.pnlToolbar.Controls.Add(this.label5);
+            this.pnlToolbar.Controls.Add(this.lblMapH);
+            this.pnlToolbar.Controls.Add(this.lblMapW);
+            this.pnlToolbar.Controls.Add(this.lblProjectName);
+            this.pnlToolbar.Controls.Add(this.btnWipeCanvas);
+            this.pnlToolbar.Controls.Add(this.button1);
+            this.pnlToolbar.Controls.Add(this.btnLoadMap);
+            this.pnlToolbar.Controls.Add(this.btnSaveMap);
             this.pnlToolbar.Controls.Add(this.gbTileSets);
-            this.pnlToolbar.Controls.Add(this.gbMap);
             this.pnlToolbar.Controls.Add(this.gbResize);
             this.pnlToolbar.Controls.Add(this.lblH);
             this.pnlToolbar.Controls.Add(this.lblW);
-            this.pnlToolbar.Controls.Add(this.txtH);
-            this.pnlToolbar.Controls.Add(this.txtW);
             this.pnlToolbar.Controls.Add(this.lblTileDim);
-            this.pnlToolbar.Controls.Add(this.txtDefaultChar);
             this.pnlToolbar.Controls.Add(this.label1);
             this.pnlToolbar.Controls.Add(this.btnNewMap);
             this.pnlToolbar.Location = new System.Drawing.Point(0, -1);
@@ -168,12 +178,172 @@ namespace RPGTileMapCreator
             this.pnlToolbar.Size = new System.Drawing.Size(1165, 75);
             this.pnlToolbar.TabIndex = 20;
             // 
+            // lblDefault
+            // 
+            this.lblDefault.Enabled = false;
+            this.lblDefault.Location = new System.Drawing.Point(611, 40);
+            this.lblDefault.MaxLength = 1;
+            this.lblDefault.Name = "lblDefault";
+            this.lblDefault.Size = new System.Drawing.Size(19, 23);
+            this.lblDefault.TabIndex = 67;
+            this.lblDefault.Text = "?";
+            // 
+            // lblTileH
+            // 
+            this.lblTileH.AutoSize = true;
+            this.lblTileH.Location = new System.Drawing.Point(611, 14);
+            this.lblTileH.Name = "lblTileH";
+            this.lblTileH.Size = new System.Drawing.Size(10, 15);
+            this.lblTileH.TabIndex = 65;
+            this.lblTileH.Text = ".";
+            // 
+            // lblTileW
+            // 
+            this.lblTileW.AutoSize = true;
+            this.lblTileW.Location = new System.Drawing.Point(545, 14);
+            this.lblTileW.Name = "lblTileW";
+            this.lblTileW.Size = new System.Drawing.Size(10, 15);
+            this.lblTileW.TabIndex = 64;
+            this.lblTileW.Text = ".";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label4.Location = new System.Drawing.Point(594, 14);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(16, 15);
+            this.label4.TabIndex = 63;
+            this.label4.Text = "H";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label5.Location = new System.Drawing.Point(520, 14);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(19, 15);
+            this.label5.TabIndex = 62;
+            this.label5.Text = "W";
+            // 
+            // lblMapH
+            // 
+            this.lblMapH.AutoSize = true;
+            this.lblMapH.Location = new System.Drawing.Point(435, 14);
+            this.lblMapH.Name = "lblMapH";
+            this.lblMapH.Size = new System.Drawing.Size(10, 15);
+            this.lblMapH.TabIndex = 61;
+            this.lblMapH.Text = ".";
+            // 
+            // lblMapW
+            // 
+            this.lblMapW.AutoSize = true;
+            this.lblMapW.Location = new System.Drawing.Point(364, 14);
+            this.lblMapW.Name = "lblMapW";
+            this.lblMapW.Size = new System.Drawing.Size(10, 15);
+            this.lblMapW.TabIndex = 60;
+            this.lblMapW.Text = ".";
+            // 
+            // lblProjectName
+            // 
+            this.lblProjectName.AutoSize = true;
+            this.lblProjectName.Location = new System.Drawing.Point(114, 14);
+            this.lblProjectName.Name = "lblProjectName";
+            this.lblProjectName.Size = new System.Drawing.Size(38, 15);
+            this.lblProjectName.TabIndex = 59;
+            this.lblProjectName.Text = "label2";
+            // 
+            // btnWipeCanvas
+            // 
+            this.btnWipeCanvas.BackColor = System.Drawing.Color.White;
+            this.btnWipeCanvas.Location = new System.Drawing.Point(339, 39);
+            this.btnWipeCanvas.Name = "btnWipeCanvas";
+            this.btnWipeCanvas.Size = new System.Drawing.Size(100, 23);
+            this.btnWipeCanvas.TabIndex = 33;
+            this.btnWipeCanvas.Text = "Clear Map";
+            this.btnWipeCanvas.UseVisualStyleBackColor = false;
+            this.btnWipeCanvas.Visible = false;
+            // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.Color.RosyBrown;
+            this.button1.Location = new System.Drawing.Point(230, 39);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(100, 23);
+            this.button1.TabIndex = 34;
+            this.button1.Text = "Refresh Map";
+            this.button1.UseVisualStyleBackColor = false;
+            this.button1.Visible = false;
+            // 
+            // btnLoadMap
+            // 
+            this.btnLoadMap.BackColor = System.Drawing.Color.CornflowerBlue;
+            this.btnLoadMap.Location = new System.Drawing.Point(3, 37);
+            this.btnLoadMap.Name = "btnLoadMap";
+            this.btnLoadMap.Size = new System.Drawing.Size(104, 27);
+            this.btnLoadMap.TabIndex = 58;
+            this.btnLoadMap.Text = "Load Project";
+            this.btnLoadMap.UseVisualStyleBackColor = false;
+            this.btnLoadMap.Click += new System.EventHandler(this.btnLoadMap_Click);
+            // 
+            // btnSaveMap
+            // 
+            this.btnSaveMap.BackColor = System.Drawing.Color.LightSkyBlue;
+            this.btnSaveMap.Location = new System.Drawing.Point(113, 39);
+            this.btnSaveMap.Name = "btnSaveMap";
+            this.btnSaveMap.Size = new System.Drawing.Size(111, 23);
+            this.btnSaveMap.TabIndex = 31;
+            this.btnSaveMap.Text = "Save Project";
+            this.btnSaveMap.UseVisualStyleBackColor = false;
+            this.btnSaveMap.Visible = false;
+            this.btnSaveMap.Click += new System.EventHandler(this.btnSaveMap_Click);
+            // 
+            // gbTileSets
+            // 
+            this.gbTileSets.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.gbTileSets.Controls.Add(this.btnSaveTileSet);
+            this.gbTileSets.Controls.Add(this.btnLoadTileSet);
+            this.gbTileSets.Controls.Add(this.gbTiles);
+            this.gbTileSets.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.gbTileSets.Location = new System.Drawing.Point(684, 6);
+            this.gbTileSets.Name = "gbTileSets";
+            this.gbTileSets.Size = new System.Drawing.Size(177, 60);
+            this.gbTileSets.TabIndex = 56;
+            this.gbTileSets.TabStop = false;
+            this.gbTileSets.Text = "Tile Sets";
+            this.gbTileSets.Visible = false;
+            // 
+            // btnSaveTileSet
+            // 
+            this.btnSaveTileSet.BackColor = System.Drawing.Color.LightSkyBlue;
+            this.btnSaveTileSet.Location = new System.Drawing.Point(6, 37);
+            this.btnSaveTileSet.Name = "btnSaveTileSet";
+            this.btnSaveTileSet.Size = new System.Drawing.Size(81, 23);
+            this.btnSaveTileSet.TabIndex = 14;
+            this.btnSaveTileSet.Text = "Save";
+            this.btnSaveTileSet.UseVisualStyleBackColor = false;
+            this.btnSaveTileSet.Visible = false;
+            this.btnSaveTileSet.Click += new System.EventHandler(this.btnSaveTileSet_Click);
+            // 
+            // btnLoadTileSet
+            // 
+            this.btnLoadTileSet.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
+            this.btnLoadTileSet.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.btnLoadTileSet.Location = new System.Drawing.Point(6, 16);
+            this.btnLoadTileSet.Name = "btnLoadTileSet";
+            this.btnLoadTileSet.Size = new System.Drawing.Size(81, 23);
+            this.btnLoadTileSet.TabIndex = 13;
+            this.btnLoadTileSet.Text = "Load...";
+            this.btnLoadTileSet.UseVisualStyleBackColor = false;
+            this.btnLoadTileSet.Visible = false;
+            this.btnLoadTileSet.Click += new System.EventHandler(this.btnLoadTileSet_Click);
+            // 
             // gbTiles
             // 
             this.gbTiles.Controls.Add(this.button2);
             this.gbTiles.Controls.Add(this.btnLoadTiles);
             this.gbTiles.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.gbTiles.Location = new System.Drawing.Point(563, 6);
+            this.gbTiles.Location = new System.Drawing.Point(93, 0);
             this.gbTiles.Name = "gbTiles";
             this.gbTiles.Size = new System.Drawing.Size(118, 64);
             this.gbTiles.TabIndex = 57;
@@ -204,126 +374,9 @@ namespace RPGTileMapCreator
             this.btnLoadTiles.Visible = false;
             this.btnLoadTiles.Click += new System.EventHandler(this.btnLoadTiles_Click);
             // 
-            // gbTileSets
-            // 
-            this.gbTileSets.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.gbTileSets.Controls.Add(this.btnResetTileSet);
-            this.gbTileSets.Controls.Add(this.btnSaveTileSet);
-            this.gbTileSets.Controls.Add(this.btnLoadTileSet);
-            this.gbTileSets.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.gbTileSets.Location = new System.Drawing.Point(684, 6);
-            this.gbTileSets.Name = "gbTileSets";
-            this.gbTileSets.Size = new System.Drawing.Size(177, 60);
-            this.gbTileSets.TabIndex = 56;
-            this.gbTileSets.TabStop = false;
-            this.gbTileSets.Text = "Tile Sets";
-            this.gbTileSets.Visible = false;
-            // 
-            // btnResetTileSet
-            // 
-            this.btnResetTileSet.BackColor = System.Drawing.Color.White;
-            this.btnResetTileSet.Location = new System.Drawing.Point(93, 18);
-            this.btnResetTileSet.Name = "btnResetTileSet";
-            this.btnResetTileSet.Size = new System.Drawing.Size(75, 23);
-            this.btnResetTileSet.TabIndex = 31;
-            this.btnResetTileSet.Text = "Reset";
-            this.btnResetTileSet.UseVisualStyleBackColor = false;
-            this.btnResetTileSet.Visible = false;
-            // 
-            // btnSaveTileSet
-            // 
-            this.btnSaveTileSet.BackColor = System.Drawing.Color.LightSkyBlue;
-            this.btnSaveTileSet.Location = new System.Drawing.Point(6, 37);
-            this.btnSaveTileSet.Name = "btnSaveTileSet";
-            this.btnSaveTileSet.Size = new System.Drawing.Size(81, 23);
-            this.btnSaveTileSet.TabIndex = 14;
-            this.btnSaveTileSet.Text = "Save";
-            this.btnSaveTileSet.UseVisualStyleBackColor = false;
-            this.btnSaveTileSet.Visible = false;
-            // 
-            // btnLoadTileSet
-            // 
-            this.btnLoadTileSet.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
-            this.btnLoadTileSet.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.btnLoadTileSet.Location = new System.Drawing.Point(6, 16);
-            this.btnLoadTileSet.Name = "btnLoadTileSet";
-            this.btnLoadTileSet.Size = new System.Drawing.Size(81, 23);
-            this.btnLoadTileSet.TabIndex = 13;
-            this.btnLoadTileSet.Text = "Load...";
-            this.btnLoadTileSet.UseVisualStyleBackColor = false;
-            this.btnLoadTileSet.Visible = false;
-            this.btnLoadTileSet.Click += new System.EventHandler(this.btnLoadTileSet_Click);
-            // 
-            // gbMap
-            // 
-            this.gbMap.Controls.Add(this.button1);
-            this.gbMap.Controls.Add(this.btnWipeCanvas);
-            this.gbMap.Controls.Add(this.btnLoadMap);
-            this.gbMap.Controls.Add(this.btnSaveMap);
-            this.gbMap.Controls.Add(this.txtMapName);
-            this.gbMap.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.gbMap.Location = new System.Drawing.Point(266, 3);
-            this.gbMap.Name = "gbMap";
-            this.gbMap.Size = new System.Drawing.Size(297, 69);
-            this.gbMap.TabIndex = 55;
-            this.gbMap.TabStop = false;
-            this.gbMap.Text = "Map";
-            // 
-            // button1
-            // 
-            this.button1.BackColor = System.Drawing.Color.RosyBrown;
-            this.button1.Location = new System.Drawing.Point(88, 40);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(100, 23);
-            this.button1.TabIndex = 34;
-            this.button1.Text = "Update";
-            this.button1.UseVisualStyleBackColor = false;
-            this.button1.Visible = false;
-            // 
-            // btnWipeCanvas
-            // 
-            this.btnWipeCanvas.BackColor = System.Drawing.Color.White;
-            this.btnWipeCanvas.Location = new System.Drawing.Point(191, 40);
-            this.btnWipeCanvas.Name = "btnWipeCanvas";
-            this.btnWipeCanvas.Size = new System.Drawing.Size(100, 23);
-            this.btnWipeCanvas.TabIndex = 33;
-            this.btnWipeCanvas.Text = "Clear Map";
-            this.btnWipeCanvas.UseVisualStyleBackColor = false;
-            this.btnWipeCanvas.Visible = false;
-            // 
-            // btnLoadMap
-            // 
-            this.btnLoadMap.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
-            this.btnLoadMap.Location = new System.Drawing.Point(12, 15);
-            this.btnLoadMap.Name = "btnLoadMap";
-            this.btnLoadMap.Size = new System.Drawing.Size(70, 23);
-            this.btnLoadMap.TabIndex = 32;
-            this.btnLoadMap.Text = "Load...";
-            this.btnLoadMap.UseVisualStyleBackColor = false;
-            this.btnLoadMap.Click += new System.EventHandler(this.btnLoadMap_Click);
-            // 
-            // btnSaveMap
-            // 
-            this.btnSaveMap.BackColor = System.Drawing.Color.LightSkyBlue;
-            this.btnSaveMap.Location = new System.Drawing.Point(12, 40);
-            this.btnSaveMap.Name = "btnSaveMap";
-            this.btnSaveMap.Size = new System.Drawing.Size(70, 23);
-            this.btnSaveMap.TabIndex = 31;
-            this.btnSaveMap.Text = "Save";
-            this.btnSaveMap.UseVisualStyleBackColor = false;
-            this.btnSaveMap.Visible = false;
-            // 
-            // txtMapName
-            // 
-            this.txtMapName.Location = new System.Drawing.Point(88, 15);
-            this.txtMapName.MaxLength = 200;
-            this.txtMapName.Name = "txtMapName";
-            this.txtMapName.Size = new System.Drawing.Size(203, 23);
-            this.txtMapName.TabIndex = 30;
-            this.txtMapName.Visible = false;
-            // 
             // gbResize
             // 
+            this.gbResize.Controls.Add(this.btnResetTileSet);
             this.gbResize.Controls.Add(this.btnAddRowBottom);
             this.gbResize.Controls.Add(this.btnAddColumnLeft);
             this.gbResize.Controls.Add(this.btnAddColumnRight);
@@ -339,6 +392,18 @@ namespace RPGTileMapCreator
             this.gbResize.Text = "Resize Map";
             this.gbResize.Visible = false;
             // 
+            // btnResetTileSet
+            // 
+            this.btnResetTileSet.BackColor = System.Drawing.Color.White;
+            this.btnResetTileSet.Location = new System.Drawing.Point(107, -3);
+            this.btnResetTileSet.Name = "btnResetTileSet";
+            this.btnResetTileSet.Size = new System.Drawing.Size(75, 23);
+            this.btnResetTileSet.TabIndex = 31;
+            this.btnResetTileSet.Text = "Reset";
+            this.btnResetTileSet.UseVisualStyleBackColor = false;
+            this.btnResetTileSet.Visible = false;
+            this.btnResetTileSet.Click += new System.EventHandler(this.btnResetTileSet_Click);
+            // 
             // btnAddRowBottom
             // 
             this.btnAddRowBottom.BackColor = System.Drawing.Color.DarkSeaGreen;
@@ -350,6 +415,7 @@ namespace RPGTileMapCreator
             this.btnAddRowBottom.Text = "Bottom Row";
             this.btnAddRowBottom.UseVisualStyleBackColor = false;
             this.btnAddRowBottom.Visible = false;
+            this.btnAddRowBottom.Click += new System.EventHandler(this.btnAddRowBottom_Click);
             // 
             // btnAddColumnLeft
             // 
@@ -362,6 +428,7 @@ namespace RPGTileMapCreator
             this.btnAddColumnLeft.Text = "Left Column";
             this.btnAddColumnLeft.UseVisualStyleBackColor = false;
             this.btnAddColumnLeft.Visible = false;
+            this.btnAddColumnLeft.Click += new System.EventHandler(this.btnAddColumnLeft_Click);
             // 
             // btnAddColumnRight
             // 
@@ -374,6 +441,7 @@ namespace RPGTileMapCreator
             this.btnAddColumnRight.Text = "Right Column";
             this.btnAddColumnRight.UseVisualStyleBackColor = false;
             this.btnAddColumnRight.Visible = false;
+            this.btnAddColumnRight.Click += new System.EventHandler(this.btnAddColumnRight_Click);
             // 
             // btnAddRowTop
             // 
@@ -386,6 +454,7 @@ namespace RPGTileMapCreator
             this.btnAddRowTop.Text = "Top Row";
             this.btnAddRowTop.UseVisualStyleBackColor = false;
             this.btnAddRowTop.Visible = false;
+            this.btnAddRowTop.Click += new System.EventHandler(this.btnAddRowTop_Click);
             // 
             // rbAdd
             // 
@@ -415,7 +484,7 @@ namespace RPGTileMapCreator
             // 
             this.lblH.AutoSize = true;
             this.lblH.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lblH.Location = new System.Drawing.Point(215, 17);
+            this.lblH.Location = new System.Drawing.Point(413, 14);
             this.lblH.Name = "lblH";
             this.lblH.Size = new System.Drawing.Size(16, 15);
             this.lblH.TabIndex = 53;
@@ -425,55 +494,26 @@ namespace RPGTileMapCreator
             // 
             this.lblW.AutoSize = true;
             this.lblW.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lblW.Location = new System.Drawing.Point(168, 17);
+            this.lblW.Location = new System.Drawing.Point(339, 14);
             this.lblW.Name = "lblW";
             this.lblW.Size = new System.Drawing.Size(19, 15);
             this.lblW.TabIndex = 52;
             this.lblW.Text = "W";
             // 
-            // txtH
-            // 
-            this.txtH.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.txtH.Location = new System.Drawing.Point(232, 15);
-            this.txtH.MaxLength = 1;
-            this.txtH.Name = "txtH";
-            this.txtH.Size = new System.Drawing.Size(28, 23);
-            this.txtH.TabIndex = 51;
-            this.txtH.Text = "51";
-            // 
-            // txtW
-            // 
-            this.txtW.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.txtW.Location = new System.Drawing.Point(188, 15);
-            this.txtW.MaxLength = 1;
-            this.txtW.Name = "txtW";
-            this.txtW.Size = new System.Drawing.Size(27, 23);
-            this.txtW.TabIndex = 50;
-            this.txtW.Text = "51";
-            // 
             // lblTileDim
             // 
             this.lblTileDim.AutoSize = true;
             this.lblTileDim.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lblTileDim.Location = new System.Drawing.Point(127, 17);
+            this.lblTileDim.Location = new System.Drawing.Point(479, 14);
             this.lblTileDim.Name = "lblTileDim";
             this.lblTileDim.Size = new System.Drawing.Size(35, 15);
             this.lblTileDim.TabIndex = 49;
             this.lblTileDim.Text = "Tiles:";
             // 
-            // txtDefaultChar
-            // 
-            this.txtDefaultChar.Location = new System.Drawing.Point(232, 39);
-            this.txtDefaultChar.MaxLength = 1;
-            this.txtDefaultChar.Name = "txtDefaultChar";
-            this.txtDefaultChar.Size = new System.Drawing.Size(19, 23);
-            this.txtDefaultChar.TabIndex = 48;
-            this.txtDefaultChar.Text = "?";
-            // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(161, 45);
+            this.label1.Location = new System.Drawing.Point(545, 43);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(65, 15);
             this.label1.TabIndex = 47;
@@ -482,12 +522,13 @@ namespace RPGTileMapCreator
             // btnNewMap
             // 
             this.btnNewMap.BackColor = System.Drawing.Color.CornflowerBlue;
-            this.btnNewMap.Location = new System.Drawing.Point(2, 12);
+            this.btnNewMap.Location = new System.Drawing.Point(3, 5);
             this.btnNewMap.Name = "btnNewMap";
-            this.btnNewMap.Size = new System.Drawing.Size(61, 46);
+            this.btnNewMap.Size = new System.Drawing.Size(104, 27);
             this.btnNewMap.TabIndex = 46;
             this.btnNewMap.Text = "New Project";
             this.btnNewMap.UseVisualStyleBackColor = false;
+            this.btnNewMap.Click += new System.EventHandler(this.btnNewMap_Click);
             // 
             // Form_Map
             // 
@@ -507,10 +548,8 @@ namespace RPGTileMapCreator
             this.pnlCanvasBase.ResumeLayout(false);
             this.pnlToolbar.ResumeLayout(false);
             this.pnlToolbar.PerformLayout();
-            this.gbTiles.ResumeLayout(false);
             this.gbTileSets.ResumeLayout(false);
-            this.gbMap.ResumeLayout(false);
-            this.gbMap.PerformLayout();
+            this.gbTiles.ResumeLayout(false);
             this.gbResize.ResumeLayout(false);
             this.gbResize.PerformLayout();
             this.ResumeLayout(false);
@@ -537,12 +576,9 @@ namespace RPGTileMapCreator
         private System.Windows.Forms.Button btnResetTileSet;
         private System.Windows.Forms.Button btnSaveTileSet;
         private System.Windows.Forms.Button btnLoadTileSet;
-        private System.Windows.Forms.GroupBox gbMap;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button btnWipeCanvas;
-        private System.Windows.Forms.Button btnLoadMap;
         private System.Windows.Forms.Button btnSaveMap;
-        private System.Windows.Forms.TextBox txtMapName;
         private System.Windows.Forms.GroupBox gbResize;
         private System.Windows.Forms.Button btnAddRowBottom;
         private System.Windows.Forms.Button btnAddColumnLeft;
@@ -552,12 +588,19 @@ namespace RPGTileMapCreator
         private System.Windows.Forms.RadioButton rbDelete;
         private System.Windows.Forms.Label lblH;
         private System.Windows.Forms.Label lblW;
-        private System.Windows.Forms.TextBox txtH;
-        private System.Windows.Forms.TextBox txtW;
         private System.Windows.Forms.Label lblTileDim;
-        private System.Windows.Forms.TextBox txtDefaultChar;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnNewMap;
+        private System.Windows.Forms.Button btnLoadMap;
+        private System.Windows.Forms.ColorDialog colorDialog1;
+        private System.Windows.Forms.Label lblProjectName;
+        private System.Windows.Forms.Label lblTileH;
+        private System.Windows.Forms.Label lblTileW;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label lblMapH;
+        private System.Windows.Forms.Label lblMapW;
+        private System.Windows.Forms.TextBox lblDefault;
     }
 }
 

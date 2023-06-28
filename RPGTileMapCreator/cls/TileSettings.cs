@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,18 +9,27 @@ namespace RPGTileMapCreator.cls
 {
     public class TileSettings
     {
-        public string tileFilePath { get; set; }
-        public List<Tileset> tilesets { get; set; }
+        public string TileFilePath { get; set; }
+        public List<Tile> Tiles { get; set; }
     }
 
-    public class Tileset
+    public class Tile
     {
-        public string fileName { get; set; }
-        public string character { get; set; }
+        public string FileName { get; set; }
+        public string Character { get; set; }
     }
 
     public class Root
     {
-        public TileSettings tileSettings { get; set; }
+        public TileSettings TileSettings { get; set; }
     }
+
+    public class ProjectFile
+    {
+        public string ProjectFolder { get; set; }
+        public string MapFile { get; set; }
+        public string TileFolder { get; set; }
+        public string TileSettingsFile { get; set; }
+    }
+
 }
