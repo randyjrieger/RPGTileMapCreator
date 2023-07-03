@@ -119,7 +119,7 @@ namespace RPGTileMapCreator
 
                 projectInfo = new Project
                 {
-                    Name = txtProjectName.Text,
+                    ProjectName = txtProjectName.Text,
                     ProjectFolder = txtProjectName.Text,
                     TileFolderPath = txtTileRepoPath.Text,
                     StartingWidth = int.Parse(txtMapWidth.Text),

@@ -33,7 +33,6 @@ namespace RPGTileMapCreator
             this.openTileFolderDialog = new System.Windows.Forms.OpenFileDialog();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.openMapFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.Canvas_Panel = new System.Windows.Forms.Panel();
             this.btnBottom = new System.Windows.Forms.Button();
             this.btnRight = new System.Windows.Forms.Button();
@@ -94,14 +93,6 @@ namespace RPGTileMapCreator
             // openTileFolderDialog
             // 
             this.openTileFolderDialog.Filter = "JSON|*.json";
-            // 
-            // progressBar1
-            // 
-            this.progressBar1.Location = new System.Drawing.Point(0, 77);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(669, 20);
-            this.progressBar1.TabIndex = 16;
-            this.progressBar1.Visible = false;
             // 
             // Canvas_Panel
             // 
@@ -537,7 +528,6 @@ namespace RPGTileMapCreator
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.ClientSize = new System.Drawing.Size(1164, 580);
             this.Controls.Add(this.pnlToolbar);
-            this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.pnlCanvasBase);
             this.Controls.Add(this.Panel_Palete);
             this.Name = "Form_Map";
@@ -562,7 +552,6 @@ namespace RPGTileMapCreator
         private System.Windows.Forms.OpenFileDialog openTileFolderDialog;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
         private System.Windows.Forms.OpenFileDialog openMapFileDialog;
-        private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.Panel Canvas_Panel;
         private System.Windows.Forms.Panel pnlCanvasBase;
         private System.Windows.Forms.Button btnRight;

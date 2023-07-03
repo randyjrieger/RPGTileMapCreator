@@ -8,7 +8,7 @@ namespace RPGTileMapCreator.cls
 {
     public class Project
     {
-        public string Name;
+        public string ProjectName;
         public string ProjectFolder;
         public string MapFilePath;
         public string TileFolderPath;

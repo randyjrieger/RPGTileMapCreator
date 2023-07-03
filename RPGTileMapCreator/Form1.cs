@@ -342,24 +342,6 @@ namespace RPGTileMapCreator
 
         private void btnLoadTiles_Click(object sender, EventArgs e)
         {
-            //DialogResult result = folderBrowserDialog1.ShowDialog();
-
-            //if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(ProjectInfo.TileFolderPath))
-            //{
-            //    ProjectInfo.TileFolderPath = folderBrowserDialog1.SelectedPath;
-            //}
-
-            LoadTiles();
-        }
-
-        private void LoadTiles()
-        {
-            int row = 0;
-            int col = 0;
-            PictureBox p;
-            TextBox t;
-            tileSets = new List<PaletteObject>();
-
             DialogResult result = folderBrowserDialog1.ShowDialog();
             if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(folderBrowserDialog1.SelectedPath))
             {
@@ -368,9 +350,29 @@ namespace RPGTileMapCreator
 
             DirectoryInfo DirInfo = new DirectoryInfo(ProjectInfo.TileFolderPath);
 
+            StatusForm waa = new StatusForm { };
+            LoadTiles(DirInfo, ref waa);
+        }
+
+        private void LoadTiles(DirectoryInfo DirInfo, ref StatusForm sf)
+        {
+            int row = 0;
+            int col = 0;
+            PictureBox p;
+            TextBox t;
+            tileSets = new List<PaletteObject>();
+
+            sf.UpdateStatusMessage("Setting Up Tile Palette");
+
             var tileImageFiles = from f in DirInfo.EnumerateFiles()
                                  where f.Name.EndsWith(".png") || f.Name.EndsWith(".jpg")
                                  select f;
+
+            int fileCount = tileImageFiles.Count();
+
+            sf.StartStatusBar(fileCount);
+            sf.Show();
+            Application.DoEvents();
 
             foreach (var f in tileImageFiles)
             {
@@ -412,29 +414,38 @@ namespace RPGTileMapCreator
                 Panel_Palete.Controls.Add(t);
 
                 tileSets.Add(new PaletteObject(p, t));
+
+                sf.IncrementStatusBar();
             }
 
             UpdateFormState();
             Canvas_Panel.Controls.Add(txtMapCharacter);
 
         }
+
+
         private void btnLoadTileSet_Click(object sender, EventArgs e)
         {
-            LoadTileSet();
+            if (openTileFolderDialog.ShowDialog() == DialogResult.OK)
+            {
+                ProjectInfo.TileSetFile = openTileFolderDialog.FileName;
+            }
+            StatusForm waa = new StatusForm { };
+            LoadTileSet(ref waa);
         }
 
-        private void LoadTileSet()
+        private void LoadTileSet(ref StatusForm sf)
         {
             // reads path for tile configuration
 
             //  tileSets = new List<PaletteObject>();
-            string tileSetPath = "";
+            string tileSetPath = @ProjectInfo.TileSetFile;
 
-            if (openTileFolderDialog.ShowDialog() == DialogResult.OK)
-            {
-                tileSetPath = @openTileFolderDialog.FileName;
-                ProjectInfo.TileSetFile = openTileFolderDialog.FileName;
-            }
+            //if (openTileFolderDialog.ShowDialog() == DialogResult.OK)
+            //{
+            //    tileSetPath = @openTileFolderDialog.FileName;
+            //    ProjectInfo.TileSetFile = openTileFolderDialog.FileName;
+            //}
             //  }
             var tileSetJson = JsonConvert.DeserializeObject<Root>(File.ReadAllText(tileSetPath));
             // var tileSetJson = JsonConvert.DeserializeObject<List<Tileset>>(File.ReadAllText(tileSetPath));
@@ -487,12 +498,35 @@ namespace RPGTileMapCreator
             {
                 projectFile = openMapFileDialog.FileName;
 
-                LoadMap(projectFile);
-
-                // readyState = ReadyState.MapLoaded;
-                UpdateFormState();
+                LoadProject(projectFile);
             }
 
+            lblProjectName.Text = ProjectInfo.ProjectName;
+
+        }
+
+        private void LoadProject(string projectFile)
+        {
+            // open project file
+            string json = File.ReadAllText(projectFile);
+
+            // Deserialize JSON to object
+            var project = JsonConvert.DeserializeObject<ProjectFile>(json);
+
+            // read in map file
+            LoadMap(project.MapFile);
+
+            StatusForm sf = new StatusForm();
+
+            DirectoryInfo DirInfo = new DirectoryInfo(project.TileFolder);
+            LoadTiles(DirInfo, ref sf);
+
+            ProjectInfo.TileSetFile = project.TileSettingsFile;
+            LoadTileSet(ref sf);
+
+            // readyState = ReadyState.MapLoaded;
+            UpdateFormState();
+            sf.Close();
         }
 
         private void LoadMap(string projectFile)
@@ -503,38 +537,31 @@ namespace RPGTileMapCreator
             Bitmap sourceBmp = null;
             CanvasTile canvasTile = null;
 
-            // open project file
-            string json = File.ReadAllText(projectFile);
+            var lineCount = File.ReadLines(projectFile).Count();
 
-            // Deserialize JSON to object
-            var project = JsonConvert.DeserializeObject<ProjectFile>(json);
-
-
-            var lineCount = File.ReadLines(project.MapFile).Count();
-
-            progressBar1.Visible = true;
-            progressBar1.Maximum = lineCount;
+            StatusForm sf = new StatusForm();
+            sf.UpdateStatusMessage("Loading Map File");
+            sf.StartStatusBar(lineCount);
+            sf.Show();
+            Application.DoEvents();
 
             if (tileSets == null)
             {
                 tileSets = new List<PaletteObject>();
             }
 
-
-            // read in map file
-
-            using (StreamReader file = new System.IO.StreamReader(project.MapFile))
+            using (StreamReader file = new System.IO.StreamReader(projectFile))
             {
                 canvasTiles.Clear();
                 while ((line = file.ReadLine()) != null)
                 {
                     rows++;
                     columns = 0;
-                    progressBar1.Value = rows;
+                    sf.IncrementStatusBar();//.Value = rows;
                     // read each character in the line
                     foreach (char s in line)
                     {
-                        progressBar1.Value = rows;
+                        sf.IncrementStatusBar();//.Value = rows;
                         var selectedTileSet = tileSets.Find(t => t.letter.Text == s.ToString());
                         columns++;
                         if (selectedTileSet != null)
@@ -593,8 +620,8 @@ namespace RPGTileMapCreator
 
             Canvas_Panel.Width = columns * ProjectInfo.TileWidth;
             Canvas_Panel.Height = rows * ProjectInfo.TileHeight;
+            sf.Close();
 
-            progressBar1.Visible = false;
             Canvas_Panel.Refresh();
         }
 
@@ -810,7 +837,7 @@ namespace RPGTileMapCreator
             if (newProjectForm != null)
             {
                 ProjectInfo = newProjectForm.ProjectInfo;
-                lblProjectName.Text = ProjectInfo.Name;
+                lblProjectName.Text = ProjectInfo.ProjectName;
                 lblDefault.Text = ProjectInfo.EmptyTileCharacter;
                 lblMapW.Text = ProjectInfo.StartingWidth.ToString();
                 lblMapH.Text = ProjectInfo.StartingHeight.ToString();
@@ -831,8 +858,8 @@ namespace RPGTileMapCreator
 
             var lineCount = ProjectInfo.StartingHeight;
 
-            progressBar1.Visible = true;
-            progressBar1.Maximum = lineCount;
+            //progressBar1.Visible = true;
+            //progressBar1.Maximum = lineCount;
 
             if (tileSets == null)
             {
@@ -844,10 +871,10 @@ namespace RPGTileMapCreator
             {
                 rows++;
                 columns = 0;
-                progressBar1.Value = rows;
+                //progressBar1.Value = rows;
                 for (int i = 1; i <= ProjectInfo.StartingWidth; i++)
                 {
-                    progressBar1.Value = rows;
+                    // progressBar1.Value = rows;
                     columns++;
                     sourceBmp = new Bitmap(defaultTileSet.tile.Image);
 
@@ -878,7 +905,7 @@ namespace RPGTileMapCreator
             Canvas_Panel.Width = columns * ProjectInfo.TileWidth;
             Canvas_Panel.Height = rows * ProjectInfo.TileHeight;
 
-            progressBar1.Visible = false;
+            //progressBar1.Visible = false;
             Canvas_Panel.Refresh();
         }
 
@@ -1243,7 +1270,7 @@ namespace RPGTileMapCreator
         public void UpdateCanvas()
         {
 
-            progressBar1.Visible = true;
+            //progressBar1.Visible = true;
             /*progressBar1.Maximum = tileSets.Count;
             progressBar1.Value = 0;*/
 
@@ -1262,7 +1289,7 @@ namespace RPGTileMapCreator
                 Canvas_Panel.Visible = true;
             }
 
-            progressBar1.Visible = false;
+            // progressBar1.Visible = false;
 
             Canvas_Panel.Refresh();
         }

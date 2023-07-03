@@ -30,6 +30,11 @@ namespace RPGTileMapCreator.cls
         public string MapFile { get; set; }
         public string TileFolder { get; set; }
         public string TileSettingsFile { get; set; }
+        public string ProjectName;
+        public string EmptyTileCharacter;
+        public int StartingWidth;
+        public int StartingHeight;
+        public int TileWidth;
+        public int TileHeight;
     }
-
 }
