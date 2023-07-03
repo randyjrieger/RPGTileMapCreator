@@ -20,9 +20,10 @@ namespace RPGTileMapCreator
     // TODO use tilewidth/height - not 51
     public partial class Form_Map : Form
     {
+        private const int MAX_MAP_HEIGHT = 1000;
+        private const int MAX_MAP_WIDTH = 1000;
+
         public Project ProjectInfo;
-        private Canvas canvas;
-        private Map map;
 
         PictureBox SelectedPaletteBox = new PictureBox();
         PictureBox formerSelected = new PictureBox();
@@ -99,15 +100,22 @@ namespace RPGTileMapCreator
                 {
                     //MessageBox.Show(string.Format("Tile {0} at LT X: {1} , Y: {2}", tileInPlay.Character, me.Location.X, me.Location.Y));
 
-                    if (selectedTileSet != null)
+                    try
                     {
-                        if (!String.IsNullOrEmpty(selectedTileSet.letter.Text))
+                        if (selectedTileSet != null)
                         {
-                            tileInPlay.TileImage = selectedTileSet.tile.Image;
-                            tileInPlay.Character = selectedTileSet.letter.Text;
-                        }
+                            if (!String.IsNullOrEmpty(selectedTileSet.letter.Text))
+                            {
+                                tileInPlay.TileImage = selectedTileSet.tile.Image;
+                                tileInPlay.Character = selectedTileSet.letter.Text;
+                            }
 
-                        Canvas_Panel.Refresh();
+                            Canvas_Panel.Refresh();
+                        }
+                    }
+                    catch (System.NullReferenceException)
+                    {
+
                     }
                 }
 
@@ -524,6 +532,13 @@ namespace RPGTileMapCreator
             ProjectInfo.TileSetFile = project.TileSettingsFile;
             LoadTileSet(ref sf);
 
+            ProjectInfo.ProjectName = project.ProjectName;
+            ProjectInfo.TileWidth = project.TileWidth;
+            ProjectInfo.TileHeight = project.TileHeight;
+
+            lblTileW.Text = ProjectInfo.TileWidth.ToString();
+            lblTileH.Text = ProjectInfo.TileHeight.ToString();
+
             // readyState = ReadyState.MapLoaded;
             UpdateFormState();
             sf.Close();
@@ -611,7 +626,10 @@ namespace RPGTileMapCreator
             }
 
             lblMapH.Text = rows.ToString();
+            ProjectInfo.StartingHeight = rows;
             lblMapW.Text = columns.ToString();
+            ProjectInfo.StartingWidth = columns;
+
 
             if (Canvas_Panel.Visible != true)
             {
@@ -831,7 +849,7 @@ namespace RPGTileMapCreator
 
         }
 
-        void NewProject_ProjectInfoReady(object sender, EventArgs e)
+        private void NewProject_ProjectInfoReady(object sender, EventArgs e)
         {
             Wizard newProjectForm = sender as Wizard;
             if (newProjectForm != null)
@@ -916,7 +934,7 @@ namespace RPGTileMapCreator
 
             if (rbAdd.Checked)
             {
-                if (columns + 1 <= 100)
+                if (columns + 1 <= MAX_MAP_WIDTH)
                 {
                     columns++;
 
@@ -1058,7 +1076,7 @@ namespace RPGTileMapCreator
 
             if (rbAdd.Checked)
             {
-                if (rows + 1 <= 300)
+                if (rows + 1 <= MAX_MAP_HEIGHT)
                 {
                     rows++;
 
