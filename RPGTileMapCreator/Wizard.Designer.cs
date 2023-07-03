@@ -35,13 +35,9 @@ namespace RPGTileMapCreator
             this.wiz03_charset = new AdvancedWizardControl.WizardPages.AdvancedWizardPage();
             this.pnlProjectDetails = new System.Windows.Forms.Panel();
             this.pnlWizTiles = new System.Windows.Forms.Panel();
-            this.btnRootFolder = new System.Windows.Forms.Button();
             this.btnTileFolder = new System.Windows.Forms.Button();
-            this.txtRootFolder = new System.Windows.Forms.TextBox();
             this.txtTileRepoPath = new System.Windows.Forms.TextBox();
-            this.label10 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.txtProjectName = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
@@ -62,6 +58,9 @@ namespace RPGTileMapCreator
             this.button1 = new System.Windows.Forms.Button();
             this.openFolderDialog = new System.Windows.Forms.OpenFileDialog();
             this.openRootFolderDialog = new System.Windows.Forms.OpenFileDialog();
+            this.lblNewSaveFolder = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.chkCopyTiles = new System.Windows.Forms.CheckBox();
             this.pnlProjectDetails.SuspendLayout();
             this.pnlWizTiles.SuspendLayout();
             this.SuspendLayout();
@@ -143,33 +142,22 @@ namespace RPGTileMapCreator
             // 
             this.pnlWizTiles.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.pnlWizTiles.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pnlWizTiles.Controls.Add(this.btnRootFolder);
-            this.pnlWizTiles.Controls.Add(this.btnTileFolder);
-            this.pnlWizTiles.Controls.Add(this.txtRootFolder);
-            this.pnlWizTiles.Controls.Add(this.txtTileRepoPath);
-            this.pnlWizTiles.Controls.Add(this.label10);
-            this.pnlWizTiles.Controls.Add(this.label9);
+            this.pnlWizTiles.Controls.Add(this.chkCopyTiles);
+            this.pnlWizTiles.Controls.Add(this.lblNewSaveFolder);
             this.pnlWizTiles.Controls.Add(this.label4);
+            this.pnlWizTiles.Controls.Add(this.btnTileFolder);
+            this.pnlWizTiles.Controls.Add(this.txtTileRepoPath);
+            this.pnlWizTiles.Controls.Add(this.label9);
             this.pnlWizTiles.Controls.Add(this.label13);
-            this.pnlWizTiles.Location = new System.Drawing.Point(8, 13);
+            this.pnlWizTiles.Location = new System.Drawing.Point(79, 52);
             this.pnlWizTiles.Name = "pnlWizTiles";
             this.pnlWizTiles.Size = new System.Drawing.Size(420, 180);
             this.pnlWizTiles.TabIndex = 80;
             this.pnlWizTiles.Visible = false;
             // 
-            // btnRootFolder
-            // 
-            this.btnRootFolder.Location = new System.Drawing.Point(302, 80);
-            this.btnRootFolder.Name = "btnRootFolder";
-            this.btnRootFolder.Size = new System.Drawing.Size(44, 23);
-            this.btnRootFolder.TabIndex = 87;
-            this.btnRootFolder.Text = "...";
-            this.btnRootFolder.UseVisualStyleBackColor = true;
-            this.btnRootFolder.Click += new System.EventHandler(this.btnRootFolder_Click);
-            // 
             // btnTileFolder
             // 
-            this.btnTileFolder.Location = new System.Drawing.Point(302, 12);
+            this.btnTileFolder.Location = new System.Drawing.Point(302, 61);
             this.btnTileFolder.Name = "btnTileFolder";
             this.btnTileFolder.Size = new System.Drawing.Size(44, 23);
             this.btnTileFolder.TabIndex = 82;
@@ -177,54 +165,27 @@ namespace RPGTileMapCreator
             this.btnTileFolder.UseVisualStyleBackColor = true;
             this.btnTileFolder.Click += new System.EventHandler(this.btnTileFolder_Click);
             // 
-            // txtRootFolder
-            // 
-            this.txtRootFolder.Location = new System.Drawing.Point(108, 80);
-            this.txtRootFolder.Name = "txtRootFolder";
-            this.txtRootFolder.Size = new System.Drawing.Size(188, 23);
-            this.txtRootFolder.TabIndex = 86;
-            // 
             // txtTileRepoPath
             // 
-            this.txtTileRepoPath.Location = new System.Drawing.Point(108, 13);
+            this.txtTileRepoPath.Location = new System.Drawing.Point(108, 62);
             this.txtTileRepoPath.Name = "txtTileRepoPath";
             this.txtTileRepoPath.Size = new System.Drawing.Size(188, 23);
             this.txtTileRepoPath.TabIndex = 80;
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point);
-            this.label10.Location = new System.Drawing.Point(32, 118);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(210, 15);
-            this.label10.TabIndex = 85;
-            this.label10.Text = "A project subfolder will be created here";
             // 
             // label9
             // 
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point);
-            this.label9.Location = new System.Drawing.Point(32, 52);
+            this.label9.Location = new System.Drawing.Point(32, 101);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(235, 15);
             this.label9.TabIndex = 78;
             this.label9.Text = "The local folder where tile images are saved";
             // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label4.Location = new System.Drawing.Point(8, 88);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(105, 15);
-            this.label4.TabIndex = 84;
-            this.label4.Text = "Save Under Folder:";
-            // 
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(8, 16);
+            this.label13.Location = new System.Drawing.Point(8, 65);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(58, 15);
             this.label13.TabIndex = 69;
@@ -396,7 +357,6 @@ namespace RPGTileMapCreator
             this.button1.TabIndex = 5;
             this.button1.Text = "< &Back";
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // openFolderDialog
             // 
@@ -405,6 +365,36 @@ namespace RPGTileMapCreator
             // openRootFolderDialog
             // 
             this.openRootFolderDialog.FileName = "openFileDialog2";
+            // 
+            // lblNewSaveFolder
+            // 
+            this.lblNewSaveFolder.AutoSize = true;
+            this.lblNewSaveFolder.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point);
+            this.lblNewSaveFolder.Location = new System.Drawing.Point(108, 27);
+            this.lblNewSaveFolder.Name = "lblNewSaveFolder";
+            this.lblNewSaveFolder.Size = new System.Drawing.Size(210, 15);
+            this.lblNewSaveFolder.TabIndex = 89;
+            this.lblNewSaveFolder.Text = "A project subfolder will be created here";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label4.Location = new System.Drawing.Point(8, 27);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(70, 15);
+            this.label4.TabIndex = 88;
+            this.label4.Text = "Save Folder:";
+            // 
+            // chkCopyTiles
+            // 
+            this.chkCopyTiles.AutoSize = true;
+            this.chkCopyTiles.Location = new System.Drawing.Point(108, 129);
+            this.chkCopyTiles.Name = "chkCopyTiles";
+            this.chkCopyTiles.Size = new System.Drawing.Size(158, 19);
+            this.chkCopyTiles.TabIndex = 90;
+            this.chkCopyTiles.Text = "Copy Tiles To Save Folder";
+            this.chkCopyTiles.UseVisualStyleBackColor = true;
             // 
             // Wizard
             // 
@@ -460,9 +450,8 @@ namespace RPGTileMapCreator
         private System.Windows.Forms.TextBox txtTileRepoPath;
         private System.Windows.Forms.OpenFileDialog openFolderDialog;
         private System.Windows.Forms.OpenFileDialog openRootFolderDialog;
-        private System.Windows.Forms.Button btnRootFolder;
-        private System.Windows.Forms.TextBox txtRootFolder;
-        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label lblNewSaveFolder;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.CheckBox chkCopyTiles;
     }
 }

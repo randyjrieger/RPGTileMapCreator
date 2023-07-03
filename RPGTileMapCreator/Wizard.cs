@@ -1,4 +1,5 @@
-﻿using RPGTileMapCreator.cls;
+﻿using Newtonsoft.Json;
+using RPGTileMapCreator.cls;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -16,13 +17,7 @@ namespace RPGTileMapCreator
     {
         public event EventHandler<EventArgs> ProjectInfoReady;
 
-        public Project ProjectInfo
-        {
-            get { return projectInfo; }
-            set { projectInfo = value; }
-        }
-
-        private Project projectInfo;
+        public ProjectFile project;
 
         public Wizard()
         {
@@ -94,6 +89,53 @@ namespace RPGTileMapCreator
         {
             if (pnlProjectDetails.Visible)
             {
+                // create folder under c:\..profile
+                string projectFilePath = System.Environment.GetEnvironmentVariable("USERPROFILE") + "\\RPGTIleMapCreator\\" + txtProjectName.Text + "_" + DateTime.Now.ToString("yyyyMMddHHmmssFFF");
+
+                Directory.CreateDirectory(projectFilePath);
+
+                int rows = int.Parse(txtMapHeight.Text);
+                int cols = int.Parse(txtMapWidth.Text);
+                int tileWidth = int.Parse(txtTileWidth.Text);
+                int tileHeight = int.Parse(txtTileHeight.Text);
+
+                // save map file - all ?s
+                //File.Create(projectFilePath + "\\" + txtProjectName.Text + ".rpg");
+
+                // create json for file
+                project = new ProjectFile
+                {
+                    ProjectFolder = projectFilePath,
+                    MapFile = projectFilePath + "\\" + txtProjectName.Text + ".map",
+                    TileFolder = projectFilePath + "\\tiles",
+                    TileSettingsFile = projectFilePath + "\\tilesettings.json",
+                    ProjectName = txtProjectName.Text,
+                    EmptyTileCharacter = txtDefaultChar.Text,
+                    StartingWidth = rows,
+                    StartingHeight = cols,
+                    TileWidth = tileWidth,
+                    TileHeight = tileHeight
+                };
+
+                using (StreamWriter file = File.CreateText(projectFilePath + "\\" + txtProjectName.Text + ".rpg"))
+                {
+                    JsonSerializer serializer = new JsonSerializer();
+                    serializer.Serialize(file, project);
+                }
+
+                // Create map file
+                using (StreamWriter streamWeaver = new StreamWriter(project.MapFile))
+                {
+                    for (int i = 0; i < rows; i++)
+                    {
+                        streamWeaver.WriteLine(CraftNewLine(rows));
+
+                    }
+                }
+
+                // tile settings - blank
+                File.Create(project.TileSettingsFile);
+
                 pnlProjectDetails.Visible = false;
                 foreach (Control c in pnlProjectDetails.Controls)
                 {
@@ -111,23 +153,26 @@ namespace RPGTileMapCreator
             }
             else if (pnlWizTiles.Visible)
             {
-                /*
-                if (!AreMandatoryFieldsEntered())
-                {
-                    return;
-                }*/
+                // show save folder in label
+                // create blank tilesetting file
 
-                projectInfo = new Project
+                // if chkTilesCopy - copy tiles folder to save folder
+                // update the rpg file
+
+                if (chkCopyTiles.Checked)
                 {
-                    ProjectName = txtProjectName.Text,
-                    ProjectFolder = txtProjectName.Text,
-                    TileFolderPath = txtTileRepoPath.Text,
-                    StartingWidth = int.Parse(txtMapWidth.Text),
-                    StartingHeight = int.Parse(txtMapHeight.Text),
-                    EmptyTileCharacter = txtDefaultChar.Text,
-                    TileWidth = 51,
-                    TileHeight = 51
-                };
+                    Directory.CreateDirectory(project.TileFolder);
+
+                    //Copy all the files & Replaces any files with the same name
+                    foreach (string newFile in Directory.GetFiles(txtTileRepoPath.Text, "*.*", SearchOption.AllDirectories))
+                    {
+                        File.Copy(newFile, project.TileFolder + "\\" + Path.GetFileName(newFile));
+                    }
+                }
+                else
+                {
+                    project.TileFolder = txtTileRepoPath.Text;
+                }
 
                 OnProjectInfoReady(e);
                 this.Close();
@@ -155,18 +200,28 @@ namespace RPGTileMapCreator
             */
         }
 
-
-        private void button1_Click(object sender, EventArgs e)
+        private string CraftNewLine(int width)
         {
-            if (pnlWizTiles.Visible)
+            string returnLine = "";
+
+            for (int i = 1; i < width; i++)
             {
-                pnlWizTiles.Visible = false;
-                pnlProjectDetails.Visible = true;
-                pnlProjectDetails.BringToFront();
-                button1.Text = "< &Back";
+                returnLine += txtDefaultChar.Text;
             }
 
+            return returnLine;
         }
+        //private void button1_Click(object sender, EventArgs e)
+        //{
+        //    if (pnlWizTiles.Visible)
+        //    {
+        //        pnlWizTiles.Visible = false;
+        //        pnlProjectDetails.Visible = true;
+        //        pnlProjectDetails.BringToFront();
+        //        button1.Text = "< &Back";
+        //    }
+
+        //}
 
         private void btnTileFolder_Click(object sender, EventArgs e)
         {
@@ -197,8 +252,6 @@ namespace RPGTileMapCreator
                 {
                     projectFolder = fbd.SelectedPath;
                 }
-
-                txtRootFolder.Text = projectFolder;
             }
         }
     }
